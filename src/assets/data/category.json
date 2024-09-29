@@ -1,0 +1,42 @@
+[
+  {
+    "name": "Chairs",
+    "logoUrl": "https://res.cloudinary.com/dx499gc6x/image/upload/v1723007578/categories/logos/logo_66aa0e63c89cd48f147a1fc7.svg"
+  },
+  {
+    "name": "Tables",
+    "logoUrl": "https://res.cloudinary.com/dx499gc6x/image/upload/v1723008010/categories/logos/logo_66aa0e8bc89cd48f147a1fc9.svg"
+  },
+  {
+    "name": "Sofas",
+    "logoUrl": "https://res.cloudinary.com/dx499gc6x/image/upload/v1723008034/categories/logos/logo_66aa0e94c89cd48f147a1fcb.svg"
+  },
+  {
+    "name": "Armchairs",
+    "logoUrl": "https://res.cloudinary.com/dx499gc6x/image/upload/v1723008059/categories/logos/logo_66aa0e9cc89cd48f147a1fcd.svg"
+  },
+  {
+    "name": "Decor",
+    "logoUrl": "https://res.cloudinary.com/dx499gc6x/image/upload/v1723008292/categories/logos/logo_66aa12c9c89cd48f147a1ff2.svg"
+  },
+  {
+    "name": "Beds",
+    "logoUrl": "https://res.cloudinary.com/dx499gc6x/image/upload/v1723634548/categories/logos/qqscwnkpaisre5itsy4f.svg"
+  },
+  {
+    "name": "Storage",
+    "logoUrl": "https://res.cloudinary.com/dx499gc6x/image/upload/v1725096491/categories/logos/mttzicsgwhj76t4rjkp1.svg"
+  },
+  {
+    "name": "Textiles",
+    "logoUrl": "https://res.cloudinary.com/dx499gc6x/image/upload/v1725096718/categories/logos/u3ytezvix51wtmw9cwxh.svg"
+  },
+  {
+    "name": "Lighting",
+    "logoUrl": "https://res.cloudinary.com/dx499gc6x/image/upload/v1725096896/categories/logos/gdgyq3g8x0yljmm7p3oy.svg"
+  },
+  {
+    "name": "Toys",
+    "logoUrl": "https://res.cloudinary.com/dx499gc6x/image/upload/v1725097027/categories/logos/mftrer8rnvfl1x48kbuz.svg"
+  }
+]
