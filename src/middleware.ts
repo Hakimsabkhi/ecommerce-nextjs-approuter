@@ -27,7 +27,7 @@ export async function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL('/', req.url));
   }
   if (req.nextUrl.pathname.startsWith('/orderhistory')|| 
-  req.nextUrl.pathname.startsWith('/checkout')) {
+  req.nextUrl.pathname.startsWith('/checkout')||req.nextUrl.pathname.startsWith('/settings')) {
     const userRole = token?.role;
   
     if (userRole !== 'SuperAdmin' && userRole !== 'Admin'&& userRole !== 'Consulter' && userRole !== 'Visiteur') {
@@ -70,7 +70,8 @@ export const config = {
   matcher: [
     '/admin/:path*',
     '/orderhistory',
-    '/checkout'
+    '/checkout',
+    '/settings'
   ],
 
 };
