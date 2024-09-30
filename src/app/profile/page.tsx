@@ -11,7 +11,7 @@ const Profile = () => {
 
   useEffect(() => {
     if (!session) {
-      router.push('/auth/signin');
+      router.push('/signin');
     } else {
       setFormData((prevFormData) => ({
         ...prevFormData,
