@@ -115,11 +115,11 @@ const Page = () => {
           </div>
         ))}
         {/* Pagination Component */}
-        <Pagination
+       {currentPage===0 && <Pagination
           currentPage={currentPage}
           totalPages={totalPages}
           onPageChange={setCurrentPage}
-        />
+        />}
       </div>
     </div>
   );

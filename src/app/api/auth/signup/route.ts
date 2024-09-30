@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
 import connectToDatabase from '@/lib/db';
 import UserModel from '@/models/User';
+// In-memory rate limiting store
+const rateLimit = new Map<string, { count: number; lastRequest: number }>();
 
 export async function POST(req: NextRequest) {
 
@@ -19,6 +21,18 @@ export async function POST(req: NextRequest) {
   }
 
   try {
+        // Rate limiting logic
+        const clientIp = req.headers.get('x-forwarded-for') || req.ip || 'unknown-ip';
+        const rateLimitInfo = rateLimit.get(clientIp) || { count: 0, lastRequest: Date.now() };
+    
+        if (Date.now() - rateLimitInfo.lastRequest < 60000 && rateLimitInfo.count >= 5) {
+          console.log('Rate limit exceeded');
+          return NextResponse.json({ error: 'Rate limit exceeded. Please wait a minute before trying again.' }, { status: 429 });
+        }
+    
+        rateLimitInfo.count++;
+        rateLimitInfo.lastRequest = Date.now();
+        rateLimit.set(clientIp, rateLimitInfo);
     await connectToDatabase();
 
     const existingUser = await UserModel.findOne({ email });
@@ -32,6 +46,7 @@ export async function POST(req: NextRequest) {
       email,
       password: hashedPassword,
       role: role || 'Visiteur', // Default role if not provided
+      
     });
 
     await newUser.save();
