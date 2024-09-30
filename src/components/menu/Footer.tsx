@@ -20,7 +20,61 @@ import { FaFacebookF } from "react-icons/fa6";
 import { FaLinkedinIn } from "react-icons/fa";
 import { FaInstagram } from "react-icons/fa";
 import { FaArrowRight } from "react-icons/fa6";
+import useSWR from 'swr';
+interface Address {
+    _id: string;
+    governorate: string;
+    city: string;
+    address: string;
+    zipcode: number;
+  }
+  
+  interface CompanyData {
+    name: string;
+    addresse: Address;
+    email: string;
+    phone: number;
+  }
+  
+  // Fetcher function for useSWR
+  const fetcher = async (url: string): Promise<CompanyData> => {
+    const res = await fetch(url, {
+      method: 'GET',
+      next: { revalidate: 0 }, // Disable caching to always fetch the latest data
+    });
+  
+    if (!res.ok) {
+      throw new Error('Failed to fetch company data');
+    }
+  
+    return res.json();
+  };
+ 
+  
+
 export default function Bb() {
+    const { data: companyData, error } = useSWR('/api/company/getCompany', fetcher);
+    const formatPhoneNumber = (phone: string | number): string => {
+        // Convert number to string if needed
+        const phoneStr = phone.toString().trim();
+      
+        // Check if the length of the phone number is correct
+        if (phoneStr.length === 8) {
+          return `${phoneStr.slice(0, 2)} ${phoneStr.slice(2, 5)} ${phoneStr.slice(5)}`;
+        }
+      
+        // Handle other cases (e.g., longer or shorter phone numbers)
+        return phoneStr;
+      };
+      
+    if (error) {
+      console.error(error);
+      return <div>Error loading company data</div>;
+    }
+  
+    if (!companyData) {
+      return <></>;
+    }
     return (
         <div>
             <div className="pt-8">
@@ -29,9 +83,9 @@ export default function Bb() {
                     <div className='flex flex-col gap-8  items-center'>                    
                         <Image src={luxehome} alt="luxehome" />
                         <div className="gap-5 flex flex-col max-md:items-center "> 
-                            <p>5080 Teboulba Monastir, Tunisie</p>
-                            <p className="flex items-center gap-2 "><CiPhone size={25} /> +216 12 345 778</p>
-                            <p className='flex gap-2 items-center'><CiMail className='fill-cyan-400 ' size={25}/> support@Nproject.com</p>                                           
+                            <p>{companyData.addresse.zipcode} {companyData.addresse.city} {companyData.addresse.governorate}, Tunisie</p>
+                            <p className="flex items-center gap-2 "><CiPhone size={25} /> +216 {formatPhoneNumber(companyData.phone)}</p>
+                            <p className='flex gap-2 items-center'><CiMail  size={25}/> {companyData.email}</p>                                           
                         </div>
                     </div>
                     <div className=" flex w-1/3 max-md:w-full justify-between max-md:justify-center items-center max-md:gap-20  ">
@@ -109,8 +163,8 @@ export default function Bb() {
                         </div>
                         <p className="max-md:text-xl">Suivez-nous sur</p>
                         <div className='flex  items-center gap-2'>                            
-                            <FaLinkedinIn className="hover:text-secondary"  size={25} />                            
-                            <FaFacebookF className="hover:text-secondary" size={25} />
+                            <FaLinkedinIn className="hover:text-[#0077b5]"  size={25} />                            
+                            <FaFacebookF className="hover:text-black" size={25} />
                             <FaInstagram className='hover:bg-gradient-to-r from-orange-500 overflow-hidden rounded-lg via-pink-500 to-indigo-500 ' fill="currentcolor" size={25} />                            
                         </div>
                     </div>
@@ -118,7 +172,7 @@ export default function Bb() {
             </div>
             <div className="bg-white flex items-center justify-center w-full py-3 max-lg:pb-20">
                 <div className="w-[60%] flex items-center justify-between text-[#525566] font-bold max-lg:w-[95%] max-md:text-[10px]">
-                    <p>© Nproject - All rights reserved</p>
+                    <p>© {companyData.name} - All rights reserved</p>
                     <div className=" flex items-center gap-8 max-md:gap-1">
                         <p>Terms and conditions</p>
                         <p>Privacy Policy</p>
