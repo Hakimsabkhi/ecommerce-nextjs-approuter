@@ -51,7 +51,8 @@ interface PageProps {
       next: { revalidate: 0 }, // Disable caching to always fetch the latest data
     })
   if (!res.ok) {
-    throw new Error("Product not found");
+    console.log("Product not found");
+    notFound();
   }
   const data: ProductData = await res.json();
   return data;

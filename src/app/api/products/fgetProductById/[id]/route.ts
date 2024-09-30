@@ -13,7 +13,7 @@ export async function GET(
       await dbConnect();
       const { id } = params; // Get `id` from params
       
-      if (!id) {
+      if (!id || id.length !== 24) { // assuming the MongoDB ObjectId format is 24 characters
         return new NextResponse(JSON.stringify({ message: "Invalid or missing product ID" }), { status: 400 });
       }
      
@@ -24,7 +24,7 @@ export async function GET(
         .populate("brand");
   
       if (!product) {
-        return new NextResponse(JSON.stringify({ message: "Product not found" }), { status: 404 });
+        return new NextResponse(JSON.stringify({ message: "Product not found" }), { status: 404});
       }
   
       return new NextResponse(JSON.stringify(product), { status: 200 });

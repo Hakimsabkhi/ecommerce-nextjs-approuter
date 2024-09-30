@@ -40,7 +40,8 @@ const fetchCategoryData = async (id: string): Promise<ICategory | null> => {
       next: { revalidate: 0 }, // Disable caching to always fetch the latest data
     })
     if (!res.ok) {
-      throw new Error('Category not found');
+     console.log('Category not found');
+     return notFound();
     }
     const data: ICategory = await res.json();
     return data;
