@@ -12,14 +12,14 @@ interface Category {
 const Headerbottom: React.FC = () => {
 
   if (categories.length === 0) {
-    return <div>Aucune catégorie trouvée</div>;
+    return <></>;
   }
 
   return (
     <header>
       <nav className="w-full h-[72px] flex justify-center bg-white max-lg:hidden">
         <div className="flex justify-between w-[90%] max-xl:w-[95%] font-bold items-center text-xl max-2xl:text-sm">
-          {categories.map((category: Category) => (
+          {categories?.map((category: Category) => (
             <Link 
               href={`/${category.name}`} 
               key={category.name} 

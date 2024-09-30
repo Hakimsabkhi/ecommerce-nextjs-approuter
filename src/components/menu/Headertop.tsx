@@ -37,9 +37,20 @@ const Headertop: React.FC = () => {
 
   if (error) {
     console.error(error);
-    return <div>Error loading company data</div>;
+    return <div></div>;
   }
-
+  const formatPhoneNumber = (phone: string | number): string => {
+    // Convert number to string if needed
+    const phoneStr = phone.toString().trim();
+  
+    // Check if the length of the phone number is correct
+    if (phoneStr.length === 8) {
+      return `${phoneStr.slice(0, 2)} ${phoneStr.slice(2, 5)} ${phoneStr.slice(5)}`;
+    }
+  
+    // Handle other cases (e.g., longer or shorter phone numbers)
+    return phoneStr;
+  };
   if (!companyData) {
     return <></>;
   }
@@ -52,7 +63,7 @@ const Headertop: React.FC = () => {
             Address: {companyData.addresse?.address}, {companyData.addresse?.zipcode} {companyData.addresse?.city}, {companyData.addresse?.governorate}, Tunisie
           </p>                    
           <div className="flex gap-16 items-center ">                                                    
-            <p className='flex gap-2 items-center'>TELE: {companyData.phone}</p>                                                                        
+            <p className='flex gap-2 items-center'>TELE:  +216 {formatPhoneNumber(companyData.phone)}</p>                                                                        
             <p className='flex gap-2 items-center'>EMAIL: {companyData.email}</p>                                                            
           </div> 
         </div>
