@@ -1,19 +1,32 @@
-import React, { useState } from "react";
+'use client'; // This component will be rendered on the client-side
+
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { FaRegUserCircle } from 'react-icons/fa';
-import Dropdown from "@/components/Dropdown"
+import Dropdown from "@/components/Dropdown";
 import { useSession } from "next-auth/react";
 
-
-
 const UserMenu: React.FC = () => {
-  const {data:session}=useSession();
+  const { data: session, status } = useSession(); // Get session data and status
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true); // State to track loading
 
   const toggleDropdown = () => {
     setIsDropdownOpen((prev) => !prev);
   };
 
+  useEffect(() => {
+    if (status === "loading") {
+      setIsLoading(true); // Set loading to true while fetching
+    } else {
+      setIsLoading(false); // Set loading to false after fetching
+    }
+  }, [status]);
+
+  // Display a loading state or the user menu based on session
+  if (isLoading) {
+    return <></>; // Optional loading indicator
+  }
 
   if (session?.user) {
     return (

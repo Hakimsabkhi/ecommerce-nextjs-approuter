@@ -26,7 +26,7 @@ const ClientLayout: React.FC<ClientLayoutProps> = ({ children }) => {
   return (
     <div className=" flex flex-col min-h-screen">
       <Headertop />
-      <Header/>
+      <Header />
       <HeaderBottom />
       <div className="flex-grow">
       {children}

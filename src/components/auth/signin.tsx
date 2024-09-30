@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect,useState } from 'react';
-import {useSession, signIn } from 'next-auth/react';
+import { useSession, signIn, getProviders, ClientSafeProvider } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { pic4 } from "@/assets/image";
 import Image from 'next/image';
@@ -10,47 +10,62 @@ import React from 'react';
 
 
 const SignIn = () => {
+  const [providers, setProviders] = useState<Record<string, ClientSafeProvider> | null>(null);
   const [credentials, setCredentials] = useState({ email: '', password: '' });
   const [error, setError] = useState<string | null>(null);
+  
   const router = useRouter();
-  const { data: session, status } = useSession();//get for session
+  const { data: session } = useSession();
+
+  useEffect(() => {
+    const fetchProviders = async () => {
+      try {
+        const res = await getProviders();
+        if (res) {
+          setProviders(res);
+        } else {
+          setError('Failed to load authentication providers.');
+        }
+      } catch (error) {
+        console.error('Error fetching providers:', error);
+        setError('An unexpected error occurred while loading providers. Please try again.');
+      }
+    };
+    fetchProviders();
+  }, []);
+
   useEffect(() => {
     if (session) {
-      if (session?.user?.role === 'SuperAdmin') {
-          router.push('/admin/dashboard');
-        } else {
-          router.push('/');
-        }
+      router.push('/');
     }
-  }, [session,router]);
+  }, [session, router]);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
   };
-  
-  
-  const handleSubmit = async (e: React.FormEvent) => {
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setError(null); // Clear any previous errors
+    setError(null);
     try {
       const result = await signIn('credentials', {
         redirect: false,
         email: credentials.email,
         password: credentials.password,
       });
-
+  
       if (result?.ok) {
-        if (session?.user?.role === 'Admin') {
-          router.push('/admin/dashboard');
-        } else {
-          router.push('/');
-        }
+        router.push('/');
       } else {
-        setError('Failed to sign in. Please check your email and password , try again.');
+        setError('Failed to sign in. Please check your email and password and try again.');
       }
     } catch (error) {
+      console.error('Sign in error:', error);
       setError('An unexpected error occurred. Please try again.');
     }
   };
+  
+
 
   return (
     <div className="flex items-center  justify-center min-h-screen relative bg-gray-100">
@@ -91,6 +106,7 @@ const SignIn = () => {
               className="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 bg-gray-200 leading-tight focus:outline-none focus:shadow-outline"
               required
             />
+            
           </div>
           <div className="flex justify-between items-center max-md:text-xs mb-4">
             <div className="flex items-center h-5">
@@ -106,13 +122,13 @@ const SignIn = () => {
             >
               Sign In to your account
             </button>
-            <button
+            {providers && providers.google &&   <button
               type="button"
               onClick={() => signIn('google', { callbackUrl: '/' })}
               className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 w-full rounded-lg focus:outline-none focus:shadow-outline"
             >
               Sign In with Google
-            </button>
+            </button>}
             <button
               type="button"      
               onClick={() => router.push('/signup')}    
