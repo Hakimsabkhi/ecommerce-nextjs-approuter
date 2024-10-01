@@ -100,7 +100,7 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, user }: { token: JWT, user?: User }) {
       if (user) {
         token.id = user.id;
-        token.role = user.role || null; // Ensure role is nullable
+        token.role = user.role; // Ensure role is nullable
       } else {
         if (token?.id && typeof token.id === 'string') {
           await connectToDatabase();
@@ -163,5 +163,5 @@ export const authOptions: NextAuthOptions = {
     },
   },
   secret: nextAuthSecret,
-  debug: false,
+  debug: true,
 };

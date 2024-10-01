@@ -7,11 +7,11 @@ import { Session } from "next-auth";
 
 interface SessionProviderWrapperProps {
   children: React.ReactNode;
-  session: Session | null;
+  
 }
 
-const SessionProviderWrapper: React.FC<SessionProviderWrapperProps> = ({ children, session }) => {
-  return <SessionProvider session={session}>{children}</SessionProvider>;
+const SessionProviderWrapper: React.FC<SessionProviderWrapperProps> = ({ children}) => {
+  return <SessionProvider >{children}</SessionProvider>;
 };
 
 export default SessionProviderWrapper;
