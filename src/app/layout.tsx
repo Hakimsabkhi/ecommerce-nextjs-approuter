@@ -20,7 +20,7 @@ export const metadata: Metadata = {
 
 const RootLayout = async ({ children }: { children: React.ReactNode }) => {
   // Fetch the session server-side
-  const session = await getServerSession(authOptions);
+ // const session = await getServerSession(authOptions);
 
   return (
   
