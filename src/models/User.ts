@@ -6,7 +6,7 @@ export interface IUser extends Document {
   email: string;
   password?: string;
   role:  'SuperAdmin' | 'Admin' | 'Consulter' | 'Visiteur';
-
+  
   createdAt?: Date;
   updatedAt?: Date;
 
