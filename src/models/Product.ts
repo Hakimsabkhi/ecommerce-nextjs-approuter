@@ -21,6 +21,7 @@ export interface IProduct extends Document {
   discount?: number;
   weight?:string;
   status:string;
+  statuspage:string;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -41,6 +42,7 @@ const ProductSchema = new mongoose.Schema({
   discount: { type: Number},
   weight:{type:String},
   status: { type: String, default: 'in stock' },
+  statuspage:{ type: String,default:''},
   user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   imageUrl: { type: String },
   images: [{ type: String }], 
