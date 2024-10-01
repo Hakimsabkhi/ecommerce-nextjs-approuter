@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { pic4 } from '@/assets/image'; // Ensure path is correct
+import { signIn } from 'next-auth/react';
 
 const Signup = () => {
   const [credentials, setCredentials] = useState({ email: '', password: '', repeatPassword: '', name: '', lastname: '' });
@@ -41,7 +42,16 @@ const Signup = () => {
       const data = await result.json();
 
       if (result.ok) {
-        router.push('/signin'); // Redirect on successful signup
+        const result = await signIn('credentials', {
+          redirect: false,
+          email: credentials.email,
+          password: credentials.password,
+        });
+        if (result?.ok) {
+          router.push('/');
+        } else {
+          setError('Failed to sign in. Please check your email and password and try again.');
+        } // Redirect on successful signup
       } else {
         setError(data.message || 'An error occurred. Please try again.');
       }

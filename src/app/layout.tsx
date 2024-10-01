@@ -26,7 +26,7 @@ const RootLayout = async ({ children }: { children: React.ReactNode }) => {
   
       <html lang="en">
         <body className={poppins.className}>
-          <SessionProviderWrapper session={session}>
+          <SessionProviderWrapper >
           <StoreProviders>
             <ClientLayout>
             <ToastContainer 
