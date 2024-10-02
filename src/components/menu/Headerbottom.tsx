@@ -1,7 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import categories from "@/assets/data/category.json"; // Adjust path if needed
 
 // Type definition for category data (if you're using TypeScript)
 interface Category {
@@ -9,8 +8,17 @@ interface Category {
   logoUrl?: string;
 }
 
-const Headerbottom: React.FC = () => {
+async function fetchcategoryData() {  
+  const res = await fetch(`${process.env.NEXTAUTH_URL}/api/category/getAllCategory`);
+  if (!res.ok) {
+      throw new Error('Failed to fetch data');
+  }
+  return res.json();
+}
 
+
+const Headerbottom: React.FC = async () => {
+ const categories = await  fetchcategoryData()
   if (categories.length === 0) {
     return <></>;
   }

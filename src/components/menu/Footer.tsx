@@ -1,14 +1,8 @@
+
 import Image from 'next/image';
 import React from 'react';
 import Link from "next/link"
 import {
-    facebook,
-    linkedin,
-    X,
-    pinterest,
-    payment,
-    googleplay,
-    appstore,
     luxehome
 } from '@/assets/image';
 import { CiShop, CiShoppingCart,CiUser } from "react-icons/ci";
@@ -20,7 +14,7 @@ import { FaFacebookF } from "react-icons/fa6";
 import { FaLinkedinIn } from "react-icons/fa";
 import { FaInstagram } from "react-icons/fa";
 import { FaArrowRight } from "react-icons/fa6";
-import useSWR from 'swr';
+
 interface Address {
     _id: string;
     governorate: string;
@@ -35,25 +29,20 @@ interface Address {
     email: string;
     phone: number;
   }
-  
-  // Fetcher function for useSWR
-  const fetcher = async (url: string): Promise<CompanyData> => {
-    const res = await fetch(url, {
-      method: 'GET',
-      next: { revalidate: 0 }, // Disable caching to always fetch the latest data
-    });
-  
+  async function fetchCompanyData() {
+    const res = await fetch(`${process.env.NEXTAUTH_URL}/api/company/getCompany`);
     if (!res.ok) {
-      throw new Error('Failed to fetch company data');
+        throw new Error('Failed to fetch data');
     }
-  
     return res.json();
-  };
+}
+  
+
  
   
 
-export default function Bb() {
-    const { data: companyData, error } = useSWR('/api/company/getCompany', fetcher);
+export default async function Bb() {
+    const companyData = await fetchCompanyData();
     const formatPhoneNumber = (phone: string | number): string => {
         // Convert number to string if needed
         const phoneStr = phone.toString().trim();
@@ -67,10 +56,7 @@ export default function Bb() {
         return phoneStr;
       };
       
-    if (error) {
-      console.error(error);
-      return <div>Error loading company data</div>;
-    }
+
   
     if (!companyData) {
       return <></>;

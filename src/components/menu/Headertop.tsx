@@ -1,5 +1,5 @@
 import React from 'react';
-import useSWR from 'swr';
+
 
 // Define interfaces for company data and address
 interface Address {
@@ -18,42 +18,35 @@ interface CompanyData {
 }
 
 // Fetcher function for useSWR
-const fetcher = async (url: string): Promise<CompanyData> => {
-  const res = await fetch(url, {
-    method: 'GET',
-    next: { revalidate: 0 }, // Disable caching to always fetch the latest data
-  });
-
+async function fetchCompanyData() {
+  const res = await fetch(`${process.env.NEXTAUTH_URL}/api/company/getCompany`);
   if (!res.ok) {
-    throw new Error('Failed to fetch company data');
+      throw new Error('Failed to fetch data');
   }
-
   return res.json();
-};
+}
 
-const Headertop: React.FC = () => {
+const Headertop: React.FC = async () => {
   // Use useSWR to fetch company data
-  const { data: companyData, error } = useSWR('/api/company/getCompany', fetcher);
+  const companyData = await fetchCompanyData();
 
-  if (error) {
-    console.error(error);
-    return <div></div>;
+  
+
+  if (!companyData) {
+    return <div>Loading...</div>;
   }
+
   const formatPhoneNumber = (phone: string | number): string => {
     // Convert number to string if needed
     const phoneStr = phone.toString().trim();
-  
-    // Check if the length of the phone number is correct
+
+    // Format phone number as XX XXX XXX
     if (phoneStr.length === 8) {
       return `${phoneStr.slice(0, 2)} ${phoneStr.slice(2, 5)} ${phoneStr.slice(5)}`;
     }
-  
-    // Handle other cases (e.g., longer or shorter phone numbers)
+
     return phoneStr;
   };
-  if (!companyData) {
-    return <></>;
-  }
 
   return (
     <header>
@@ -62,8 +55,8 @@ const Headertop: React.FC = () => {
           <p className='flex gap-2 items-center uppercase'>
             Address: {companyData.addresse?.address}, {companyData.addresse?.zipcode} {companyData.addresse?.city}, {companyData.addresse?.governorate}, Tunisie
           </p>                    
-          <div className="flex gap-16 items-center ">                                                    
-            <p className='flex gap-2 items-center'>TELE:  +216 {formatPhoneNumber(companyData.phone)}</p>                                                                        
+          <div className="flex gap-16 items-center">                                                    
+            <p className='flex gap-2 items-center'>TELE: +216 {formatPhoneNumber(companyData.phone)}</p>                                                                        
             <p className='flex gap-2 items-center'>EMAIL: {companyData.email}</p>                                                            
           </div> 
         </div>
