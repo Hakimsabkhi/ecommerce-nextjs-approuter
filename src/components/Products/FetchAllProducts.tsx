@@ -226,7 +226,7 @@ const AddedProducts: React.FC<AddedProductsProps> = ({ products }) => {
               {/* <td className="border px-4 py-2">{item._id}</td> */}
               <td className="border px-4 py-2  ">{item.ref}</td>
               <td className="border px-4 py-2   ">{item.name}</td>
-              <td className="border px-4 py-2 ">{item.imageUrl}</td>
+              <td className="border px-4 py-2 "><Link href={item.imageUrl}>{item.imageUrl.split('/')[item.imageUrl.split('/').length - 1]}</Link></td>
               <td className="border px-4 py-2  ">{item?.user?.username}</td>
               <td className="border px-4 py-2    ">
                 <div className="flex items-center justify-center gap-2">
