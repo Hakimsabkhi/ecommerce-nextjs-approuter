@@ -5,7 +5,7 @@ import React, { useEffect, useState, ChangeEvent  } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-import { fetchCategories } from "@/lib/featcher";
+
 import { toast } from "react-toastify";
 
 interface CategoryData {
@@ -105,7 +105,7 @@ const ModifyCategory = () => {
       if (!response.ok) {
         throw new Error('Failed to update category');
       }
-      await fetchCategories();
+   
       toast.success(`Category ${categoryData.name} modification successfully!`);
     router.push('/admin/categorylist')
     } catch (error) {

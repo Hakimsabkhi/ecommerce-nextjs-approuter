@@ -2,7 +2,7 @@
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import { fetchCategories } from "@/lib/featcher";
+
 import Image from "next/image";
 import Link from "next/link";
 const AddCategory = () => {
@@ -92,7 +92,7 @@ const AddCategory = () => {
         const errorData = await response.json();
         throw new Error(errorData.message || "Error posting category");
       }
-      await fetchCategories();
+      
       toast.success(`Category ${name} Add successfully!`);
       router.push("/admin/categorylist");
     } catch (err: any) {

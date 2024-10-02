@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { fetchCategories } from "@/lib/featcher";
+
 import { toast } from "react-toastify";
 import DeletePopup from "../Popup/DeletePopup";
 import { flag } from "@/assets/image";
@@ -59,7 +59,7 @@ const AddedCategories: React.FC = () => {
       }
 
       // Refresh categories after deletion
-      await fetchCategories();
+    
       handleClosePopup();
       getCategory();
       toast.success("Category delete successfully!");
