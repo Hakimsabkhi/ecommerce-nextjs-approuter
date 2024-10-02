@@ -6,15 +6,12 @@ import Image from "next/image";
 import { FiHeart } from "react-icons/fi";
 import { SlBag } from "react-icons/sl";
 import { CiSearch } from "react-icons/ci";
-import UserMenu from "../userComp/UserMenu";
 import CartModal from "../CartModal";
-
 import { luxehome } from "@/assets/image";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
 import Link from "next/link";
 import Total from "./Total";
-import { useSessionData } from '@/content/session/useSessionData';
 
 interface Category {
   id: string;
@@ -25,9 +22,7 @@ interface Category {
 const Header: React.FC = () => {
   const [isCartOpen, setIsCartOpen] = React.useState(false);
   const cartmodalRef = React.useRef<HTMLDivElement>(null);
-
   const items = useSelector((state: RootState) => state.cart.items);
-
   const [totalQuantity, setTotalQuantity] = useState(0);
   //for search
   const [searchTerm, setSearchTerm] = useState("");
@@ -116,8 +111,8 @@ const Header: React.FC = () => {
     
   };
   return (
-    <div className="w-full max-lg:fixed max-lg:z-10 h-[109px] bg-[#15335E] flex max-lg:hidden justify-center">
-      <div className="flex w-[95%] max-xl:w-[95%] gap-4 items-center justify-between max-lg:bg-white pr-[350px]">
+    
+      <div className="flex w-[80%] gap-4 items-center justify-around">
         <Link href="/" aria-label="Home page">
           <div>
             <Image
@@ -197,7 +192,7 @@ const Header: React.FC = () => {
           )}
         </div>
 
-        <div className="flex items-center gap-4 w-[133px] text-white">
+        <div className="flex items-center gap-4 w-[200px] text-white">
           <FiHeart size={25} />
           <div className="relative" ref={cartmodalRef}>
             <div className="relative cursor-pointer" onClick={toggleCartModal}>
@@ -212,7 +207,7 @@ const Header: React.FC = () => {
           <Total items={items} />
         </div>
       </div>
-    </div>
+  
   );
 };
 

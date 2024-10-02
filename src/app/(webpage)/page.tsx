@@ -6,7 +6,6 @@ import Collection from "@/components/Collection";
 import Furniture from "@/components/Furniture";
 import Rules from "@/components/Rules";
 import Latestarticle from "@/components/Latestarticle";
-import "./globals.css";
 import Categories from "@/components/Categorys/Categories";
 
 export default function HomePage() {
