@@ -1,22 +1,21 @@
-'use client';
-import React, {useState } from "react";
+'use client'; // UserMenu remains a client component
+
+import React, { useState } from "react";
 import Link from "next/link";
 import { FaRegUserCircle } from 'react-icons/fa';
 import Dropdown from "@/components/Dropdown";
-import { Session } from "next-auth";
+import { Session } from "next-auth"; // Import Session type
 
-interface SessionProps {
-  session: Session | null;
+interface UserMenuProps {
+  session: Session | null; // Session passed from server component
 }
 
-const UserMenu: React.FC <SessionProps>= ({ session }) => {
-
+const UserMenu: React.FC<UserMenuProps> = ({ session }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const toggleDropdown = () => {
     setIsDropdownOpen((prev) => !prev);
   };
-
 
   if (session) {
     return (
@@ -31,8 +30,8 @@ const UserMenu: React.FC <SessionProps>= ({ session }) => {
 
         {isDropdownOpen && (
           <Dropdown
-            username={session.user.name ?? ""}
-            role={session.user.role ?? ""}
+            username={session.user?.name ?? ""}
+            role={session.user?.role ?? ""}
           />
         )}
       </div>
