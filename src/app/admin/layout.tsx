@@ -6,9 +6,7 @@ const RootLayout = async ({ children }: { children: React.ReactNode }) => {
   return (
     <>
       <NavAdmin  />
-   
-      {children}
-      
+      {children}    
     </>
   );
 };
