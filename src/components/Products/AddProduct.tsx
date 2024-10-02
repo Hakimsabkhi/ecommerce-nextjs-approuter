@@ -40,6 +40,7 @@ const AddProduct = () => {
     weight: "",
     warranty: "",
     dimensions: "",
+    statuspage:"",
   });
 
   useEffect(() => {
@@ -138,7 +139,7 @@ const AddProduct = () => {
     formData.append("weight", productData.weight);
     formData.append("warranty", productData.warranty);
     formData.append("dimensions", productData.dimensions);
-
+    formData.append("statuspage", productData.statuspage);
     if (image) formData.append("image", image);
     if (images) {
       images.forEach((img, index) => formData.append(`images[${index}]`, img));
@@ -289,6 +290,27 @@ const AddProduct = () => {
             onChange={handleChange}
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-[60%] block p-2.5"
           />
+        </div>
+            <div className="flex items-center w-[30%] max-lg:w-full max-lg:justify-between gap-4">
+          <p className="text-xl font-bold">Place</p>
+          <select
+            name="statuspage"
+            value={productData.statuspage}
+            onChange={handleChange}
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-[60%] block p-2.5"
+            required
+          >
+            <option value="">Select a Place</option>
+            <option value="home-page" >
+               Home Page
+             </option>
+              <option value="best-collection" >
+              Best Collection
+            </option>
+            <option value="promotion">
+            Promotion
+            </option>
+          </select>
         </div>
       </div>
       <div className="flex items-center w-full gap-4">

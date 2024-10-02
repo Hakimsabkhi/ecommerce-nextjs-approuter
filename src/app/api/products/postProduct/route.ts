@@ -43,6 +43,7 @@ export async function POST(req: NextRequest) {
     const color = formData.get('color') as string;
     const weight = formData.get('weight') as string;
     const warranty = formData.get('warranty')as string ;
+    const statuspage = formData.get('statuspage')as string ;
     const imageFiles: File[] = [];
     const entries = Array.from(formData.entries()); // Convert entries to an array
     for (let i = 0; i < entries.length; i++) {
@@ -120,7 +121,7 @@ export async function POST(req: NextRequest) {
 );
 
 
-    const newProducts = new Products({ name,info,description,ref,material,color,warranty,dimensions,category,brand,stock,price ,discount , imageUrl, user ,weight, images: uploadedImages,});
+    const newProducts = new Products({ name,info,description,ref,material,color,warranty,dimensions,category,brand,stock,price ,discount , imageUrl, user ,weight, images: uploadedImages,statuspage});
     await newProducts.save(); 
     return NextResponse.json(newProducts, { status: 201 });
   } catch (error) {

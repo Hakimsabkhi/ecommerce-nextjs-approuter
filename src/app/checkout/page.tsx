@@ -15,7 +15,6 @@ import DeliveryMethod from '@/components/checkoutComp/DeliveryMethod';
 
 const Checkout = () => {
   const items = useSelector((state: RootState) => state.cart.items);
-  const router = useRouter();
   const dispatch = useDispatch();
 
   // Step state to control the view of the process
