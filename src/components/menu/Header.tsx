@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-
 import Image from "next/image";
 import { FiHeart } from "react-icons/fi";
 import { SlBag } from "react-icons/sl";
@@ -12,6 +11,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../store";
 import Link from "next/link";
 import Total from "./Total";
+import { useSessionData } from '@/content/session/useSessionData';
 
 interface Category {
   id: string;
@@ -113,10 +113,10 @@ const Header: React.FC = () => {
     
   };
   return (
-    <div className="w-full max-lg:fixed max-lg:z-10 h-[109px] bg-[#15335E] justify-center flex max-lg:hidden ">
-      <div className="flex w-[90%] max-xl:w-[95%] max-lg:hidden justify-between gap-14 items-center max-lg:bg-white">
+    <div className="w-full max-lg:fixed max-lg:z-10 h-[109px] bg-[#15335E] flex max-lg:hidden justify-center">
+      <div className="flex w-[95%] max-xl:w-[95%] gap-4 items-center justify-between max-lg:bg-white pr-[350px]">
         <Link href="/" aria-label="Home page">
-          <div className="mb-1">
+          <div>
             <Image
               width={250}
               height={250}
@@ -208,7 +208,6 @@ const Header: React.FC = () => {
 
           <Total items={items} />
         </div>
-        <UserMenu />
       </div>
     </div>
   );

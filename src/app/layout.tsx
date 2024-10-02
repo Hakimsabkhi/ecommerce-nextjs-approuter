@@ -1,11 +1,11 @@
-// app/layout.tsx
+// app/layout.tsx (or wherever you handle the layout)
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/authOptions"; // Ensure the path is correct
 import SessionProviderWrapper from "@/components/ProviderComp/SessionProviderWrapper";
 import ClientLayout from "@/components/ClientLayout";
 import { Poppins } from "next/font/google";
-import "./globals.css"; // Ensure global styles are imported
-
+import "./globals.css";
+import UserMenu from "@/components/userComp/UserMenu";
 import { Metadata } from "next";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -19,17 +19,19 @@ export const metadata: Metadata = {
 };
 
 const RootLayout = async ({ children }: { children: React.ReactNode }) => {
-  // Fetch the session server-side
- // const session = await getServerSession(authOptions);
+  // Fetch the session on the server
+  const session = await getServerSession(authOptions);
+
 
   return (
-  
-      <html lang="en">
-        <body className={poppins.className}>
-          <SessionProviderWrapper >
+    <html lang="en">
+      <body className={poppins.className}>
+        <SessionProviderWrapper session={session}>
           <StoreProviders>
             <ClientLayout>
-            <ToastContainer 
+              {/* Pass session to UserMenu */}
+              <UserMenu session={session} />
+              <ToastContainer
                 position="top-center"
                 autoClose={2000}
                 hideProgressBar={false}
@@ -43,11 +45,10 @@ const RootLayout = async ({ children }: { children: React.ReactNode }) => {
               />
               {children}
             </ClientLayout>
-            </StoreProviders>
-          </SessionProviderWrapper>
-        </body>
-      </html>
-    
+          </StoreProviders>
+        </SessionProviderWrapper>
+      </body>
+    </html>
   );
 };
 

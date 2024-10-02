@@ -1,36 +1,25 @@
-'use client'; // This component will be rendered on the client-side
+'use client'; // UserMenu remains a client component
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import { FaRegUserCircle } from 'react-icons/fa';
 import Dropdown from "@/components/Dropdown";
-import { useSession } from "next-auth/react";
+import { Session } from "next-auth"; // Import Session type
 
-const UserMenu: React.FC = () => {
-  const { data: session } = useSession(); // Get session data and status
+interface UserMenuProps {
+  session: Session | null; // Session passed from server component
+}
+
+const UserMenu: React.FC<UserMenuProps> = ({ session }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
- /*  const [isLoading, setIsLoading] = useState(true); // State to track loading
- */
+
   const toggleDropdown = () => {
     setIsDropdownOpen((prev) => !prev);
   };
 
-/*   useEffect(() => {
-    if (status === "loading") {
-      setIsLoading(true); // Set loading to true while fetching
-    } else {
-      setIsLoading(false); // Set loading to false after fetching
-    }
-  }, [status]); */
-
-/*   // Display a loading state or the user menu based on session
-  if (isLoading) {
-    return <></>; // Optional loading indicator
-  } */
-
-  if (session?.user) {
+  if (session) {
     return (
-      <div className="relative inline-block text-left">
+      <div className="absolute top-[90px] right-[72px] inline-block text-left">
         <button
           onClick={toggleDropdown}
           className="flex items-center gap-4 justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 w-[269px] bg-white font-bold text-primary"
@@ -41,8 +30,8 @@ const UserMenu: React.FC = () => {
 
         {isDropdownOpen && (
           <Dropdown
-            username={session.user.name ?? ""}
-            role={session.user.role ?? ""}
+            username={session.user?.name ?? ""}
+            role={session.user?.role ?? ""}
           />
         )}
       </div>
@@ -50,7 +39,7 @@ const UserMenu: React.FC = () => {
   }
 
   return (
-    <div className="flex items-center gap-2 w-[269px]">
+    <div className="absolute top-16 right-4 text-left flex gap-4">
       <Link href="/signin" aria-label="Sign in page">
         <button
           aria-label="Sign in"
