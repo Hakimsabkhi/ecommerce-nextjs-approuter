@@ -113,10 +113,10 @@ const Header: React.FC = () => {
     
   };
   return (
-    <div className="w-full max-lg:fixed max-lg:z-10 h-[109px] bg-[#15335E] justify-center flex max-lg:hidden ">
-      <div className="flex w-[90%] max-xl:w-[95%] max-lg:hidden justify-between gap-14 items-center max-lg:bg-white">
+    <div className="w-full max-lg:fixed max-lg:z-10 h-[109px] bg-[#15335E] flex max-lg:hidden justify-center">
+      <div className="flex w-[95%] max-xl:w-[95%] gap-4 items-center justify-between max-lg:bg-white pr-[350px]">
         <Link href="/" aria-label="Home page">
-          <div className="mb-1">
+          <div>
             <Image
               width={250}
               height={250}

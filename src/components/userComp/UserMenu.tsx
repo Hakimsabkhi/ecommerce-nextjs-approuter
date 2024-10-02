@@ -19,7 +19,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ session }) => {
 
   if (session) {
     return (
-      <div className="absolute top-16 right-4 inline-block text-left">
+      <div className="absolute top-[90px] right-[72px] inline-block text-left">
         <button
           onClick={toggleDropdown}
           className="flex items-center gap-4 justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 w-[269px] bg-white font-bold text-primary"
