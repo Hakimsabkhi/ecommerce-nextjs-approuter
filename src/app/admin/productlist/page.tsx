@@ -18,6 +18,7 @@ type Product = {
     user: User; // Reference to a User document or User ID
     discount: number;
     status:string;
+    statuspage: string;
     createdAt: Date;
     updatedAt: Date;
 };

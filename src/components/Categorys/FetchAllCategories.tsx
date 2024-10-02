@@ -158,7 +158,7 @@ const AddedCategories: React.FC = () => {
               <td className="border px-4 py-2 ">
                 <Image src={item.logoUrl} width={30} height={30} alt="icon" />
               </td>
-              <td className="border px-4 py-2">{item.imageUrl}</td>
+              <td className="border px-4 py-2"><Link href={item.imageUrl}>{item.imageUrl.split('/')[item.imageUrl.split('/').length - 1]}</Link></td>
               <td className="border px-4 py-2">{item.name}</td>
 
               <td className="border px-4 py-2">{item?.user?.username}</td>
