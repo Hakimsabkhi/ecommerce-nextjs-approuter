@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-
 import Image from "next/image";
 import { FiHeart } from "react-icons/fi";
 import { SlBag } from "react-icons/sl";
@@ -12,6 +11,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../store";
 import Link from "next/link";
 import Total from "./Total";
+import { useSessionData } from '@/content/session/useSessionData';
 
 interface Category {
   id: string;
@@ -208,7 +208,6 @@ const Header: React.FC = () => {
 
           <Total items={items} />
         </div>
-        <UserMenu />
       </div>
     </div>
   );

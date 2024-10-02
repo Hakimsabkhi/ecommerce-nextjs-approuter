@@ -7,6 +7,7 @@ import Footer from "@/components/menu/Footer";
 import Header from "./menu/Header";
 import Headertop from "./menu/Headertop";
 import HeaderBottom from "./menu/Headerbottom";
+import UserMenu from "@/components/userComp/UserMenu";
 
 interface ClientLayoutProps {
   children: React.ReactNode;

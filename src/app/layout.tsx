@@ -5,7 +5,7 @@ import SessionProviderWrapper from "@/components/ProviderComp/SessionProviderWra
 import ClientLayout from "@/components/ClientLayout";
 import { Poppins } from "next/font/google";
 import "./globals.css"; // Ensure global styles are imported
-
+import UserMenu from "@/components/userComp/UserMenu";
 import { Metadata } from "next";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -31,6 +31,7 @@ export const metadata: Metadata = {
           <SessionProviderWrapper session={session} >
           <StoreProviders>
             <ClientLayout>
+            <UserMenu session={session}/>
             <ToastContainer 
                 position="top-center"
                 autoClose={2000}
