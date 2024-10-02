@@ -4,6 +4,7 @@ import SessionProviderWrapper from "@/components/ProviderComp/SessionProviderWra
 import { Poppins } from "next/font/google";
 import "../globals.css";
 import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import StoreProviders from "@/components/ProviderComp/StoreProvider";
 
