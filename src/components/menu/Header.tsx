@@ -1,3 +1,6 @@
+
+"use client";
+
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { FiHeart } from "react-icons/fi";

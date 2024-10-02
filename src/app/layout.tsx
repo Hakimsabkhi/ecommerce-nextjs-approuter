@@ -10,6 +10,7 @@ import { Metadata } from "next";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import StoreProviders from "@/components/ProviderComp/StoreProvider";
+import { headers } from "next/headers";
 
 const poppins = Poppins({ subsets: ["latin"], weight: ["400", "700"] });
 
@@ -21,16 +22,14 @@ export const metadata: Metadata = {
 const RootLayout = async ({ children }: { children: React.ReactNode }) => {
   // Fetch the session on the server
   const session = await getServerSession(authOptions);
-
+  const pathname = headers().get('x-nextjs-rewrite') || '/';
 
   return (
     <html lang="en">
       <body className={poppins.className}>
         <SessionProviderWrapper session={session}>
           <StoreProviders>
-            <ClientLayout>
-              {/* Pass session to UserMenu */}
-              <UserMenu session={session} />
+            <ClientLayout pathname={pathname}>        
               <ToastContainer
                 position="top-center"
                 autoClose={2000}
