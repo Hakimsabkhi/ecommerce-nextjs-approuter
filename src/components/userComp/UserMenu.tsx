@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { FaRegUserCircle } from 'react-icons/fa';
 import Dropdown from "@/components/Dropdown";
-import { Session } from "next-auth"; // Import Session type
+import { Session } from "next-auth";
 
 interface UserMenuProps {
   session: Session | null; 
@@ -39,7 +39,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ session }) => {
   }
 
   return (
-    <div className="absolute top-[90px] right-[72px] flex gap-4 text-left">
+    <div className="flex gap-4">
       <Link href="/signin" aria-label="Sign in page">
         <button
           aria-label="Sign in"
