@@ -21,6 +21,7 @@ interface Products {
   color?: string;
   material?: string;
   status?: string;
+  statuspage:string;
 }
 
 // Function to fetch categories data
@@ -47,14 +48,13 @@ const Furniture = async () => {
     return (
         <div className="desktop  max-md:w-[95%] flex flex-col justify-center items-center gap-10 py-8">
             <div className="flex  w-full flex-col gap-2  items-center   ">
-                <h3 className="font-bold text-4xl text-gray-800">Furniture collection of the week</h3>
-                <div className="text-base flex gap-2 text-[#525566]">
-                    <p>The msot popular products from the collection</p>
-                </div>
-            </div>                            
+                <h3 className="font-bold text-4xl text-gray-800">Collection of The Promotion</h3>
+                            </div>                            
             <div className="grid grid-cols-4  w-full  max-xl:grid-cols-2 group    gap-8  max-md:gap-3">
                 {products.map((item, _id) => (
+                   item.statuspage === "promotion" && (
                     <ProductCard key={item._id} item={item} />
+                  )
                 ))}
             </div>                            
         </div>

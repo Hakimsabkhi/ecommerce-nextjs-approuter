@@ -19,6 +19,7 @@ interface Products {
   color?: string;
   material?: string;
   status?: string;
+  statuspage:string;
 }
 
 // Function to fetch categories data
@@ -50,7 +51,7 @@ const Sellers: React.FC = async () => {
       </div>
       <div className="grid grid-cols-4 w-full max-md:grid-cols-2 group max-xl:grid-cols-3 gap-8 max-md:gap-3">
         {products.map((item, _id) => (
-          <ProductCard key={item._id} item={item} />
+          item.statuspage==="home-page" &&<ProductCard key={item._id} item={item} />
         ))}
       </div>
     </div>
