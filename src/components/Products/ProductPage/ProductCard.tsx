@@ -67,7 +67,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
    toast.success(`${product.name} added to cart !`);
  };
   return (
-    <div className="bg-white rounded-lg duration-500 lg:group-hover:scale-[0.85] lg:hover:!scale-100 h-[481px] max-md:h-[320px] relative">
+    <div className="bg-white rounded-lg duration-500 lg:group-hover:scale-[0.85] lg:hover:!scale-100 h-[481px] max-md:h-[320px] relative m-4">
       <Link href={`/${item.category?.name}/${item._id}`}>
         <Image
           className="absolute inset-0 mx-auto top-5"
