@@ -39,7 +39,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ session }) => {
   }
 
   return (
-    <div className="absolute top-16 right-4 text-left flex gap-4">
+    <div className="absolute top-[90px] right-[72px] inline-block text-left">
       <Link href="/signin" aria-label="Sign in page">
         <button
           aria-label="Sign in"
