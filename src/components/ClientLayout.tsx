@@ -1,28 +1,22 @@
 import React from "react";
 import Footer from "@/components/menu/Footer";
-import Header from "./menu/Header";
+import Header from "./menu/HeaderFirstSection";
 import Headertop from "./menu/Headertop";
 import HeaderBottom from "./menu/Headerbottom";
+import UserMenu from "@/components/userComp/UserMenu";
+import { Session } from "next-auth";
 
 interface ClientLayoutProps {
-  children: React.ReactNode;
-  pathname: string; // Receive pathname from the parent component
+  session: Session | null;
 }
 
-const ClientLayout: React.FC<ClientLayoutProps> = ({ children, pathname }) => {
-  // Define excluded paths as before
-  const excludedPaths = ["/signup", "/signin", "/checkout"];
-
-  if (excludedPaths.includes(pathname)) {
-    return <>{children}</>;
-  }
-
+const ClientLayout: React.FC<ClientLayoutProps> = ({ session }) => {
   return (
     <div className="flex flex-col min-h-screen">
       <Headertop />
+      <UserMenu session={session} />
       <Header />
       <HeaderBottom />
-      <div className="flex-grow">{children}</div>
       <Footer />
     </div>
   );

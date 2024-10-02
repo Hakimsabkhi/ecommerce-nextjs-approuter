@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { EditPostProps, PostQuery } from '../../../../types';
+import { EditPostProps, PostQuery } from '../../../../../types';
 
 const EditPost = () => {
   const [formData, setFormData] = useState({ title: '', content: '' });

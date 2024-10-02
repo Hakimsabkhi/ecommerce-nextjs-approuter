@@ -7,7 +7,7 @@ import Dropdown from "@/components/Dropdown";
 import { Session } from "next-auth"; // Import Session type
 
 interface UserMenuProps {
-  session: Session | null; // Session passed from server component
+  session: Session | null; 
 }
 
 const UserMenu: React.FC<UserMenuProps> = ({ session }) => {
@@ -19,7 +19,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ session }) => {
 
   if (session) {
     return (
-      <div className="absolute top-[90px] right-[72px] inline-block text-left">
+      <div className="relative inline-block">
         <button
           onClick={toggleDropdown}
           className="flex items-center gap-4 justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 w-[269px] bg-white font-bold text-primary"
