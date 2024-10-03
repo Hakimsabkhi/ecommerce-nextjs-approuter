@@ -54,6 +54,9 @@ const Addresse: React.FC = () => {
            name="address-method"
            className="rounded-lg border w-border-gray-200 bg-gray-50 p-4 ps-4 dark:border-gray-700 dark:bg-gray-800 w-full"
          >
+          <option>
+              Select Address
+             </option>
            {addresses.map((address) => (
              <option key={address._id} value={address._id}>
                {address.address}, {address.governorate}/{address.city}/
