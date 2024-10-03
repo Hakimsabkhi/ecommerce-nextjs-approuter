@@ -13,7 +13,10 @@ const PaymentMethode : React.FC<PaymentMethodeProps> = ({ handlePaymentMethodCha
     </h3>
 
     <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-      <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 ps-4 dark:border-gray-700 dark:bg-gray-800">
+    <label
+          htmlFor="pay-on-delivery"
+          className="rounded-lg border border-gray-200 bg-gray-50 p-4 ps-4 dark:border-gray-700 dark:bg-gray-800 cursor-pointer"
+        >
         <div className="flex items-start">
           <div className="flex h-5 items-center">
             <input
@@ -24,7 +27,7 @@ const PaymentMethode : React.FC<PaymentMethodeProps> = ({ handlePaymentMethodCha
               value="Payment on delivery"
               onChange={handlePaymentMethodChange}
               checked={selectedPaymentMethod === "Payment on delivery"} 
-              className="h-4 w-4 border-gray-300 bg-white text-primary-600 focus:ring-2 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600"
+              className="h-4 w-4 border-gray-300 bg-white text-primary-600 focus:ring-2 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600 "
             />
           </div>
 
@@ -43,9 +46,11 @@ const PaymentMethode : React.FC<PaymentMethodeProps> = ({ handlePaymentMethodCha
        
         
         </div>
-      </div>
+      </label>
 
-      <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 ps-4 dark:border-gray-700 dark:bg-gray-800">
+      <label 
+      htmlFor="paypal-2"
+      className="rounded-lg border border-gray-200 bg-gray-50 p-4 ps-4 dark:border-gray-700 dark:bg-gray-800 cursor-pointer">
         <div className="flex items-start">
           <div className="flex h-5 items-center">
             <input
@@ -76,7 +81,7 @@ const PaymentMethode : React.FC<PaymentMethodeProps> = ({ handlePaymentMethodCha
             
           </div>
         
-        </div>
+        </label>
       </div>
      
     </div>
