@@ -4,12 +4,12 @@ import connectToDatabase from '@/lib/db';
 import Category from '@/models/Category';
 
 
-export async function GET() {
+export async function GET(req:NextRequest) {
   try {
     await connectToDatabase(); // Ensure the database connection is established
 
     // Fetch all categories but only return the name and imageUrl fields
-    const categories = await Category.find({}).select('name logoUrl imageUrl bannerUrl').exec(); 
+    const categories = await Category.find({}).exec();
     // Return the fetched category names and image URLs
     return NextResponse.json(categories, { status: 200 });
   } catch (error) {

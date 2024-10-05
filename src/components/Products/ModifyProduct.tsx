@@ -74,7 +74,10 @@ const ModifyProduct: React.FC<ModifyProductProps> = ({ productData }) => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await fetch('/api/category/getAllCategory');
+        const response = await fetch('/api/category/getAllCategoryAdmin', {
+          method: 'GET',
+          next: { revalidate: 0 }, // Disable caching to always fetch the latest data
+        });
         if (!response.ok) {
           throw new Error(`Failed to fetch categories: ${response.statusText} (Status: ${response.status})`);
         }
@@ -87,7 +90,10 @@ const ModifyProduct: React.FC<ModifyProductProps> = ({ productData }) => {
 
     const fetchBrands = async () => {
       try {
-        const response = await fetch('/api/brand/getAllBrand');
+        const response = await fetch('/api/brand/getAllBrandAdmin', {
+          method: 'GET',
+          next: { revalidate: 0 }, // Disable caching to always fetch the latest data
+        });
         if (!response.ok) {
           throw new Error(`Failed to fetch brands: ${response.statusText} (Status: ${response.status})`);
         }
