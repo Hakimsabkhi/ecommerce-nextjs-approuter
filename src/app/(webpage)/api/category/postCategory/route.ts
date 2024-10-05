@@ -69,10 +69,7 @@ export async function POST(req: NextRequest) {
     }
 
     if (logoFile) {
-      if (logoFile.type !== 'image/svg+xml') {
-        return NextResponse.json({ message: 'Please upload a valid SVG file' }, { status: 432 });
-     
-      }
+
       const logoBuffer = await logoFile.arrayBuffer();
       const logoBufferStream = new stream.PassThrough();
       logoBufferStream.end(Buffer.from(logoBuffer));
@@ -80,7 +77,7 @@ export async function POST(req: NextRequest) {
       const logoResult = await new Promise<any>((resolve, reject) => {
         const uploadStream = cloudinary.uploader.upload_stream(
           { folder: 'categories/logos' ,
-            format: 'svg' 
+            format: 'webp' 
           },
           (error, result) => {
             if (error) {

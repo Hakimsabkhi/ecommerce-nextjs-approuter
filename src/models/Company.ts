@@ -1,10 +1,13 @@
 import mongoose, { Schema, Document,Model} from 'mongoose';
 import { IUser } from './User';
-import {IAddress} from './Address'
+
 
 export interface ICompany extends Document {
   name: string;
-  addresse:IAddress|string;
+  address:string;
+  city:string;
+  zipcode:string;
+  governorate:string
   logoUrl?:string;
   email:string;
   phone:number;
@@ -18,7 +21,10 @@ export interface ICompany extends Document {
 
 const CompanySchema: Schema = new Schema({
   name: { type: String, required: true },
-  addresse:{ type: mongoose.Schema.Types.ObjectId, ref: 'Address' },
+  address:{ type: String, required: true },
+  city:{ type: String, required: true },
+  zipcode:{ type: String, required: true },
+  governorate:{ type: String, required: true },
   email:{type: String, required: true },
   phone:{type: Number, required: true },
   facebook:{type: String},

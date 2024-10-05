@@ -30,7 +30,12 @@ interface Address {
     phone: number;
   }
   async function fetchCompanyData() {
-    const res = await fetch(`${process.env.NEXTAUTH_URL}/api/company/getCompany`);
+    const res = await fetch(`${process.env.NEXTAUTH_URL}/api/company/getCompany`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
     if (!res.ok) {
         throw new Error('Failed to fetch data');
     }
@@ -69,7 +74,7 @@ export default async function Bb() {
                     <div className='flex flex-col gap-8  items-center'>                    
                         <Image src={luxehome} alt="luxehome" />
                         <div className="gap-5 flex flex-col max-md:items-center "> 
-                            <p>{companyData.addresse.zipcode} {companyData.addresse.city} {companyData.addresse.governorate}, Tunisie</p>
+                            <p>{companyData.zipcode} {companyData.city} {companyData.governorate}, Tunisie</p>
                             <p className="flex items-center gap-2 "><CiPhone size={25} /> +216 {formatPhoneNumber(companyData.phone)}</p>
                             <p className='flex gap-2 items-center'><CiMail  size={25}/> {companyData.email}</p>                                           
                         </div>

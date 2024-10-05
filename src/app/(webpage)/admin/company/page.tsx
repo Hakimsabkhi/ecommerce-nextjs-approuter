@@ -29,7 +29,7 @@ function CreateCompany() {
       setIconPreview(URL.createObjectURL(file));
     }
   };
-  const fetchCompanyData =  useCallback(async () => {
+  const fetchCompanyData =  async () => {
     try {
       const response = await fetch(`/api/company/getCompany`, {
         method: "GET",
@@ -48,10 +48,10 @@ function CreateCompany() {
       setName(data.name || '');
       setPhone(data.phone || '');
       setEmail(data.email || '');
-      setAddress(data.addresse.address || '');
-      setCity(data.addresse.city || '');
-      setZipcode(data.addresse.zipcode || '');
-      setGovernorate(data.addresse.governorate || '');
+      setAddress(data.address || '');
+      setCity(data.city || '');
+      setZipcode(data.zipcode || '');
+      setGovernorate(data.governorate || '');
       setFacebook(data.facebook || '');
       setLinkedin(data.linkedin || '');
       setInstagram(data.instagram || '');
@@ -63,13 +63,13 @@ function CreateCompany() {
     }finally{
       setLoading(false);
     }
-  }, []);
+  }
   useEffect(() => {
     // Fetch company data
    
 
     fetchCompanyData();
-  }, [fetchCompanyData]);
+  }, []);
   
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

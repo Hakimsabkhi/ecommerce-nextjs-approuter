@@ -2,14 +2,13 @@ import { NextRequest, NextResponse } from 'next/server';
 import connectToDatabase from '@/lib/db';
 import Brand from '@/models/Brand';
 import cloudinary from '@/lib/cloudinary';
-import upload from '@/lib/multer'; // Adjust the path according to your project structure
+
 import stream from 'stream';
-import { promisify } from 'util';
+
 import { getToken } from 'next-auth/jwt';
 import User from '@/models/User';
 
 
-const uploadFiles = promisify(upload.fields([{ name: 'image', maxCount: 1 }, { name: 'logo', maxCount: 1 }]));
 
 
 

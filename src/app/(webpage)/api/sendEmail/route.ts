@@ -51,10 +51,10 @@ export async function POST(req: NextRequest) {
     const namecomapny = company?.name ?? 'Unknown Company';
     const emailcompany = company?.email ?? 'Unknown Email';
     const phonecompany = typeof company?.phone === 'number' ? company.phone.toString() : company?.phone ?? 'Unknown Phone';
-    const companyaddress = typeof company?.addresse === 'object' ? company?.addresse.address ?? 'Unknown Address' : 'Unknown Address';
-    const companycity = typeof company?.addresse === 'object' ? company?.addresse.city ?? 'Unknown city' : 'Unknown city';
-    const companygov = typeof company?.addresse === 'object' ? company?.addresse.governorate ?? 'Unknown governorate' : 'Unknown governorate';
-    const companyzip = typeof company?.addresse === 'object' ? company?.addresse.zipcode ?? 'Unknown zipcode' : 'Unknown zipcode';
+    const companyaddress = company?.address || "Default Address"; // Using logical OR
+    const companycity  =  company?.city || "Default city";
+    const companygov  = company?.governorate || "Default governorate";
+    const companyzip = company?.zipcode || "Default zipcode";
 
     const name = user.username;
     const email = user.email;

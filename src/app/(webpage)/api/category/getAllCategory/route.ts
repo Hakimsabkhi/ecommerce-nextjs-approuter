@@ -2,15 +2,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 import connectToDatabase from '@/lib/db';
 import Category from '@/models/Category';
-import User from '@/models/User';
 
-export async function GET(req: NextRequest) {
+
+export async function GET() {
   try {
     await connectToDatabase(); // Ensure the database connection is established
 
     // Fetch all categories but only return the name and imageUrl fields
-    const categories = await Category.find({}); // Only select the 'name' and 'imageUrl' fields
-
+    const categories = await Category.find({}).select('name logoUrl imageUrl bannerUrl').exec(); 
     // Return the fetched category names and image URLs
     return NextResponse.json(categories, { status: 200 });
   } catch (error) {

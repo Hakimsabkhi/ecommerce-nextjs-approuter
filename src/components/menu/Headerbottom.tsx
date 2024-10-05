@@ -8,19 +8,31 @@ interface Category {
   logoUrl?: string;
 }
 
-async function fetchcategoryData() {  
-  const res = await fetch(`${process.env.NEXTAUTH_URL}/api/category/getAllCategory`);
-  if (!res.ok) {
-      throw new Error('Failed to fetch data');
+const fetchCategories = async (): Promise<Category[]> => {
+  try {
+    const res = await fetch(`${process.env.NEXTAUTH_URL}/api/category/getAllCategory`, {
+      method: 'GET',
+     
+      next: { revalidate: 0 }, // Disable caching to always fetch the latest data
+    })
+    if (!res.ok) {
+      throw new Error('Failed to fetch categories');
+    }
+    const data: Category[] = await res.json();
+    return data;
+  } catch (error) {
+    console.error(error);
+    return [];
   }
-  return res.json();
-}
+};
 
 
-const Headerbottom: React.FC = async () => {
- const categories = await  fetchcategoryData()
+const Headerbottom = async () => {
+  // Fetch categories in a server component
+  const categories = await fetchCategories();
+
   if (categories.length === 0) {
-    return <></>;
+    return null; // No categories found
   }
 
   return (

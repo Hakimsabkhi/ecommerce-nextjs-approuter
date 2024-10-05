@@ -35,9 +35,9 @@ export async function PUT( req: NextRequest ){
       // Handle form data
       const formData = await req.formData();
       const id =formData.get('id') as string ;
-      const IAddress=formData.get('idAddress')as string;
+
       const name = formData.get('name') as string | null;
-      const addres = formData.get('address') as string | null;
+      const address = formData.get('address') as string | null;
       const city = formData.get('city') as string | null;
       const governorate = formData.get('governorate') as string | null;
       const zipcode = formData.get('zipcode') as string | null;
@@ -100,24 +100,17 @@ export async function PUT( req: NextRequest ){
       }
   
   
-      // Update adress with new values
-      if(IAddress){
-        const existingAddress= await Address.findById(IAddress);
-        if (!existingAddress) {
-          return NextResponse.json({ message: "Address not found" }, { status: 404 });
-        }
-        if (addres !== null) existingAddress.address = addres;
-        if (city !== null) existingAddress.city = city;
-        if (governorate !== null) existingAddress.governorate = governorate;
-        if (zipcode !== null) existingAddress.zipcode = zipcode;
-        existingAddress.user=user;
-        await existingAddress.save();
-      }
+     
+   
     
       // Update company with new values if provided
       if (name !== null) existingCompany.name = name;
       if (phone !== null) existingCompany.phone = phone;
       if (email !== null) existingCompany.email = email;
+      if (address !== null) existingCompany.address = address;
+      if (city !== null) existingCompany.city = city;
+      if (governorate !== null) existingCompany.governorate = governorate;
+      if (zipcode !== null) existingCompany.zipcode = zipcode;
       if (facebook !== null) existingCompany.facebook = facebook;
       if (linkedin !== null) existingCompany.linkedin = linkedin;
       if (instagram !== null) existingCompany.instagram = instagram;

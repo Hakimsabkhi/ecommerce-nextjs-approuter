@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -13,65 +13,52 @@ type Category = {
   name: string;
   imageUrl: string;
   logoUrl: string;
-  user: user;
+  user: { _id: string; username: string };
   createdAt: Date;
   updatedAt: Date;
 };
-interface user {
-  _id: string;
-  username: string;
-}
 
 const AddedCategories: React.FC = () => {
   const [addedCategory, setAddedCategory] = useState<Category[]>([]);
-  const [filteredCategory, setFilteredCategory] = useState<Category[]>([]);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [loading, setLoading] = useState(true);
-  const [selectedCatgory, setSelectedCatgory] = useState({ id: "", name: "" });
-  const [loadingCategoryId, setLoadingCategoryId] = useState<string | null>(
-    null
-  );
-  const categoriesPerPage = 5; // Number of categories to display per page
-  const handleDeleteClick = (Category: Category) => {
-    setLoadingCategoryId(Category._id);
-    setSelectedCatgory({ id: Category._id, name: Category.name });
+  const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
+
+  const categoriesPerPage = 5; 
+
+  const handleDeleteClick = (category: Category) => {
+    setSelectedCategory(category);
     setIsPopupOpen(true);
   };
 
   const handleClosePopup = () => {
     setIsPopupOpen(false);
-    setLoadingCategoryId(null);
+    setSelectedCategory(null);
   };
 
-  const DeleteCategory = async (categoryId: string) => {
+  const deleteCategory = async (categoryId: string) => {
     try {
-      const response = await fetch(
-        `/api/category/deleteCategory/${categoryId}`,
-        {
-          method: "DELETE",
-        }
-      );
+      const response = await fetch(`/api/category/deleteCategory/${categoryId}`, {
+        method: "DELETE",
+      });
 
       if (!response.ok) {
         throw new Error("Failed to delete category");
       }
 
-      // Refresh categories after deletion
-      setAddedCategory(
-        addedCategory.filter((Category) => Category._id !== categoryId)
+      // Remove the deleted category from the state
+      setAddedCategory((prevCategories) =>
+        prevCategories.filter((category) => category._id !== categoryId)
       );
-      handleClosePopup();
 
-      toast.success("Category delete successfully!");
+      toast.success("Category deleted successfully!");
     } catch (err: any) {
-      /*  setError(`[Category_DELETE] ${err.message}`);
-          setError(`Error: ${err.message}`); */
-      toast.error("faild Category_DELETE");
+      toast.error(`Failed to delete category: ${err.message}`);
     } finally {
-      setLoadingCategoryId(null);
+      handleClosePopup();
     }
   };
 
@@ -99,28 +86,25 @@ const AddedCategories: React.FC = () => {
     getCategory();
   }, []);
 
-  useEffect(() => {
-    const filtered = addedCategory.filter((category) =>
+  const filteredCategory = useMemo(() => {
+    return addedCategory.filter((category) =>
       category.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
-    setFilteredCategory(filtered);
-    setCurrentPage(1); // Reset to the first page when search term changes
   }, [searchTerm, addedCategory]);
 
-  const indexOfLastCategory = currentPage * categoriesPerPage;
-  const indexOfFirstCategory = indexOfLastCategory - categoriesPerPage;
-  const currentCategories = filteredCategory.slice(
-    indexOfFirstCategory,
-    indexOfLastCategory
-  );
-  const totalPages = Math.ceil(filteredCategory.length / categoriesPerPage);
+
+  const currentCategories = useMemo(() => {
+    const indexOfLastCategory = currentPage * categoriesPerPage;
+    const indexOfFirstCategory = indexOfLastCategory - categoriesPerPage;
+    return filteredCategory.slice(indexOfFirstCategory, indexOfLastCategory);
+  }, [currentPage, filteredCategory, categoriesPerPage]);
+
+  const totalPages = useMemo(() => {
+    return Math.ceil(filteredCategory.length / categoriesPerPage);
+  }, [filteredCategory.length, categoriesPerPage]);
 
   if (loading) {
-    return (
-      /* loading start */
-      <LoadingSpinner />
-      /*  loading end  */
-    );
+    return <LoadingSpinner />;
   }
 
   if (error) {
@@ -147,49 +131,41 @@ const AddedCategories: React.FC = () => {
       />
       <table className="table-auto w-full mt-4 uppercase">
         <thead>
-          <tr className="bg-gray-800 ">
-            <th className=" px-4 py-2 ">Icon</th>
-            <th className=" px-4 py-2 ">ImageURL</th>
-            <th className="px-4 py-2  ">Name</th>
-            <th className=" px-4 py-2"> Created By</th>
-            <th className="px-4 text-center py-2"> Action</th>
+          <tr className="bg-gray-800">
+            <th className="px-4 py-2">Icon</th>
+            <th className="px-4 py-2">ImageURL</th>
+            <th className="px-4 py-2">Name</th>
+            <th className="px-4 py-2">Created By</th>
+            <th className="px-4 py-2 text-center">Action</th>
           </tr>
         </thead>
         <tbody>
-          {currentCategories.map((item, index) => (
-            <tr key={index} className="bg-white text-balck">
-              <td className="border px-4 py-2 ">
-                <Image src={item.logoUrl} width={30} height={30} alt="icon" />
+          {currentCategories.map((category) => (
+            <tr key={category._id} className="bg-white text-black">
+              <td className="border px-4 py-2">
+                <Image src={category.logoUrl} width={30} height={30} alt="icon" />
               </td>
               <td className="border px-4 py-2">
-                <Link href={item.imageUrl}>
-                  {
-                    item.imageUrl.split("/")[
-                      item.imageUrl.split("/").length - 1
-                    ]
-                  }
+                <Link href={category.imageUrl}>
+                  {category.imageUrl.split("/").pop()}
                 </Link>
               </td>
-              <td className="border px-4 py-2">{item.name}</td>
-
-              <td className="border px-4 py-2">{item?.user?.username}</td>
-              <td>
+              <td className="border px-4 py-2">{category.name}</td>
+              <td className="border px-4 py-2">{category?.user?.username}</td>
+              <td className="border px-4 py-2">
                 <div className="flex items-center justify-center gap-2">
-                  <Link href={`/admin/categorylist/${item._id}`}>
-                    <button className="bg-gray-800 text-white w-28 h-10  hover:bg-gray-600 rounded-md">
+                  <Link href={`/admin/categorylist/${category._id}`}>
+                    <button className="bg-gray-800 text-white w-28 h-10 hover:bg-gray-600 rounded-md">
                       Modify
                     </button>
                   </Link>
                   <button
-                    onClick={() => handleDeleteClick(item)}
+                    onClick={() => handleDeleteClick(category)}
                     className="bg-gray-800 text-white w-28 h-10 hover:bg-gray-600 rounded-md"
-                    disabled={loadingCategoryId === item._id}
+                    disabled={selectedCategory?._id === category._id}
                   >
-                    {loadingCategoryId === item._id
-                      ? "Processing..."
-                      : "DELETE"}
+                    {selectedCategory?._id === category._id ? "Processing..." : "DELETE"}
                   </button>
-               
                 </div>
               </td>
             </tr>
@@ -199,18 +175,18 @@ const AddedCategories: React.FC = () => {
       <div className="flex justify-center mt-4">
         <Pagination
           currentPage={currentPage}
-          totalPages={Math.ceil(totalPages)}
+          totalPages={totalPages}
           onPageChange={setCurrentPage}
         />
       </div>
-      {isPopupOpen && (
-                    <DeletePopup
-                      handleClosePopup={handleClosePopup}
-                      Delete={DeleteCategory}
-                      id={selectedCatgory.id}
-                      name={selectedCatgory.name}
-                    />
-                  )}
+      {isPopupOpen && selectedCategory && (
+        <DeletePopup
+          handleClosePopup={handleClosePopup}
+          Delete={deleteCategory}
+          id={selectedCategory._id}
+          name={selectedCategory.name}
+        />
+      )}
     </div>
   );
 };
