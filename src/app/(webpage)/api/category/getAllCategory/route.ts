@@ -7,9 +7,9 @@ import User from '@/models/User';
 export async function GET(req: NextRequest) {
   try {
     await connectToDatabase(); // Ensure the database connection is established
-    await User.find({})
+
     // Fetch all categories but only return the name and imageUrl fields
-    const categories = await Category.find({}).populate('user','_id username email'); // Only select the 'name' and 'imageUrl' fields
+    const categories = await Category.find({}); // Only select the 'name' and 'imageUrl' fields
 
     // Return the fetched category names and image URLs
     return NextResponse.json(categories, { status: 200 });
