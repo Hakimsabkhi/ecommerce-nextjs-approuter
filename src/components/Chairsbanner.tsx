@@ -25,8 +25,7 @@ const Chairsbanner: React.FC <ChairsbannerProps>= ({ category }) => {
           className='text-8xl max-md:text-3xl text-white transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/4 absolute font-bold'>
           {category ? category.name : 'Loading...'}
         </Link>
-        <div className='w-full h-full flex items-center justify-center'>
-        
+        <div className='w-full h-full flex items-center justify-center'>        
               <Image
               className='object-cover w-full h-[400px]'
               src={category?.bannerUrl || 'default'}

@@ -1,7 +1,6 @@
 import React from 'react';
 import Products from '@/components/Products';
 import Chairsbanner from '@/components/Chairsbanner';
-
 import { ICategory } from '@/models/Category';
 import { notFound } from 'next/navigation';
 
@@ -18,31 +17,32 @@ interface ProductData {
   ref: string;
   price: number;
   imageUrl?: string;
-  brand: brand;
+  brand: Brand;
   stock: number;
   discount?: number;
   color?: string;
   material?: string;
-  status
-  ?: string;
-}
-interface brand{
-_id:string;
-name:string;
+  status?: string;
 }
 
-// Function to fetch category data by ID
+interface Brand {
+  _id: string;
+  name: string;
+}
+
+// Fetch category data by ID
 const fetchCategoryData = async (id: string): Promise<ICategory | null> => {
   try {
-    const res = await fetch(`${process.env.NEXTAUTH_URL}/api/searchcategory/${id}` , {
+    if (!id) return notFound(); // Check if id is valid
+    const res = await fetch(`${process.env.NEXTAUTH_URL}/api/searchcategory/${id}`, {
       method: 'GET',
-     
-      next: { revalidate: 0 }, // Disable caching to always fetch the latest data
-    })
+    });
+
     if (!res.ok) {
-     console.log('Category not found');
-     return notFound();
+      console.log('Category not found');
+      return notFound();
     }
+
     const data: ICategory = await res.json();
     return data;
   } catch (error) {
@@ -51,17 +51,18 @@ const fetchCategoryData = async (id: string): Promise<ICategory | null> => {
   }
 };
 
-// Function to fetch products data by category ID
+// Fetch products data by category ID
 const fetchProductsData = async (id: string): Promise<ProductData[]> => {
   try {
     const res = await fetch(`${process.env.NEXTAUTH_URL}/api/search/${id}`, {
       method: 'GET',
-     
-      next: { revalidate: 0 }, // Disable caching to always fetch the latest data
-    }) // Adjust the API endpoint
+      next: { revalidate: 0 }, // Disable caching
+    });
+
     if (!res.ok) {
       throw new Error('Products not found');
     }
+
     const data: ProductData[] = await res.json();
     return data;
   } catch (error) {
@@ -70,18 +71,19 @@ const fetchProductsData = async (id: string): Promise<ProductData[]> => {
   }
 };
 
-// Function to fetch brand data
-const fetchBrandData = async (): Promise<brand[]> => {
+// Fetch brand data
+const fetchBrandData = async (): Promise<Brand[]> => {
   try {
     const res = await fetch(`${process.env.NEXTAUTH_URL}/api/brand/getAllBrand`, {
       method: 'GET',
-     
-      next: { revalidate: 0 }, // Disable caching to always fetch the latest data
-    })// Adjust the API endpoint
+      next: { revalidate: 0 }, // Disable caching
+    });
+
     if (!res.ok) {
       throw new Error('Brand not found');
     }
-    const data: brand[] = await res.json();
+
+    const data: Brand[] = await res.json();
     return data;
   } catch (error) {
     console.error('Error fetching brand data:', error);
@@ -89,17 +91,32 @@ const fetchBrandData = async (): Promise<brand[]> => {
   }
 };
 
-export default async function HomePage({ params }: HomePageProps) {
+// HomePage component
+async function HomePage({ params }: HomePageProps) {
   const id = params?.product;
-  const category = id ? await fetchCategoryData(id) : null;
-  const products = id ? await fetchProductsData(id) : [];
+
+  // Early return if no product id
+  if (!id) {
+    return notFound();
+  }
+
+  const category = await fetchCategoryData(id);
+  const products = await fetchProductsData(id);
   const brand = await fetchBrandData();
+
+  // Return 404 if no category or products found
+  if (!category || products.length === 0) {
+    return notFound();
+  }
 
   return (
     <div>
-      <Chairsbanner category={category || undefined} />
-      {/* Uncomment the following line to render products */}
-      <Products products={products} brands={brand} /> 
+      {/* Uncomment the following if you need to show a banner */}
+      <Chairsbanner category={category} />
+      <Products products={products} brands={brand} />
     </div>
   );
 }
+
+// Export the HomePage component at the end
+export default HomePage;
