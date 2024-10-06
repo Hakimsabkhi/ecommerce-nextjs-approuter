@@ -27,7 +27,7 @@ interface Products {
 // Function to fetch categories data
 const fetchProduct = async (): Promise<Products[]> => {
   try {
-    const res = await fetch(`${process.env.NEXTAUTH_URL}/api/products/fgetAllProduct`, {
+    const res = await fetch(`${process.env.NEXTAUTH_URL}/api/products/getProductbyStatue`, {
       method: 'GET',
       next: { revalidate: 0 }, // Disable caching to always fetch the latest data
     }); // Adjust the API endpoint
