@@ -21,7 +21,12 @@ const Page = () => {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const response = await fetch('/api/products/getAllProduct');
+                const response = await fetch('/api/products/getAllProduct', {
+                    method: "GET",
+                    headers: {
+                      "Content-Type": "application/json",
+                    },
+                  });
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }

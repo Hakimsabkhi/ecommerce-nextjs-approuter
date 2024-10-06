@@ -33,7 +33,7 @@ export async function GET(req: NextRequest,{ params }: { params: { ref: string }
      await User.find();
     await Address.find({});
     // Fetch all categories but only return the name and imageUrl fields
-    const order = await Order.findOne({ref}).populate('address').populate('user','username phone'); // Only select the 'name' and 'imageUrl' fields
+    const order = await Order.findOne({ref}).populate('address').populate('user','username phone').exec(); // Only select the 'name' and 'imageUrl' fields
 
     // Return the fetched category names and image URLs
     return new NextResponse(JSON.stringify(order), { status: 200 });

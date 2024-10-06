@@ -19,7 +19,12 @@ interface CompanyData {
 
 // Fetcher function for useSWR
 async function fetchCompanyData() {
-  const res = await fetch(`${process.env.NEXTAUTH_URL}/api/company/getCompany`);
+  const res = await fetch(`${process.env.NEXTAUTH_URL}/api/company/getCompany`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
   if (!res.ok) {
       throw new Error('Failed to fetch data');
   }
@@ -53,7 +58,7 @@ const Headertop: React.FC = async () => {
       <nav className='w-full h-[57px] justify-center flex bg-[#6A6A6A] max-lg:hidden'>
         <div className="flex text-white w-[90%] justify-between items-center max-2xl:text-base text-2xl">                                            
           <p className='flex gap-2 items-center uppercase'>
-            Address: {companyData.addresse?.address}, {companyData.addresse?.zipcode} {companyData.addresse?.city}, {companyData.addresse?.governorate}, Tunisie
+            Address: {companyData.address}, {companyData.zipcode} {companyData.addresse?.city}, {companyData.governorate}, Tunisie
           </p>                    
           <div className="flex gap-16 items-center">                                                    
             <p className='flex gap-2 items-center'>TELE: +216 {formatPhoneNumber(companyData.phone)}</p>                                                                        

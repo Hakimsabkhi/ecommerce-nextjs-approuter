@@ -38,8 +38,11 @@ const ListReview: React.FC = () => {
     if (!productId) return;
 
     try {
-      const response = await fetch(`/api/review/getAllReviewByProduct?id=${productId}`, {
-        method: 'GET',
+      const response = await fetch(`/api/review/getAllReviewByProduct?id=${productId}`,  {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
       });
 
       if (!response.ok) {

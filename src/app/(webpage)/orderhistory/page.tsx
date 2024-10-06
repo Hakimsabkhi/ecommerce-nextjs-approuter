@@ -45,7 +45,12 @@ const Page = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await fetch("/api/order/getoderbyuser");
+        const response = await fetch("/api/order/getoderbyuser", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
         if (!response.ok) {
           throw new Error("Failed to fetch orders");
         }

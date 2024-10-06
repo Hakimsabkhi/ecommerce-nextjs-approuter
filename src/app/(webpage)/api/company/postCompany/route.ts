@@ -7,7 +7,6 @@ import stream from 'stream';
 import { promisify } from 'util';
 import { getToken } from 'next-auth/jwt';
 import User from '@/models/User';
-import Address from '@/models/Address';
 
 const uploadFiles = promisify(upload.fields([{ name: 'image', maxCount: 1 }, { name: 'logo', maxCount: 1 }]));
 
@@ -33,7 +32,7 @@ export async function POST(req: NextRequest) {
       const formData = await req.formData();
 
       const name = formData.get('name') as string | null;
-      const addres = formData.get('address') as string | null;
+      const address = formData.get('address') as string | null;
       const city = formData.get('city') as string | null;
       const governorate = formData.get('governorate') as string | null;
       const zipcode = formData.get('zipcode') as string | null;
@@ -45,7 +44,7 @@ export async function POST(req: NextRequest) {
       const imageFile = formData.get('image') as File | null;
 
   
-      if (!name||!addres||!city||!governorate||!zipcode||!phone||!email ) {
+      if (!name||!address||!city||!governorate||!zipcode||!phone||!email ) {
         return NextResponse.json({ message: 'Name , Addres , City , Governorate , Zipcode And Phone is required' }, { status: 400 });
       }
   
@@ -83,10 +82,9 @@ export async function POST(req: NextRequest) {
       }
   
     
-      const addresss= new Address({governorate,city,address:addres,zipcode });
-     const address =await addresss.save(); 
+     
 
-      const newCompany = new Company({ name, addresse:address,email,logoUrl:imageUrl,phone,facebook,linkedin,instagram,user });
+      const newCompany = new Company({ name, governorate,city,address,zipcode ,email,logoUrl:imageUrl,phone,facebook,linkedin,instagram,user });
       await newCompany.save();
       return NextResponse.json(newCompany, { status: 201 });
     } catch (error) {

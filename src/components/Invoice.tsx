@@ -56,7 +56,12 @@ const Invoice=()=>{
       // Fetch category data by ID
       const fetchOrderData = async () => {
         try {
-          const response = await fetch(`/api/order/getorderbyref/${params.id}`);
+          const response = await fetch(`/api/order/getorderbyref/${params.id}`, {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
     
           if (!response.ok) {
             throw new Error('Failed to fetch order data');
