@@ -1,13 +1,12 @@
 "use client"
 import LoadingSpinner from '@/components/LoadingSpinner';
 import Image from 'next/image';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 
 function CreateCompany() {
   const [loading, setLoading] = useState(true);
   const [idCompany,setIdCompany]=useState('');
-  const [idaddress,setIdaddress]=useState('');
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
@@ -43,8 +42,6 @@ function CreateCompany() {
       const data = await response.json();
       setCompanyData(data);
       setIdCompany(data._id || '');
-      setIdaddress(data.addresse._id || '');
-      // Pre-fill form with fetched data
       setName(data.name || '');
       setPhone(data.phone || '');
       setEmail(data.email || '');
@@ -113,7 +110,7 @@ function CreateCompany() {
  
     const formData = new FormData();
     formData.append('id', idCompany);
-    formData.append('idAddress', idaddress);
+
     formData.append('name', name);
     formData.append('phone', phone);
     formData.append('email', email);

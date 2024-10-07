@@ -22,7 +22,7 @@ export async function GET(  req: NextRequest,
     }
 
     // Find the category by name
-    const foundCategory = await Category.findOne({ slug: category });
+    const foundCategory = await Category.findOne({ category: category });
 
     if (!foundCategory) {
       return NextResponse.json({ message: 'Category not found' }, { status: 404 });

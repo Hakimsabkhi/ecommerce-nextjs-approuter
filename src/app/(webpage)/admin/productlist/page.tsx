@@ -29,7 +29,10 @@ type Product = {
 };
 interface Category{
   _id:string;
-  slug:string;
+  name:string;
+}
+function slugifyCategoryName(name: string): string {
+  return name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^\w\s-]/g, "").replace(/\s+/g, "-").trim(); // Remove any special characters
 }
 const AddedProducts: React.FC = () => {
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
@@ -234,7 +237,7 @@ const AddedProducts: React.FC = () => {
                     <option value="promotion">Promotion</option>
                   </select>
                   <Link href={`/admin/productlist/${item._id}`}>
-                    <button className="bg-gray-800 text-white w-28 h-10 hover:bg-gray-600 rounded-md">Modify</button>
+                    <button className="bg-gray-800 text-white w-28 h-10 hover:bg-gray-600 rounded-md uppercase">Modify</button>
                   </Link>
                   <button
                     onClick={() => handleDeleteClick(item)}
@@ -243,8 +246,8 @@ const AddedProducts: React.FC = () => {
                   >
                     {loadingProductId === item._id ? "Processing..." : "DELETE"}
                   </button>
-                  <Link href={`/${item.category.slug}/${item._id}`}>
-                    <button className="bg-gray-800 text-white w-28 h-10 hover:bg-gray-600 rounded-md">See Product</button>
+                  <Link href={`/${encodeURIComponent(slugifyCategoryName(item.category.name))}/${item._id}`}>
+                    <button className="bg-gray-800 text-white w-36 h-10 hover:bg-gray-600 rounded-md uppercase">See Product</button>
                   </Link>
                   {isPopupOpen && (
                     <DeletePopup
