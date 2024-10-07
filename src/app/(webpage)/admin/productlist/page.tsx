@@ -18,7 +18,7 @@ type Product = {
   ref: string;
   price: number;
   imageUrl: string;
-  category: string;
+  category:Category;
   stock: number;
   user: User;
   discount: number;
@@ -27,7 +27,10 @@ type Product = {
   createdAt: Date;
   updatedAt: Date;
 };
-
+interface Category{
+  _id:string;
+  slug:string;
+}
 const AddedProducts: React.FC = () => {
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
@@ -240,6 +243,9 @@ const AddedProducts: React.FC = () => {
                   >
                     {loadingProductId === item._id ? "Processing..." : "DELETE"}
                   </button>
+                  <Link href={`/${item.category.slug}/${item._id}`}>
+                    <button className="bg-gray-800 text-white w-28 h-10 hover:bg-gray-600 rounded-md">See Product</button>
+                  </Link>
                   {isPopupOpen && (
                     <DeletePopup
                       handleClosePopup={handleClosePopup}

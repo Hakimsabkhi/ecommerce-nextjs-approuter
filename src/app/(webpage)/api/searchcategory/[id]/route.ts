@@ -1,3 +1,5 @@
+
+
 import { NextRequest, NextResponse } from 'next/server';
 import dbConnect from '@/lib/db';
 import Category from '@/models/Category';
@@ -5,12 +7,12 @@ import Category from '@/models/Category';
 export async function GET(  req: NextRequest,
   { params }: { params: { id: string } }
 ) {
+  
   await dbConnect();
-
   try {
-    // Extract the 'category' query parameter from the request URL
- 
+   
     const category = params.id;
+  
 
     if (!category || typeof category !== 'string') {
       return NextResponse.json(
@@ -20,7 +22,7 @@ export async function GET(  req: NextRequest,
     }
 
     // Find the category by name
-    const foundCategory = await Category.findOne({ name: category });
+    const foundCategory = await Category.findOne({ slug: category });
 
     if (!foundCategory) {
       return NextResponse.json({ message: 'Category not found' }, { status: 404 });

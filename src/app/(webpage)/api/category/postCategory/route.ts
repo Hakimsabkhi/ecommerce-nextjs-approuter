@@ -116,8 +116,9 @@ export async function POST(req: NextRequest) {
       bannerUrl = bannerResult.secure_url;
     }
     
+    const slug= name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^\w\s-]/g, "").replace(/\s+/g, "-").trim()
     
-    const newCategory = new Category({ name, logoUrl, imageUrl, bannerUrl, user });
+    const newCategory = new Category({ name, logoUrl, imageUrl, bannerUrl, slug,user });
 
     await newCategory.save();
     return NextResponse.json(newCategory, { status: 201 });

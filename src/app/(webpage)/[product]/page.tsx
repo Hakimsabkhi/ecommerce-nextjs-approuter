@@ -93,6 +93,7 @@ const fetchBrandData = async (): Promise<Brand[]> => {
 
 // HomePage component
 async function HomePage({ params }: HomePageProps) {
+
   const id = params?.product;
 
   // Early return if no product id
@@ -105,7 +106,7 @@ async function HomePage({ params }: HomePageProps) {
   const brand = await fetchBrandData();
 
   // Return 404 if no category or products found
-  if (!category || products.length === 0) {
+  if (!category ) {
     return notFound();
   }
 

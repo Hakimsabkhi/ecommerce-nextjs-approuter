@@ -15,6 +15,7 @@ export async function GET(
    
     const category = params.id;
 
+
     if (!category || typeof category !== 'string') {
       return NextResponse.json(
         { message: 'Category name is required and should be a string' },
@@ -23,7 +24,7 @@ export async function GET(
     }
 
     // Find the category by name
-    const foundCategory = await Category.findOne({ name: category });
+    const foundCategory = await Category.findOne({ slug: category });
 
     if (!foundCategory) {
       return NextResponse.json({ message: 'Category not found' }, { status: 404 });

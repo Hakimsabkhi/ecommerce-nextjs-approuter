@@ -5,6 +5,7 @@ export interface ICategory extends Document {
   logoUrl?:string;
   imageUrl?: string;
   bannerUrl?:string;
+  slug:string;
   user: IUser | string; // Reference to a User document or User ID
   createdAt?: Date;
   updatedAt?: Date;
@@ -15,6 +16,7 @@ const CategorySchema: Schema = new Schema({
   logoUrl: { type: String },
   imageUrl: { type: String },
   bannerUrl:{type:String},
+  slug:{type:String},
   user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
 },{ timestamps: true });
 
