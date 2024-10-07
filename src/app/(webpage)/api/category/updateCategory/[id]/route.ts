@@ -178,7 +178,6 @@ export async function PUT(
       }
       // Update category with new values
       existingCategory.name = name;
-      existingCategory.slug = slugifyCategoryName(name);
       existingCategory.logoUrl = logoUrl;
       existingCategory.imageUrl = imageUrl;
       existingCategory.bannerUrl = bannerUrl;

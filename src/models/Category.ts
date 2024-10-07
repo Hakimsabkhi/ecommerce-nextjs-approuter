@@ -11,6 +11,13 @@ export interface ICategory extends Document {
   updatedAt?: Date;
 }
 
+// Helper function to slugify category names
+const slugifyCategoryName = (name: string): string => {
+  return name
+    .toLowerCase()
+    .replace(/ /g, '-')
+    .replace(/[^\w-]+/g, ''); // Remove any special characters
+};
 const CategorySchema: Schema = new Schema({
   name: { type: String, required: true },
   logoUrl: { type: String },
@@ -20,6 +27,14 @@ const CategorySchema: Schema = new Schema({
   user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
 },{ timestamps: true });
 
+
+// Pre-save hook to generate the slug before saving the category
+CategorySchema.pre('save', function (next) {
+  if (this.isModified('name')) {
+    this.slug = slugifyCategoryName(this.name);
+  }
+  next();
+});
 
 
 const Category: Model<ICategory> = mongoose.models.Category || mongoose.model<ICategory>('Category', CategorySchema);
