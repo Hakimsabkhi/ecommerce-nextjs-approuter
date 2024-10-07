@@ -18,9 +18,7 @@ type Category = {
   createdAt: Date;
   updatedAt: Date;
 };
-function slugifyCategoryName(name: string): string {
-  return name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^\w\s-]/g, "").replace(/\s+/g, "-").trim(); // Remove any special characters
-}
+
 const AddedCategories: React.FC = () => {
   const [addedCategory, setAddedCategory] = useState<Category[]>([]);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -169,7 +167,7 @@ const AddedCategories: React.FC = () => {
                   >
                     {selectedCategory?._id === category._id ? "Processing..." : "DELETE"}
                   </button>
-                  <Link href={`/${encodeURIComponent(slugifyCategoryName(category.name))}`}>
+                  <Link href={`/${category.slug}`}>
                     <button className="bg-gray-800 text-white w-36 h-10 hover:bg-gray-600 rounded-md uppercase">
                       See Category
                     </button>

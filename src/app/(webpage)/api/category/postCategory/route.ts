@@ -6,7 +6,9 @@ import cloudinary from '@/lib/cloudinary';
 import stream from 'stream';
 import User from '@/models/User';
 import { getToken } from 'next-auth/jwt';
-
+function slugifyCategoryName(name: string): string {
+  return name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^\w\s-]/g, "").replace(/\s+/g, "-").trim(); // Remove any special characters
+}
 
 export async function POST(req: NextRequest) {
   await connectToDatabase();
@@ -33,7 +35,7 @@ export async function POST(req: NextRequest) {
     if (!name || !user) {
       return NextResponse.json({ message: 'Name is required' }, { status: 400 });
     }
-
+    const slug = slugifyCategoryName(name)
 
     const existingCategory = await Category.findOne({ name });
     if (existingCategory) {
@@ -118,7 +120,7 @@ export async function POST(req: NextRequest) {
     
   
     
-    const newCategory = new Category({ name, logoUrl, imageUrl, bannerUrl,user });
+    const newCategory = new Category({ name, logoUrl, imageUrl, bannerUrl,slug,user });
 
     await newCategory.save();
     return NextResponse.json(newCategory, { status: 201 });

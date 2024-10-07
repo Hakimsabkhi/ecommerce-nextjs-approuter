@@ -31,10 +31,9 @@ type Product = {
 interface Category{
   _id:string;
   name:string;
+  slug:string;
 }
-function slugifyCategoryName(name: string): string {
-  return name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^\w\s-]/g, "").replace(/\s+/g, "-").trim(); // Remove any special characters
-}
+
 const AddedProducts: React.FC = () => {
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
@@ -291,7 +290,7 @@ const AddedProducts: React.FC = () => {
                   >
                     {loadingProductId === item._id ? "Processing..." : "DELETE"}
                   </button>
-                  <Link href={`/${encodeURIComponent(slugifyCategoryName(item.category.name))}/${item._id}`}>
+                  <Link href={`/${item.category.slug}/${item._id}`}>
                     <button className="bg-gray-800 text-white w-36 h-10 hover:bg-gray-600 rounded-md uppercase">See Product</button>
                   </Link>
                   {isPopupOpen && (

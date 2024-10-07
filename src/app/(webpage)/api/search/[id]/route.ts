@@ -24,7 +24,7 @@ export async function GET(
     }
 
     // Find the category by name
-    const foundCategory = await Category.findOne({ name: category });
+    const foundCategory = await Category.findOne({ slug: category });
 
     if (!foundCategory) {
       return NextResponse.json({ message: 'Category not found' }, { status: 404 });

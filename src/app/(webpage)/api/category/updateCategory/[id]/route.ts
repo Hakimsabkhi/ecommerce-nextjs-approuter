@@ -7,6 +7,9 @@ import cloudinary from "@/lib/cloudinary";
 import stream from "stream";
 import User from "@/models/User";
 import { getToken } from "next-auth/jwt";
+function slugifyCategoryName(name: string): string {
+  return name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^\w\s-]/g, "").replace(/\s+/g, "-").trim(); // Remove any special characters
+}
 
 export async function PUT(
     req: NextRequest,
@@ -175,6 +178,7 @@ export async function PUT(
       }
       // Update category with new values
       existingCategory.name = name;
+      existingCategory.slug = slugifyCategoryName(name);
       existingCategory.logoUrl = logoUrl;
       existingCategory.imageUrl = imageUrl;
       existingCategory.bannerUrl = bannerUrl;
