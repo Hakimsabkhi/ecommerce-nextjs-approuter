@@ -101,7 +101,11 @@ const AddedProducts: React.FC = () => {
 
       const data = await response.json();
       console.log("Product status updated successfully:", data);
-    
+      setProducts((prevData) =>
+        prevData.map((item) =>
+          item._id === productId ? { ...item, status: newStatus } : item
+        )
+      );
     } catch (error) {
       console.error("Failed to update product status:", error);
       toast.error("Failed to update product status");
@@ -123,7 +127,11 @@ const AddedProducts: React.FC = () => {
       if (!response.ok) {
         throw new Error(`Error: ${response.statusText}`);
       }
-
+      setProducts((prevData) =>
+        prevData.map((item) =>
+          item._id === productId ? { ...item, vadmin: newStatus } : item
+        )
+      );
       const data = await response.json();
       console.log("Product status updated successfully:", data);
     
@@ -151,7 +159,11 @@ const AddedProducts: React.FC = () => {
 
       const data = await response.json();
       console.log("Product status page updated successfully:", data);
-    
+      setProducts((prevData) =>
+        prevData.map((item) =>
+          item._id === productId ? { ...item, statuspage: statuspage } : item
+        )
+      );
       toast.success("Product status updated successfully");
     } catch (error) {
       console.error("Failed to update product status page:", error);

@@ -57,7 +57,7 @@ export async function POST(req: NextRequest) {
 
 
     const imageFile = formData.get('image') as File | null;
-    if (!name || !ref || !info || !brand || !stock || !price || !user) {
+    if (!name || !ref || !info   || !stock || !price || !user) {
       return NextResponse.json({ message: 'Required fields: name, info, ref, category, brand, stock, price' }, { status: 400 });
     }
     const existingProducts = await Products.findOne({ ref });
