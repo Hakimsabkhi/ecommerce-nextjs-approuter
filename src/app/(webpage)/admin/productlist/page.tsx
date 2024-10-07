@@ -24,6 +24,7 @@ type Product = {
   discount: number;
   status: string;
   statuspage: string;
+  vadmin: string;
   createdAt: Date;
   updatedAt: Date;
 };
@@ -108,7 +109,31 @@ const AddedProducts: React.FC = () => {
       setLoadingProductId(null);
     }
   };
+  const updateProductvadmin = async (productId: string, newStatus: string) => {
+    setLoadingProductId(productId);
+    try {
+      const updateFormData = new FormData();
+      updateFormData.append("vadmin", newStatus);
 
+      const response = await fetch(`/api/products/updateProductvadmin/${productId}`, {
+        method: "PUT",
+        body: updateFormData,
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      console.log("Product status updated successfully:", data);
+    
+    } catch (error) {
+      console.error("Failed to update product status:", error);
+      toast.error("Failed to update product status");
+    } finally {
+      setLoadingProductId(null);
+    }
+  };
   const updateProductStatusPlace = async (productId: string, statuspage: string) => {
     setLoadingProductId(productId);
     try {
@@ -217,6 +242,14 @@ const AddedProducts: React.FC = () => {
               <td className="border px-4 py-2">{item.user.username}</td>
               <td className="border px-4 py-2">
                 <div className="flex items-center justify-center gap-2">
+                <select
+                    className={`w-50 text-black rounded-md p-2 ${item.vadmin === "not-approve" ? "bg-gray-800 text-white" : "bg-red-700 text-white"}`}
+                    value={item.status}
+                    onChange={(e) => updateProductvadmin(item._id, e.target.value)}
+                  >
+                    <option value="approve" className="text-white uppercase">approve</option>
+                    <option value="not-approve" className="text-white uppercase">Not approve </option>
+                  </select>
                   <select
                     className={`w-50 text-black rounded-md p-2 ${item.status === "in-stock" ? "bg-gray-800 text-white" : "bg-red-700 text-white"}`}
                     value={item.status}
@@ -226,7 +259,7 @@ const AddedProducts: React.FC = () => {
                     <option value="out-of-stock" className="text-white">Out of stock</option>
                   </select>
                   <select
-                    className={`w-50 text-black rounded-md p-2 ${item.statuspage === "" ? "bg-gray-800 text-white" : "bg-emerald-950 text-white"}`}
+                    className={`w-50 text-black rounded-md p-2 ${item.statuspage === "none" ? "bg-gray-800 text-white" : "bg-emerald-950 text-white"}`}
                     value={item.statuspage || ""}
                     onChange={(e) => updateProductStatusPlace(item._id, e.target.value)}
                     disabled={loadingProductId === item._id}

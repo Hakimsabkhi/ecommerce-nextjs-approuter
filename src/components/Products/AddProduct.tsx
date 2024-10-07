@@ -303,7 +303,7 @@ const AddProduct = () => {
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-[60%] block p-2.5"
             required
           >
-            <option value="">Select a Place</option>
+            <option value="none">Select a Place</option>
             <option value="home-page" >
                Home Page
              </option>
