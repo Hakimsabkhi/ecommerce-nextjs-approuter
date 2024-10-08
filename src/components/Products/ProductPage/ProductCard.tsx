@@ -6,7 +6,7 @@ import Link from "next/link";
 import { FaEye, FaRegHeart } from "react-icons/fa";
 import { FaCartShopping, FaHeart } from "react-icons/fa6";
 import { star } from "@/assets/image";
-import { useParams } from "next/navigation";
+
 import { useDispatch, useSelector } from "react-redux";
 import { addItem } from "@/store/cartSlice";
 import { RootState } from "@/store";
@@ -30,10 +30,12 @@ interface ProductData {
   color?: string;
   material?: string;
   status?: string;
-  category?: Category;
+  category: Category;
+  slug:string;
 }
 interface Category {
   name: string;
+  slug:string;
 }
 
 interface ProductCardProps {
@@ -41,9 +43,9 @@ interface ProductCardProps {
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
-  const params = useParams() as { product?: string };
+ /*  const params = useParams() as { product?: string };
   const product = params.product;
-
+ */
   const [clicked, setClicked] = useState(false);
 
   const handleClick = () => {
@@ -54,7 +56,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
     "https://res.cloudinary.com/dx499gc6x/image/upload/v1723623372/na_mma1mw.webp";
 
   const items = useSelector((state: RootState) => state.cart.items);
-  console.log(items);
+ 
 
   const dispatch = useDispatch();
   const addToCartHandler = (product: ProductData, quantity: number) => {
@@ -68,7 +70,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
  };
   return (
     <div className="bg-white rounded-lg duration-500 lg:group-hover:scale-[0.85] lg:hover:!scale-100 h-[481px] max-md:h-[320px] relative m-4">
-      <Link href={`/${item.category?.name}/${item._id}`}>
+      <Link href={`/${item.category.slug}/${item.slug}`}>
         <Image
           className="absolute inset-0 mx-auto top-5"
           src={item.imageUrl || noimage}
@@ -78,7 +80,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
         />
       </Link>
       <div className="flex-col flex bottom-0 gap-2 absolute w-full px-2">
-        <Link href={`/${item.category?.name}/${item._id}`}>
+        <Link href={`/${item.category.slug}/${item.slug}`}>
           <div className="h-24 max-md:h-20">
             <p className="text-gray-700 cursor-pointer text-3xl max-md:text-xl font-bold">
               {item.name}
@@ -144,7 +146,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
        
       </button>)}
 
-          <a href={`/${item.category?.name}/${item._id}`} className="w-[30%]">
+          <a href={`/${item.category.slug}/${item.slug}`} className="w-[30%]">
             <button className="AddtoCart bg-white max-md:rounded-[3px] w-full group/box text-primary border border-primary">
               <p className="absolute flex items-center justify-center w-full h-full transition-all duration-300 transform lg:group-hover/box:translate-y-[-100%] ease">
                 View

@@ -14,6 +14,7 @@ type Category = {
   imageUrl: string;
   logoUrl: string;
   user: { _id: string; username: string };
+  slug:string;
   createdAt: Date;
   updatedAt: Date;
 };
@@ -155,7 +156,7 @@ const AddedCategories: React.FC = () => {
               <td className="border px-4 py-2">
                 <div className="flex items-center justify-center gap-2">
                   <Link href={`/admin/categorylist/${category._id}`}>
-                    <button className="bg-gray-800 text-white w-28 h-10 hover:bg-gray-600 rounded-md">
+                    <button className="bg-gray-800 text-white w-28 h-10 hover:bg-gray-600 rounded-md uppercase">
                       Modify
                     </button>
                   </Link>
@@ -166,6 +167,11 @@ const AddedCategories: React.FC = () => {
                   >
                     {selectedCategory?._id === category._id ? "Processing..." : "DELETE"}
                   </button>
+                  <Link href={`/${category.slug}`}>
+                    <button className="bg-gray-800 text-white w-36 h-10 hover:bg-gray-600 rounded-md uppercase">
+                      See Category
+                    </button>
+                  </Link>
                 </div>
               </td>
             </tr>

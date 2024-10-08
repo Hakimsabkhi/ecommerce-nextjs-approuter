@@ -5,19 +5,36 @@ export interface ICategory extends Document {
   logoUrl?:string;
   imageUrl?: string;
   bannerUrl?:string;
+  slug:string,
   user: IUser | string; // Reference to a User document or User ID
   createdAt?: Date;
   updatedAt?: Date;
 }
 
+// Helper function to slugify category names
+const slugifyCategoryName = (name: string): string => {
+  return name
+    .toLowerCase()
+    .replace(/ /g, '-')
+    .replace(/[^\w-]+/g, ''); // Remove any special characters
+};
 const CategorySchema: Schema = new Schema({
-  name: { type: String, required: true },
+  name: { type: String, required: true ,unique: true },
   logoUrl: { type: String },
   imageUrl: { type: String },
   bannerUrl:{type:String},
+  slug: { type: String, unique: true },
   user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
 },{ timestamps: true });
 
+
+// Pre-save hook to generate the slug before saving the category
+CategorySchema.pre('save', function (next) {
+  if (this.isModified('name')) {
+    this.slug = slugifyCategoryName(this.name);
+  }
+  next();
+});
 
 
 const Category: Model<ICategory> = mongoose.models.Category || mongoose.model<ICategory>('Category', CategorySchema);

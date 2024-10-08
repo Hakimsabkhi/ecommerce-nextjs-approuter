@@ -1,5 +1,5 @@
 
-
+export const dynamic = 'force-dynamic'; 
 import {  NextResponse } from 'next/server';
 import connectToDatabase from "@/lib/db";
 import Products from "@/models/Product";

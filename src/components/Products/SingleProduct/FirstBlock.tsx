@@ -33,6 +33,7 @@ interface Product {
   color?: string;
   material?: string;
   status?: string;
+  
 }
 
 interface Brand {

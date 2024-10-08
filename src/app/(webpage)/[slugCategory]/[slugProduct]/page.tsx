@@ -17,6 +17,7 @@ interface ProductData {
   images?: string [];
   brand?: Brand; // Make brand optional
   stock: number;
+  category:category;
   dimensions?:string;
   discount?: number;
   warranty?:number;
@@ -24,6 +25,11 @@ interface ProductData {
   color?: string;
   material?: string;
   status?: string;
+}
+interface category{
+  _id:string;
+  name:string;
+  slug:string;
 }
 
 interface Brand {
@@ -60,9 +66,13 @@ interface PageProps {
 
 
 // Fetch the product data during server-side rendering
-export default async function Page({ params }: { params: { id: string } }) {
-  const product = await getProduct(params.id);
+export default async function Page({ params }: { params: {slugCategory: string ,slugProduct:string} }) {
+  
+  const product = await getProduct(params.slugProduct);
 
+  if (params.slugCategory != product.category.slug){
+    notFound();
+  }
   if (!product) {
     notFound(); // Redirects to a 404 page if the product is not found
   }

@@ -168,7 +168,7 @@ const AddedBrands: React.FC = () => {
                             <td className="border-b px-4 py-2  ">{item?.user?.username}</td>
                             <td className="border-b flex items-center justify-center gap-2 ">                                
                                     <Link href={`/admin/brandlist/${item._id}`}>
-                                        <button className="bg-gray-800 text-white w-28 h-10 hover:bg-gray-600 rounded-md">
+                                        <button className="bg-gray-800 text-white w-28 h-10 hover:bg-gray-600 rounded-md uppercase">
                                             Modify
                                         </button>
                                     </Link>

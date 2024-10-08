@@ -16,8 +16,13 @@ interface ProductData {
   color?: string;
   material?: string;
   status?: string;
+  category:Category;
+  slug:string;
 }
-
+interface Category {
+  name: string;
+  slug:string;
+}
 interface Brand {
   _id: string;
   name: string;

@@ -4,9 +4,12 @@ import Link from 'next/link';
 
 // Type definition for category data (if you're using TypeScript)
 interface Category {
+  _id:string;
   name: string;
   logoUrl?: string;
+  slug:string;
 }
+
 
 async function fetchcategoryData() {  
   const res = await fetch(`${process.env.NEXTAUTH_URL}/api/category/getAllCategory`, {
@@ -34,8 +37,8 @@ const Headerbottom: React.FC = async () => {
         <div className="flex justify-start gap-8 w-fit max-xl:w-[95%] font-bold items-center text-xl max-2xl:text-sm">
           {categories?.map((category: Category) => (
             <Link 
-              href={`/${category.name}`} 
-              key={category.name} 
+              href={`/${category.slug}`} 
+              key={category._id} 
               className="flex items-center gap-3 duration-300 hover:text-orange-400" 
               aria-label={category.name}
             >

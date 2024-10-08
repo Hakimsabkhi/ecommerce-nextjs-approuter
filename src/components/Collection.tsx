@@ -21,6 +21,20 @@ interface Products {
   material?: string;
   status?: string;
   statuspage: string;
+  category:category;
+  slug:string;
+}
+interface category{
+  _id:string;
+  name:string;
+  slug:string;
+}
+
+interface Brand {
+  _id: string;
+  name: string;
+  place: string;
+  imageUrl: string;
 }
 
 // Function to fetch categories data

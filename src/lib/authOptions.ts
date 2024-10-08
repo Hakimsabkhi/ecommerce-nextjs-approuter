@@ -163,5 +163,5 @@ export const authOptions: NextAuthOptions = {
     },
   },
   secret: nextAuthSecret,
-  debug: true,
+  debug: false,
 };

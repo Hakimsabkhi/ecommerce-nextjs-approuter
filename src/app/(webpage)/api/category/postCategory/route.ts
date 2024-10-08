@@ -7,7 +7,6 @@ import stream from 'stream';
 import User from '@/models/User';
 import { getToken } from 'next-auth/jwt';
 
-
 export async function POST(req: NextRequest) {
   await connectToDatabase();
   const token=await getToken({req,secret:process.env.NEXTAUTH_SECRET});
@@ -33,7 +32,7 @@ export async function POST(req: NextRequest) {
     if (!name || !user) {
       return NextResponse.json({ message: 'Name is required' }, { status: 400 });
     }
-
+    
 
     const existingCategory = await Category.findOne({ name });
     if (existingCategory) {
@@ -116,8 +115,9 @@ export async function POST(req: NextRequest) {
       bannerUrl = bannerResult.secure_url;
     }
     
+  
     
-    const newCategory = new Category({ name, logoUrl, imageUrl, bannerUrl, user });
+    const newCategory = new Category({ name, logoUrl, imageUrl, bannerUrl,user });
 
     await newCategory.save();
     return NextResponse.json(newCategory, { status: 201 });

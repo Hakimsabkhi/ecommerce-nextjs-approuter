@@ -20,14 +20,24 @@ interface Products {
   material?: string;
   status?: string;
   statuspage:string;
+  category: Category;
+  slug:string;
+}
+interface Category {
+  name: string;
+  slug:string;
 }
 
 // Function to fetch categories data
 const fetchProduct = async (): Promise<Products[]> => {
   try {
-    const res = await fetch(
-      `${process.env.NEXTAUTH_URL}/api/products/getProductbyStatue`
-    ); // Adjust the API endpoint
+    const res = await fetch(`${process.env.NEXTAUTH_URL}/api/products/getProductbyStatue`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    
     if (!res.ok) {
       throw new Error("Failed to fetch categories");
     }

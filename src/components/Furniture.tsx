@@ -22,7 +22,15 @@ interface Products {
   material?: string;
   status?: string;
   statuspage:string;
+  category:category;
+  slug:string;
 }
+interface category{
+  _id:string;
+  name:string;
+  slug:string;
+}
+
 
 // Function to fetch categories data
 const fetchProduct = async (): Promise<Products[]> => {

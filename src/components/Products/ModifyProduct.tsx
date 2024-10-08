@@ -285,13 +285,13 @@ const ModifyProduct: React.FC<ModifyProductProps> = ({ productData }) => {
         </select>
       </div>
       <div className='flex items-center w-[30%] max-lg:w-full max-lg:justify-between gap-4'>
-        <p className="text-xl font-bold">Brand *</p>
+        <p className="text-xl font-bold">Brand </p>
         <select 
           name="brand"
           value={formData.brand._id}
           onChange={handleChange}
           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-[60%] block p-2.5" 
-          required
+          
         >
           <option value="">Select a brand</option>
           {brands.map(brand => (
