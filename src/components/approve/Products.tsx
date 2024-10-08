@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
-import ProductList from "./Products/ProductPage/ProductList";
-import FilterProducts from "./Products/ProductPage/FilterProducts"; // Import the new FilterProducts component
+import ProductList from "./ProductList";
+import FilterProducts from "./FilterProducts"; // Import the new FilterProducts component
 
 interface ProductsProps {
   products: ProductData[];
