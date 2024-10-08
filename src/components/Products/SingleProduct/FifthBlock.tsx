@@ -20,6 +20,7 @@ interface ProductData {
   color?: string;
   material?: string;
   status?: string;
+  slug:string;
 }
 interface category{
   _id:string;

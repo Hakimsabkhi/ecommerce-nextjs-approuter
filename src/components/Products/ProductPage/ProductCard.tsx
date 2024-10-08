@@ -31,6 +31,7 @@ interface ProductData {
   material?: string;
   status?: string;
   category: Category;
+  slug:string;
 }
 interface Category {
   name: string;
@@ -69,7 +70,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
  };
   return (
     <div className="bg-white rounded-lg duration-500 lg:group-hover:scale-[0.85] lg:hover:!scale-100 h-[481px] max-md:h-[320px] relative m-4">
-      <Link href={`/${item.category.slug}/${item._id}`}>
+      <Link href={`/${item.category.slug}/${item.slug}`}>
         <Image
           className="absolute inset-0 mx-auto top-5"
           src={item.imageUrl || noimage}
@@ -79,7 +80,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
         />
       </Link>
       <div className="flex-col flex bottom-0 gap-2 absolute w-full px-2">
-        <Link href={`/${item.category.slug}/${item._id}`}>
+        <Link href={`/${item.category.slug}/${item.slug}`}>
           <div className="h-24 max-md:h-20">
             <p className="text-gray-700 cursor-pointer text-3xl max-md:text-xl font-bold">
               {item.name}
@@ -145,7 +146,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
        
       </button>)}
 
-          <a href={`/${item.category.slug}/${item._id}`} className="w-[30%]">
+          <a href={`/${item.category.slug}/${item.slug}`} className="w-[30%]">
             <button className="AddtoCart bg-white max-md:rounded-[3px] w-full group/box text-primary border border-primary">
               <p className="absolute flex items-center justify-center w-full h-full transition-all duration-300 transform lg:group-hover/box:translate-y-[-100%] ease">
                 View

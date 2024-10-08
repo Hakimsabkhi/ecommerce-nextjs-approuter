@@ -17,6 +17,7 @@ interface ProductData {
   material?: string;
   status?: string;
   category:Category;
+  slug:string;
 }
 interface Category {
   name: string;

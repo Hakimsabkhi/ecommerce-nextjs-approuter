@@ -21,6 +21,7 @@ interface Products {
   status?: string;
   statuspage:string;
   category: Category;
+  slug:string;
 }
 interface Category {
   name: string;

@@ -20,7 +20,7 @@ export async function GET(
      
       await Category.find();
       await Brand.find();
-      const product = await Product.findById(id)
+      const product = await Product.findOne({ slug: id })
         .populate("category")
         .populate("brand");
   
