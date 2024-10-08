@@ -19,7 +19,7 @@ const slugifyCategoryName = (name: string): string => {
     .replace(/[^\w-]+/g, ''); // Remove any special characters
 };
 const CategorySchema: Schema = new Schema({
-  name: { type: String, required: true },
+  name: { type: String, required: true ,unique: true },
   logoUrl: { type: String },
   imageUrl: { type: String },
   bannerUrl:{type:String},
