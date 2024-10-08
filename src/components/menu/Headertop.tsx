@@ -17,7 +17,6 @@ interface CompanyData {
   phone: number;
 }
 
-// Fetcher function for useSWR
 async function fetchCompanyData() {
   const res = await fetch(`${process.env.NEXTAUTH_URL}/api/company/getCompany`, {
     method: "GET",
@@ -32,7 +31,7 @@ async function fetchCompanyData() {
 }
 
 const Headertop: React.FC = async () => {
-  // Use useSWR to fetch company data
+
   const companyData = await fetchCompanyData();
 
   
