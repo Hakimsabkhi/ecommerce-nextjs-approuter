@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { FaEye, FaCartPlus, FaRegHeart, FaHeart } from 'react-icons/fa';
-import { useParams } from 'next/navigation'; // Use 'next/navigation' for Next.js App Router
+import { notFound, useParams } from 'next/navigation'; // Use 'next/navigation' for Next.js App Router
 import{star } from '@/assets/image';
 import ProductCard from '../ProductPage/ProductCard';
 const noimage ='https://res.cloudinary.com/dx499gc6x/image/upload/v1723623372/na_mma1mw.webp';
@@ -13,12 +13,18 @@ interface ProductData {
   ref: string;
   price: number;
   imageUrl?: string;
+  category:category
   brand?: Brand; // Make brand optional
   stock: number;
   discount?: number;
   color?: string;
   material?: string;
   status?: string;
+}
+interface category{
+  _id:string;
+  name:string;
+  slug:string;
 }
 
 interface Brand {

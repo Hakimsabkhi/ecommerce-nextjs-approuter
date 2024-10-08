@@ -23,9 +23,14 @@ export interface IProduct extends Document {
   status:string;
   statuspage:string;
   vadmin:string;
+  slug: string;
   createdAt?: Date;
   updatedAt?: Date;
 }
+// Helper function to slugify product names
+const slugifyProductName = (name: string, ref: string): string => {
+  return `${name.toLowerCase().replace(/ /g, '-')}-${ref.toLowerCase().replace(/ /g, '-')}`;
+};
 
 const ProductSchema = new mongoose.Schema({
   name:{ type: String, required: true },
@@ -48,7 +53,16 @@ const ProductSchema = new mongoose.Schema({
   user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   imageUrl: { type: String },
   images: [{ type: String }], 
+  slug: { type: String},
 },{ timestamps: true });
+
+// Pre-save hook to generate the slug before saving the product
+ProductSchema.pre('save', function (next) {
+  if (this.isModified('name') || this.isModified('ref')) {
+    this.slug = slugifyProductName(this.name, this.ref);
+  }
+  next();
+});
 
 
 const Product: Model<IProduct> = mongoose.models.Product || mongoose.model<IProduct>('Product', ProductSchema);

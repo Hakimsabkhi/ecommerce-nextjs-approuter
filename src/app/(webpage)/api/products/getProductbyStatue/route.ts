@@ -3,11 +3,13 @@ export const dynamic = 'force-dynamic';
 import {  NextResponse } from 'next/server';
 import connectToDatabase from "@/lib/db";
 import Products from "@/models/Product";
-
+import Category from '@/models/Category';
 export async function GET(){
     try{
+      
       await connectToDatabase();
-      const products = await  Products.find({});
+      await Category.find()
+      const products = await  Products.find({}).populate("category _id name slug");
     
       return NextResponse.json(products, { status: 200 });
     } catch (error) {
