@@ -37,7 +37,7 @@ export async function PUT(
           { status: 400 }
         );
       }
-  
+      console.log(vadmin)
       const existingProduct = await Product.findById(id);
       if (!existingProduct) {
         return NextResponse.json(

@@ -28,7 +28,7 @@ export async function GET(  req: NextRequest,
     if (!foundCategory) {
       return NextResponse.json({ message: 'Category not found' }, { status: 501 });
     }
-    console.log(foundCategory)
+   
     return NextResponse.json(foundCategory, { status: 200 });
   } catch (error) {
     console.error(error);

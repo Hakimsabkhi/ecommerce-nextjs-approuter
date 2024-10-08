@@ -138,8 +138,8 @@ const AddedProducts: React.FC = () => {
       console.log("Product status updated successfully:", data);
     
     } catch (error) {
-      console.error("Failed to update product status:", error);
-      toast.error("Failed to update product status");
+      console.error("Failed to update product status approve:", error);
+      toast.error("Failed to update product approve");
     } finally {
       setLoadingProductId(null);
     }
