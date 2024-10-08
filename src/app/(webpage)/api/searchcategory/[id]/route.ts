@@ -1,5 +1,5 @@
 
-
+export const dynamic = 'force-dynamic'; 
 import { NextRequest, NextResponse } from 'next/server';
 import dbConnect from '@/lib/db';
 import Category from '@/models/Category';
@@ -20,14 +20,15 @@ export async function GET(  req: NextRequest,
         { status: 400 }
       );
     }
-
+  
     // Find the category by name
-    const foundCategory = await Category.findOne({ slug: category });
+    const foundCategory = await Category.findOne({ slug: category, vadmin: "approve" }).exec();
+
 
     if (!foundCategory) {
-      return NextResponse.json({ message: 'Category not found' }, { status: 404 });
+      return NextResponse.json({ message: 'Category not found' }, { status: 501 });
     }
-
+    console.log(foundCategory)
     return NextResponse.json(foundCategory, { status: 200 });
   } catch (error) {
     console.error(error);
