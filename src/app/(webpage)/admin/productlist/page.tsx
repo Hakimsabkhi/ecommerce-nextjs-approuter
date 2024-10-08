@@ -28,6 +28,7 @@ type Product = {
   vadmin: string;
   createdAt: Date;
   updatedAt: Date;
+  slug:string;
 };
 interface Category{
   _id:string;
@@ -330,7 +331,7 @@ const AddedProducts: React.FC = () => {
                   >
                     {loadingProductId === item._id ? "Processing..." : "DELETE"}
                   </button>
-                  <Link href={`/${item.category.slug}/${item._id}`}>
+                  <Link href={`/${item.category.slug}/${item.slug}`}>
                     <button className="bg-gray-800 text-white w-36 h-10 hover:bg-gray-600 rounded-md uppercase">See Product</button>
                   </Link>
                   {isPopupOpen && (
