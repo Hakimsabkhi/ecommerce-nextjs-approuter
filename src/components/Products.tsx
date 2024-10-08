@@ -86,7 +86,7 @@ const Products: React.FC<ProductsProps> = ({ products, brands }) => {
 </div>
 
       {/* Products */}
-      <div className=" w-5/6 border-2 p-2 rounded-lg shadow-md">
+      <div className=" w-5/6">
       <ProductList products={filteredProducts} />
       </div>
     
