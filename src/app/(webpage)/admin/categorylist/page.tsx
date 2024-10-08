@@ -15,6 +15,7 @@ type Category = {
   logoUrl: string;
   user: { _id: string; username: string };
   slug:string;
+  vadmin:string;
   createdAt: Date;
   updatedAt: Date;
 };
@@ -62,7 +63,33 @@ const AddedCategories: React.FC = () => {
       handleClosePopup();
     }
   };
+  const updateCategoryvadmin = async (categoryId: string, newStatus: string) => {
+   
+    try {
+      const updateFormData = new FormData();
+      updateFormData.append("vadmin", newStatus);
 
+      const response = await fetch(`/api/category/updateCategoryvadmin/${categoryId}`, {
+        method: "PUT",
+        body: updateFormData,
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
+      }
+      setAddedCategory((prevData) =>
+        prevData.map((item) =>
+          item._id === categoryId ? { ...item, vadmin: newStatus } : item
+        )
+      );
+      const data = await response.json();
+      console.log("Product status updated successfully:", data);
+    
+    } catch (error) {
+      console.error("Failed to update product status:", error);
+      toast.error("Failed to update product status");
+    } 
+  };
   useEffect(() => {
     const getCategory = async () => {
       try {
@@ -155,6 +182,14 @@ const AddedCategories: React.FC = () => {
               <td className="border px-4 py-2">{category?.user?.username}</td>
               <td className="border px-4 py-2">
                 <div className="flex items-center justify-center gap-2">
+                <select
+                    className={`w-50 text-black rounded-md p-2 ${category.vadmin === "not-approve" ? "bg-gray-400 text-white" : "bg-green-500 text-white"}`}
+                    value={category.vadmin}
+                    onChange={(e) => updateCategoryvadmin(category._id, e.target.value)}
+                  >
+                    <option value="approve" className="text-white uppercase">approve</option>
+                    <option value="not-approve" className="text-white uppercase">Not approve </option>
+                  </select>
                   <Link href={`/admin/categorylist/${category._id}`}>
                     <button className="bg-gray-800 text-white w-28 h-10 hover:bg-gray-600 rounded-md uppercase">
                       Modify

@@ -14,15 +14,16 @@ export async function GET(
       await dbConnect();
       const { id } = params; // Get `id` from params
       
-      if (!id || id.length !== 24) { // assuming the MongoDB ObjectId format is 24 characters
-        return new NextResponse(JSON.stringify({ message: "Invalid or missing product ID" }), { status: 400 });
+      if (!id ) { // assuming the MongoDB ObjectId format is 24 characters
+        return new NextResponse(JSON.stringify({ message: "Invalid or missing product " }), { status: 400 });
       }
+     
      
       await Category.find();
       await Brand.find();
       const product = await Product.findOne({ slug: id })
         .populate("category")
-        .populate("brand");
+        .populate("brand").exec();
   
       if (!product) {
         return new NextResponse(JSON.stringify({ message: "Product not found" }), { status: 404});
