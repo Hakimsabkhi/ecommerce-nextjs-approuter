@@ -4,9 +4,9 @@ import Chairsbanner from '@/components/Chairsbanner';
 import { ICategory } from '@/models/Category';
 import { notFound } from 'next/navigation';
 
-interface HomePageProps {
+interface CategoryPageProps {
   params: {
-    product?: string;
+    slugCategory?: string;
   };
 }
 
@@ -23,8 +23,12 @@ interface ProductData {
   color?: string;
   material?: string;
   status?: string;
+category:Category;
 }
-
+interface Category {
+  name: string;
+  slug:string;
+}
 interface Brand {
   _id: string;
   name: string;
@@ -92,9 +96,9 @@ const fetchBrandData = async (): Promise<Brand[]> => {
 };
 
 // HomePage component
-async function HomePage({ params }: HomePageProps) {
+async function CategoryPage({ params }: CategoryPageProps) {
 
-  const id = params?.product;
+  const id = params?.slugCategory;
 
   // Early return if no product id
   if (!id) {
@@ -120,4 +124,4 @@ async function HomePage({ params }: HomePageProps) {
 }
 
 // Export the HomePage component at the end
-export default HomePage;
+export default CategoryPage;

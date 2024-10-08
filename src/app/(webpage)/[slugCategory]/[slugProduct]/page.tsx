@@ -66,9 +66,11 @@ interface PageProps {
 
 
 // Fetch the product data during server-side rendering
-export default async function Page({ params }: { params: { id: string ,product:string} }) {
-  const product = await getProduct(params.id);
-  if (params.product != product.category.slug){
+export default async function Page({ params }: { params: {slugCategory: string ,slugProduct:string} }) {
+  
+  const product = await getProduct(params.slugProduct);
+
+  if (params.slugCategory != product.category.slug){
     notFound();
   }
   if (!product) {
