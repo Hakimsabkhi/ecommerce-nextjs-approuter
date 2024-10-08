@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic'; 
 import { NextRequest, NextResponse } from 'next/server';
 import dbConnect from '@/lib/db';
 import Category from '@/models/Category';
@@ -24,7 +25,7 @@ export async function GET(
     }
 
     // Find the category by name
-    const foundCategory = await Category.findOne({ slug: category });
+    const foundCategory = await Category.findOne({ slug: category })
 
     if (!foundCategory) {
       return NextResponse.json({ message: 'Category not found' }, { status: 404 });
@@ -32,7 +33,7 @@ export async function GET(
     await User.find({});
     await Brand.find({});
     // Find products by the category ID
-    const products = await Product.find({ category: foundCategory._id }).populate('category brand user');
+    const products = await Product.find({ category: foundCategory._id , vadmin:"approve"}).populate('category brand user').exec();
     return NextResponse.json(products, { status: 200 });
   } catch (error) {
     console.error(error);

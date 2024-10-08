@@ -41,7 +41,11 @@ const fetchCategoryData = async (id: string): Promise<ICategory | null> => {
     if (!id) return notFound(); // Check if id is valid
     const res = await fetch(`${process.env.NEXTAUTH_URL}/api/searchcategory/${id}`, {
       method: 'GET',
+      headers: {
+        "Content-Type": "application/json",
+      },
     });
+    console.log(res)
 
     if (!res.ok) {
       console.log('Category not found');
@@ -61,6 +65,9 @@ const fetchProductsData = async (id: string): Promise<ProductData[]> => {
   try {
     const res = await fetch(`${process.env.NEXTAUTH_URL}/api/search/${id}`, {
       method: 'GET',
+      headers: {
+        "Content-Type": "application/json",
+      },
       next: { revalidate: 0 }, // Disable caching
     });
 
@@ -81,6 +88,9 @@ const fetchBrandData = async (): Promise<Brand[]> => {
   try {
     const res = await fetch(`${process.env.NEXTAUTH_URL}/api/brand/getAllBrand`, {
       method: 'GET',
+      headers: {
+        "Content-Type": "application/json",
+      },
       next: { revalidate: 0 }, // Disable caching
     });
 

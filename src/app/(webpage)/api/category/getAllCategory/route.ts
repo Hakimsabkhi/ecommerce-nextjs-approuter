@@ -11,7 +11,7 @@ export async function GET(req: NextRequest) {
     await connectToDatabase(); // Ensure the database connection is established
 
     // Fetch all categories but only return the name and imageUrl fields
-    const categories = await Category.find({}).exec(); // Only select the 'name' and 'imageUrl' fields
+    const categories = await Category.find({vadmin:"approve"}).exec(); // Only select the 'name' and 'imageUrl' fields
 
     // Return the fetched category names and image URLs
     return NextResponse.json(categories, { status: 200 });
