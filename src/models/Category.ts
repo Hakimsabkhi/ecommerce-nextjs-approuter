@@ -23,7 +23,7 @@ const CategorySchema: Schema = new Schema({
   logoUrl: { type: String },
   imageUrl: { type: String },
   bannerUrl:{type:String},
-  slug: { type: String, required: true, unique: true },
+  slug: { type: String, unique: true },
   user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
 },{ timestamps: true });
 
