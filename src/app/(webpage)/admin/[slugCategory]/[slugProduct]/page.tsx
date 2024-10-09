@@ -51,6 +51,9 @@ interface PageProps {
     `${process.env.NEXTAUTH_URL}api/products/fgetProductByIdadmin/${id}`
     , {
       method: 'GET',
+      headers: {
+        "Content-Type": "application/json",
+      },
      
       next: { revalidate: 0 }, // Disable caching to always fetch the latest data
     })

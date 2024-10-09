@@ -44,6 +44,7 @@ const fetchCategoryData = async (id: string): Promise<ICategory | null> => {
       headers: {
         "Content-Type": "application/json",
       },
+      next: { revalidate: 0 }, 
     });
     console.log(res)
 
