@@ -20,12 +20,20 @@ function CreateCompany() {
   const [companyData, setCompanyData] = useState(null);
   const [iconPreview, setIconPreview] = useState<string | null>(null);
   const [iconFile, setIconFile] = useState<File | null>(null);
-
+  const [iconPreviewBanner, setIconPreviewBanner] = useState<string | null>(null);
+  const [bannerFile, setBannerFile] = useState<File | null>(null); 
   const handleIconChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       setIconFile(file);
       setIconPreview(URL.createObjectURL(file));
+    }
+  };
+  const handleBannerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setBannerFile(file); // Correct state variable for banner
+      setIconPreviewBanner(URL.createObjectURL(file));
     }
   };
   const fetchCompanyData =  async () => {
@@ -54,6 +62,9 @@ function CreateCompany() {
       setInstagram(data.instagram || '');
       if (data.logoUrl) {
         setIconPreview(data.logoUrl);
+      }
+      if (data.imageUrl) {
+        setIconPreviewBanner(data.imageUrl);
       }
     } catch (error) {
       console.error('Error fetching company data:', error);
@@ -86,7 +97,9 @@ function CreateCompany() {
     if (iconFile) {
       formData.append('image', iconFile);
     }
-
+    if (bannerFile) {
+      formData.append('banner', bannerFile);
+    }
     try {
       const response = await fetch('/api/company/postCompany', {
         method: 'POST',
@@ -125,7 +138,9 @@ function CreateCompany() {
     if (iconFile) {
       formData.append('image', iconFile);
     }
-
+    if (bannerFile) {
+      formData.append('banner', bannerFile);
+    }
     try {
       const response = await fetch('/api/company/updateCompany', {
         method: 'put',
@@ -256,6 +271,33 @@ function CreateCompany() {
             )}
           </div>
           <div className="mb-4">
+            <p className="block text-sm font-medium">Upload Banner*</p>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleBannerChange}
+              className="hidden"
+              id="upload-banner" // Changed the ID for the banner
+            />
+            <label
+              htmlFor="upload-banner" // Corrected to reference the banner input
+              className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500"
+            >
+              Select a Banner
+            </label>
+            {iconPreviewBanner && (
+              <div className="w-[15%] max-lg:w-full">
+                <Image
+                  src={iconPreviewBanner}
+                  alt="Banner preview"
+                  className="w-full h-auto mt-4"
+                  width={50}
+                  height={50}
+                />
+              </div>
+            )}
+          </div>
+          <div className="mb-4">
             <p className="block text-sm font-medium">Facebook</p>
             <input
               type="text"
@@ -273,8 +315,7 @@ function CreateCompany() {
               className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500"
             />
           </div>
-        </div>
-        <div className="mb-4">
+          <div className="mb-4">
         <p className="block text-sm font-medium">Instagram</p>
         <input
               type="text"
@@ -283,6 +324,8 @@ function CreateCompany() {
               className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500"
             />
           </div>
+        </div>
+       
         <div className="flex justify-center items-center">
       <button
             type="submit"
