@@ -362,7 +362,7 @@ const AddedProducts: React.FC = () => {
                     disabled={loadingProductId === item._id}
                   >
                     <option value="">Select a Place</option>
-                    <option value="home-page">Home Page</option>
+                    <option value="home-page">Weekly Best Sellers</option>
                     <option value="best-collection">Best Collection</option>
                     <option value="promotion">Promotion</option>
                   </select>
