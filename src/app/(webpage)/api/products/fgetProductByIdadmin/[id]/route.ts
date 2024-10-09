@@ -21,7 +21,7 @@ export async function GET(
      
       await Category.find();
       await Brand.find();
-      const product = await Product.findOne({ slug: id,vadmin:"approve" })
+      const product = await Product.findOne({ slug: id,vadmin:"not-approve" })
         .populate("category")
         .populate("brand").exec();
   

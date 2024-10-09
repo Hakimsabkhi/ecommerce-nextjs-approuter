@@ -25,7 +25,7 @@ export async function GET(
     }
 
     // Find the category by name
-    const foundCategory = await Category.findOne({ slug: category ,vadmin: "approve"})
+    const foundCategory = await Category.findOne({ slug: category, vadmin: "not-approve" })
 
     if (!foundCategory) {
       return NextResponse.json({ message: 'Category not found' }, { status: 404 });
