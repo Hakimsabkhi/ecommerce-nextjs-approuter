@@ -47,7 +47,7 @@ export async function PUT( req: NextRequest ){
       const linkedin = formData.get('linkedin') as string | null;
       const instagram = formData.get('instagram') as string | null;
       const imageFile = formData.get('image') as File | null;
-
+      const bannerFile = formData.get('banner') as File | null;
   
       if (!id) {
         return NextResponse.json(
@@ -61,6 +61,7 @@ export async function PUT( req: NextRequest ){
         return NextResponse.json({ message: "Company not found" }, { status: 404 });
       }
   
+
    
   
       // Initialize URLs with existing values
@@ -99,7 +100,40 @@ export async function PUT( req: NextRequest ){
         logoUrl = newImageUrl; // Update imageUrl with the uploaded URL
       }
   
+      let imageUrl = existingCompany.imageUrl;
+   
   
+      // Handle image file upload and deletion of the old image
+      if (bannerFile) {
+        if (existingCompany.imageUrl) {
+          const publicId = extractPublicId(existingCompany.imageUrl);
+          if (publicId) {
+            await cloudinary.uploader.destroy('company' + publicId);
+            
+          }
+        }
+  
+        const imageBuffer = Buffer.from(await bannerFile.arrayBuffer());
+        const imageStream = new stream.PassThrough();
+        imageStream.end(imageBuffer);
+  
+        const { secure_url: newImageUrl } = await new Promise<any>(
+          (resolve, reject) => {
+            const uploadStream = cloudinary.uploader.upload_stream(
+              { folder: "company",
+                format: 'webp' 
+               },
+              (error, result) => {
+                if (error) return reject(new Error(`Image upload failed: ${error.message}`));
+                resolve(result);
+              }
+            );
+            imageStream.pipe(uploadStream);
+          }
+        );
+  
+        imageUrl = newImageUrl; // Update imageUrl with the uploaded URL
+      }
      
    
     
@@ -115,6 +149,7 @@ export async function PUT( req: NextRequest ){
       if (linkedin !== null) existingCompany.linkedin = linkedin;
       if (instagram !== null) existingCompany.instagram = instagram;
       existingCompany.logoUrl = logoUrl;
+      existingCompany.imageUrl = imageUrl;
       existingCompany.user = user;
       existingCompany.updatedAt = new Date();
       await existingCompany.save(); // Save the updated brand
