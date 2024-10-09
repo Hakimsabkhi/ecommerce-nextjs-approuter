@@ -237,7 +237,7 @@ const AddedCategories: React.FC = () => {
                     }`}
                   >
                     <button className="bg-gray-800 text-white w-36 h-10 hover:bg-gray-600 rounded-md uppercase">
-                      See Product
+                      See Category 
                     </button>
                   </Link>
                 </div>
