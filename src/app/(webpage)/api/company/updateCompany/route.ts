@@ -73,7 +73,7 @@ export async function PUT( req: NextRequest ){
         if (existingCompany.logoUrl) {
           const publicId = extractPublicId(existingCompany.logoUrl);
           if (publicId) {
-            await cloudinary.uploader.destroy('company' + publicId);
+            await cloudinary.uploader.destroy(`company/${publicId}`);
             
           }
         }
@@ -98,6 +98,7 @@ export async function PUT( req: NextRequest ){
         );
   
         logoUrl = newImageUrl; // Update imageUrl with the uploaded URL
+        existingCompany.logoUrl = logoUrl;
       }
   
       let imageUrl = existingCompany.imageUrl;
@@ -108,7 +109,7 @@ export async function PUT( req: NextRequest ){
         if (existingCompany.imageUrl) {
           const publicId = extractPublicId(existingCompany.imageUrl);
           if (publicId) {
-            await cloudinary.uploader.destroy('company' + publicId);
+            await cloudinary.uploader.destroy(`company/${publicId}`);
             
           }
         }
@@ -133,6 +134,7 @@ export async function PUT( req: NextRequest ){
         );
   
         imageUrl = newImageUrl; // Update imageUrl with the uploaded URL
+        existingCompany.imageUrl = imageUrl;
       }
      
    
@@ -148,8 +150,8 @@ export async function PUT( req: NextRequest ){
       if (facebook !== null) existingCompany.facebook = facebook;
       if (linkedin !== null) existingCompany.linkedin = linkedin;
       if (instagram !== null) existingCompany.instagram = instagram;
-      existingCompany.logoUrl = logoUrl;
-      existingCompany.imageUrl = imageUrl;
+     
+     
       existingCompany.user = user;
       existingCompany.updatedAt = new Date();
       await existingCompany.save(); // Save the updated brand
