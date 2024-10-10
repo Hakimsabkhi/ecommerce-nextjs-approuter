@@ -43,6 +43,12 @@ const ListOrders: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [selectedOrder, setSelectedOrder] = useState({ id: "", name: "" });
   const [loadingOrderId, setLoadingOrderId] = useState<string | null>(null);
+  const [status, setStatus] = useState(''); // Initial value
+
+  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setStatus(e.target.value);
+    console.log(e.target.value); // Do something with the selected value (e.g., filter data)
+  };
   const handleDeleteClick = (order:Order) => {
 
     setLoadingOrderId(order._id); 
@@ -132,13 +138,17 @@ const ListOrders: React.FC = () => {
   }, [getOrders]);
 
   useEffect(() => {
-    // Apply search filter
-    const filtered = orders.filter((order) =>
-      order.ref ? order.ref.toLowerCase().includes(searchTerm.toLowerCase()) : false
-    );
+    // Apply search and status filter
+    const filtered = orders.filter((order) => {
+      const matchesSearch = order.ref ? order.ref.toLowerCase().includes(searchTerm.toLowerCase()) : false;
+      const matchesStatus = status === '' || order.orderStatus === status;
+
+      return matchesSearch && matchesStatus;
+    });
+
     setFilteredOrders(filtered);
-    setCurrentPage(1); // Reset to first page
-  }, [searchTerm, orders]);
+    setCurrentPage(1); // Reset to the first page
+  }, [searchTerm, status, orders]);
 
   const indexOfLastOrder = currentPage * ordersPerPage;
   const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
@@ -169,6 +179,22 @@ const ListOrders: React.FC = () => {
         onChange={(e) => setSearchTerm(e.target.value)}
         className="mt-4 p-2 border border-gray-300 rounded"
       />
+      <div className="flex justify-end items-center">
+      <select
+        name="category"
+        value={status}
+        onChange={handleChange}
+        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-[20%] block p-2.5"
+        required
+      >
+        <option value="">All</option>
+        <option value="Processing">En cours de traitement</option>
+        <option value="Pack">Expédiée</option>
+        <option value="Deliver">Livrée</option>
+        <option value="Cancelled">Annulée</option>
+        <option value="Refunded">Remboursée</option>
+      </select>
+    </div>
       <table className="table-auto w-full mt-4">
         <thead>
           <tr className="bg-gray-800">
@@ -203,10 +229,11 @@ const ListOrders: React.FC = () => {
                       updateOrderStatus(item._id, e.target.value)
                     }
                   >
-                    <option value="Processing">Processing</option>
-                    <option value="Pack">Pack</option>
-                    <option value="Deliver">Deliver</option>
-                    <option value="Receive">Receive</option>
+                    <option value="Processing">En cours de traitement</option>
+                    <option value="Pack">Expédiée</option>
+                    <option value="Deliver">Livrée</option>
+                    <option value="Cancelled">Annulée</option>
+                    <option value="Refunded">Remboursée</option>
                   </select>
                   <Link href={`/admin/orderlist/${item.ref}`}>
                     <button className="bg-gray-800 text-white w-28 h-10 hover:bg-gray-600 rounded-md uppercase">
