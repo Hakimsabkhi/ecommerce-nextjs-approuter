@@ -140,7 +140,8 @@ const ListOrders: React.FC = () => {
   useEffect(() => {
     // Apply search and status filter
     const filtered = orders.filter((order) => {
-      const matchesSearch = order.ref ? order.ref.toLowerCase().includes(searchTerm.toLowerCase()) : false;
+      const matchesSearch =order.ref?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      order.user?.username.toLowerCase().includes(searchTerm.toLowerCase()); 
       const matchesStatus = status === '' || order.orderStatus === status;
 
       return matchesSearch && matchesStatus;
