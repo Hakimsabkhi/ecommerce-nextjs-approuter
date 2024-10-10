@@ -67,7 +67,7 @@ const RevenueDashboard: React.FC = () => {
     <div className="p-6  ">
       {/* Dashboard Header */}
       <div className="mb-6">
-        <h1 className="text-2xl font-bold">Dashboard Admin</h1>
+        <h1 className="text-2xl font-bold">Revenue</h1>
         
       </div>
 

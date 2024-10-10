@@ -87,6 +87,16 @@ const NavAdmin = () => {
                   Company
                 </p>
               </Link>
+              <Link href="/admin/revenue">
+                <p
+                  onClick={() => handleClick('revenue')}
+                  className={`text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium cursor-pointer ${
+                    activeLink === 'revenue' ? 'bg-gray-700' : ''
+                  }`}
+                >
+                  Revenue
+                </p>
+              </Link>
             </div>
           </div>
         </div>
@@ -153,6 +163,16 @@ const NavAdmin = () => {
               }`}
             >
               Company
+            </p>
+          </Link>
+          <Link href="/admin/revenue">
+            <p
+              onClick={() => handleClick('revenue')}
+              className={`text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium cursor-pointer ${
+                activeLink === 'revenue' ? 'bg-gray-700' : ''
+              }`}
+            >
+              Revenue
             </p>
           </Link>
         </div>
