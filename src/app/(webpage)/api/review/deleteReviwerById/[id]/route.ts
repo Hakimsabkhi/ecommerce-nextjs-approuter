@@ -1,4 +1,5 @@
 import connectToDatabase from "@/lib/db";
+import Product from "@/models/Product";
 import Review from "@/models/Review";
 import User from "@/models/User";
 import { getToken } from "next-auth/jwt";
@@ -36,7 +37,15 @@ export async function DELETE(
       if (!review) {
         return NextResponse.json({ message: "review not found" }, { status: 404 });
       }
-  
+      const productExist= await Product.findById(review.product)
+      
+      if (!productExist){
+        return NextResponse.json({ message: 'Error product ' }, { status: 402 });
+      }
+      productExist.nbreview -= 1; // Increment the review count
+
+      productExist.save();
+
     
   
   

@@ -19,6 +19,7 @@ type Product = {
   ref: string;
   imageUrl: string;
   user: User; // Reference to a User document or User ID
+  nbreview:number;
   createdAt: Date;
   updatedAt: Date;
 };
@@ -95,6 +96,7 @@ const ListerReview: React.FC<AddedProductsProps> = ({ products }) => {
           <tr className="bg-gray-800 ">
             <th className="px-4 py-2 text-center">REF</th>
             <th className="px-4 py-2 text-center">Name</th>
+            <th className="px-4 py-2 text-center">Number Review</th>
             <th className="px-4 py-2 text-center ">ImageURL</th>
             <th className="px-4 py-2  text-center">
               Action
@@ -106,6 +108,7 @@ const ListerReview: React.FC<AddedProductsProps> = ({ products }) => {
             <tr key={item._id} className="bg-white text-balck">
               <td className="border px-4 py-2 text-center">{item.ref}</td>
               <td className="border px-4 py-2 text-center">{item.name}</td>
+              <td className="border px-4 py-2 text-center">{item.nbreview}</td>
               <td className="border px-4 py-2  text-center">
                 <Image
                   alt={item.name}
@@ -118,7 +121,7 @@ const ListerReview: React.FC<AddedProductsProps> = ({ products }) => {
               <td className="border px-4 py-2 flex justify-center items-center">
                 <Link href={`/admin/reviewlist/${item._id}`}>
                   <button className="bg-gray-800 hover:bg-gray-600 text-white  w-28 h-10 rounded-md uppercase">
-                    Reviews
+                    Reviews 
                   </button>
                 </Link>
               </td>

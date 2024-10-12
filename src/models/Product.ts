@@ -26,6 +26,7 @@ export interface IProduct extends Document {
   statuspage: string;
   vadmin: string;
   slug: string;
+  nbreview:number;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -58,6 +59,7 @@ const ProductSchema = new mongoose.Schema({
   imageUrl: { type: String },
   images: [{ type: String }],  // Array of image URLs
   slug: { type: String, unique: true },  // Ensure `slug` is unique
+  nbreview:{type:Number, default: 0 }
 }, { timestamps: true });
 
 // Pre-save hook to generate the slug before saving the product
