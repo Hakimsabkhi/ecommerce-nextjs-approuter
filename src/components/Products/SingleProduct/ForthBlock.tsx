@@ -46,7 +46,8 @@ const ForthBlock: React.FC<{ product: Product | null }> = ({ product }) => {
   const [email, setEmail] = useState<string>("");
   const [saveInfo, setSaveInfo] = useState<boolean>(false);
   const params = useParams<{ id?: string }>(); // Adjust params based on your route setup
-  const productId = params.id ?? "";
+  //const productId = params.id ?? "";
+  const productId = product?._id|| '';
   const { data: session } = useSession();
   const [key, setKey] = useState(0);
   const handleSubmit = async (e: FormEvent) => {

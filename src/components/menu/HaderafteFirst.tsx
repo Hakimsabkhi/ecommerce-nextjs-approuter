@@ -15,6 +15,7 @@ interface Category {
     id: string;
     name: string;
     logoUrl: string;
+    slug:string;
   }
 const HaderafteFirst = () => {
     const [isCartOpen, setIsCartOpen] = React.useState(false);
@@ -132,7 +133,7 @@ const HaderafteFirst = () => {
             key={product._id}
             className="p-4 border-b"
           >
-            <Link href={`/${product.category.name}/${product._id}`} 
+            <Link href={`/${product.category.slug}/${product.slug}`} 
               onClick={handleLinkClick}
             className=" gap-2 flex items-center justify-start font-bold text-[25px]">
             {/* Product Image */}
