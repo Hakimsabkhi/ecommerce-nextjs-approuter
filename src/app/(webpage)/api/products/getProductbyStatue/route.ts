@@ -9,7 +9,7 @@ export async function GET(){
       
       await connectToDatabase();
       await Category.find()
-      const products = await  Products.find({}).populate("category _id name slug");
+      const products = await  Products.find({vadmin:"approve"}).populate("category _id name slug");
     
       return NextResponse.json(products, { status: 200 });
     } catch (error) {
