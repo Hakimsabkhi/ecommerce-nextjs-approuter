@@ -1,6 +1,6 @@
 "use client";
-import React, { useEffect, useState } from 'react';
-import { Line } from 'react-chartjs-2';
+import React, { useEffect, useState } from "react";
+import { Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   LinearScale,
@@ -9,9 +9,9 @@ import {
   LineElement,
   Tooltip,
   Legend,
-} from 'chart.js';
-import { FaMoneyBillWave } from 'react-icons/fa';
-import { FaArrowTrendUp } from 'react-icons/fa6';
+} from "chart.js";
+import { FaMoneyBillWave } from "react-icons/fa";
+import { FaArrowTrendUp } from "react-icons/fa6";
 
 interface Order {
   _id: string;
@@ -21,25 +21,18 @@ interface Order {
 }
 
 // Register the necessary components
-ChartJS.register(
-  LinearScale,
-  CategoryScale,
-  PointElement,
-  LineElement,
-  Tooltip,
-  Legend
-);
+ChartJS.register(LinearScale, CategoryScale, PointElement, LineElement, Tooltip, Legend);
 
 const RevenueDashboard: React.FC = () => {
   const [orders, setOrders] = useState<Order[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [timeframe, setTimeframe] = useState<'year' | 'month' | 'day'>('month');
-  const [selectedDate, setSelectedDate] = useState<string>(new Date().toISOString().split('T')[0]);
+  const [selectedDate, setSelectedDate] = useState<string>(new Date().toISOString().split("T")[0]);
 
   useEffect(() => {
     const getOrders = async () => {
       try {
-        const response = await fetch("/api/order/getallorder", {
+        const response = await fetch("/api/order/getorderrevenue", {
           method: "GET",
         });
 
@@ -60,20 +53,33 @@ const RevenueDashboard: React.FC = () => {
     const revenueByDate: Record<string, number> = {};
     const selectedYear = new Date(selectedDate).getFullYear();
     const selectedMonth = new Date(selectedDate).getMonth();
+    const selectedDay = new Date(selectedDate).getDate();
+    
+    const getDateWithOffset = (date: Date, yearsOffset: number, monthsOffset: number, daysOffset: number) => {
+      const newDate = new Date(date);
+      newDate.setFullYear(newDate.getFullYear() - yearsOffset);
+      newDate.setMonth(newDate.getMonth() - monthsOffset);
+      newDate.setDate(newDate.getDate() - daysOffset);
+      return newDate;
+    };
 
-    orders.forEach(order => {
+    const sixDaysAgo = getDateWithOffset(new Date(selectedDate), 0, 0, 6);
+    const threeYearsAgo = getDateWithOffset(new Date(selectedDate), 3, 0, 0);
+    const sevenMonthsAgo = getDateWithOffset(new Date(selectedDate), 0, 7, 0);
+
+    orders.forEach((order) => {
       const orderDate = new Date(order.createdAt);
       const year = orderDate.getFullYear();
       const month = orderDate.getMonth();
       const day = orderDate.getDate();
 
-      if (timeframe === 'year' && year === selectedYear) {
+      if (timeframe === "year" && year >= threeYearsAgo.getFullYear()) {
         revenueByDate[year] = (revenueByDate[year] || 0) + order.total;
-      } else if (timeframe === 'month' && year === selectedYear && month === selectedMonth) {
-        const dateKey = orderDate.toLocaleDateString('fr-FR');
+      } else if (timeframe === "month" && orderDate >= sevenMonthsAgo && year === selectedYear) {
+        const dateKey = orderDate.toLocaleDateString("fr-FR", { month: "long", year: "numeric" });
         revenueByDate[dateKey] = (revenueByDate[dateKey] || 0) + order.total;
-      } else if (timeframe === 'day' && year === selectedYear && month === selectedMonth && day === new Date(selectedDate).getDate()) {
-        const dateKey = orderDate.toLocaleDateString('fr-FR');
+      } else if (timeframe === "day" && orderDate >= sixDaysAgo && year === selectedYear && month === selectedMonth) {
+        const dateKey = orderDate.toLocaleDateString("fr-FR");
         revenueByDate[dateKey] = (revenueByDate[dateKey] || 0) + order.total;
       }
     });
@@ -90,10 +96,10 @@ const RevenueDashboard: React.FC = () => {
     labels,
     datasets: [
       {
-        label: 'Revenue (€)',
+        label: "Revenue (TND)",
         data,
-        borderColor: 'rgba(54, 162, 235, 1)',
-        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+        borderColor: "rgba(54, 162, 235, 1)",
+        backgroundColor: "rgba(54, 162, 235, 0.2)",
         fill: true,
         tension: 0.4,
       },
@@ -107,18 +113,18 @@ const RevenueDashboard: React.FC = () => {
       y: {
         beginAtZero: true,
         ticks: {
-          color: '#000',
+          color: "#000",
         },
         grid: {
-          color: 'rgba(0, 0, 0, 0.1)',
+          color: "rgba(0, 0, 0, 0.1)",
         },
       },
       x: {
         ticks: {
-          color: '#000',
+          color: "#000",
         },
         grid: {
-          color: 'rgba(0, 0, 0, 0.1)',
+          color: "rgba(0, 0, 0, 0.1)",
         },
       },
     },
@@ -134,34 +140,34 @@ const RevenueDashboard: React.FC = () => {
       </div>
 
       {/* Revenue Section */}
-      <div className='flex flex-col-2 gap-11 justify-center'>
+      <div className="flex flex-col-2 gap-11 justify-center">
         <div className="bg-white rounded-lg w-[50%] h-full border-2  p-36 ">
           <div className="flex items-center  gap-4 flex-col-2 ">
             <h2 className="text-xl font-semibold">Revenue</h2>
             <button
-              onClick={() => setTimeframe('year')}
-              className={`p-2 ${timeframe === 'year' ? 'bg-green-500 text-white' : 'bg-gray-300 text-black'}`}
+              onClick={() => setTimeframe("year")}
+              className={`p-2 ${timeframe === "year" ? "bg-green-500 text-white" : "bg-gray-300 text-black"}`}
             >
               Par Année
             </button>
             <button
-              onClick={() => setTimeframe('month')}
-              className={`p-2 ${timeframe === 'month' ? 'bg-green-500 text-white' : 'bg-gray-300 text-black'}`}
+              onClick={() => setTimeframe("month")}
+              className={`p-2 ${timeframe === "month" ? "bg-green-500 text-white" : "bg-gray-300 text-black"}`}
             >
               Par Mois
             </button>
             <button
-              onClick={() => setTimeframe('day')}
-              className={`p-2 ${timeframe === 'day' ? 'bg-green-500 text-white' : 'bg-gray-300 text-black'}`}
+              onClick={() => setTimeframe("day")}
+              className={`p-2 ${timeframe === "day" ? "bg-green-500 text-white" : "bg-gray-300 text-black"}`}
             >
               Par Jour
             </button>
             <input
-              type={timeframe === 'year' ? 'number' : 'date'}
+              type={timeframe === "year" ? "number" : "date"}
               className="border rounded p-2 ml-4"
-              value={timeframe === 'year' ? selectedDate.split('-')[0] : selectedDate}
+              value={timeframe === "year" ? selectedDate.split("-")[0] : selectedDate}
               onChange={(e) => {
-                if (timeframe === 'year') {
+                if (timeframe === "year") {
                   setSelectedDate(`${e.target.value}-01-01`);
                 } else {
                   setSelectedDate(e.target.value);

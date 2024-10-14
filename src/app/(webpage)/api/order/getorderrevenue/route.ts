@@ -29,7 +29,8 @@ export async function GET(req: NextRequest ) {
    
     await Address.find({});
     // Fetch all categories but only return the name and imageUrl fields
-    const orders = await Order.find({orderStatus:"Deliver"}).exec(); // Only select the 'name' and 'imageUrl' fields
+    const orders = await Order.find({orderStatus:"Deliver"}).sort({ updatedAt: 1 }) // -1 for descending, 1 for ascending
+    .exec(); // Only select the 'name' and 'imageUrl' fields
 
     // Return the fetched category names and image URLs
     return new NextResponse(JSON.stringify(orders), { status: 200 });
