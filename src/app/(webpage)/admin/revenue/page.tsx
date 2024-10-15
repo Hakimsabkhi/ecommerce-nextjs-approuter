@@ -15,19 +15,28 @@ import { FaArrowTrendUp } from "react-icons/fa6";
 
 interface Order {
   _id: string;
-  createdAt: string;
+  updatedAt: string;
   total: number;
   orderStatus: string;
 }
 
 // Register the necessary components
-ChartJS.register(LinearScale, CategoryScale, PointElement, LineElement, Tooltip, Legend);
+ChartJS.register(
+  LinearScale,
+  CategoryScale,
+  PointElement,
+  LineElement,
+  Tooltip,
+  Legend
+);
 
 const RevenueDashboard: React.FC = () => {
   const [orders, setOrders] = useState<Order[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const [timeframe, setTimeframe] = useState<'year' | 'month' | 'day'>('month');
-  const [selectedDate, setSelectedDate] = useState<string>(new Date().toISOString().split("T")[0]);
+  const [timeframe, setTimeframe] = useState<"year" | "month" | "day">("month");
+  const [selectedDate, setSelectedDate] = useState<string>(
+    new Date().toISOString().split("T")[0]
+  );
 
   useEffect(() => {
     const getOrders = async () => {
@@ -51,36 +60,72 @@ const RevenueDashboard: React.FC = () => {
 
   const aggregateRevenue = () => {
     const revenueByDate: Record<string, number> = {};
-    const selectedYear = new Date(selectedDate).getFullYear();
-    const selectedMonth = new Date(selectedDate).getMonth();
-    const selectedDay = new Date(selectedDate).getDate();
-    
-    const getDateWithOffset = (date: Date, yearsOffset: number, monthsOffset: number, daysOffset: number) => {
-      const newDate = new Date(date);
-      newDate.setFullYear(newDate.getFullYear() - yearsOffset);
-      newDate.setMonth(newDate.getMonth() - monthsOffset);
-      newDate.setDate(newDate.getDate() - daysOffset);
-      return newDate;
-    };
-
-    const sixDaysAgo = getDateWithOffset(new Date(selectedDate), 0, 0, 6);
-    const threeYearsAgo = getDateWithOffset(new Date(selectedDate), 3, 0, 0);
-    const sevenMonthsAgo = getDateWithOffset(new Date(selectedDate), 0, 7, 0);
+    const selectedDateObj = new Date(selectedDate);
+    const currentDays = selectedDateObj.getDate();
+    const currentYear = selectedDateObj.getFullYear();
+    const currentMonth = selectedDateObj.getMonth();
 
     orders.forEach((order) => {
-      const orderDate = new Date(order.createdAt);
-      const year = orderDate.getFullYear();
-      const month = orderDate.getMonth();
-      const day = orderDate.getDate();
+      const orderDate = new Date(order.updatedAt);
+      const orderYear = orderDate.getFullYear();
+      const orderMonth = orderDate.getMonth();
+      const orderDay = orderDate.getDate();
 
-      if (timeframe === "year" && year >= threeYearsAgo.getFullYear()) {
-        revenueByDate[year] = (revenueByDate[year] || 0) + order.total;
-      } else if (timeframe === "month" && orderDate >= sevenMonthsAgo && year === selectedYear) {
-        const dateKey = orderDate.toLocaleDateString("fr-FR", { month: "long", year: "numeric" });
-        revenueByDate[dateKey] = (revenueByDate[dateKey] || 0) + order.total;
-      } else if (timeframe === "day" && orderDate >= sixDaysAgo && year === selectedYear && month === selectedMonth) {
-        const dateKey = orderDate.toLocaleDateString("fr-FR");
-        revenueByDate[dateKey] = (revenueByDate[dateKey] || 0) + order.total;
+      if (timeframe === "day" && orderDate.toDateString() === selectedDateObj.toDateString()) {
+        // Initialize revenueByDate for the last 6 days including today
+        for (let i = 0; i < 6; i++) { // Loop for the last 6 days including today
+          const date = new Date(selectedDateObj);
+          date.setDate(selectedDateObj.getDate() + i); // Set to the i-th previous day (subtracting i)
+          const dayString = date.toISOString().split('T')[0]; // Get the date in 'YYYY-MM-DD' format
+          revenueByDate[dayString] = revenueByDate[dayString] || 0; // Initialize if not set
+        }
+        
+        // Accumulate the total for the order date
+        const orderDateString = orderDate.toISOString().split('T')[0]; // Format order date in 'YYYY-MM-DD'
+        if (revenueByDate[orderDateString] !== undefined) { // Check if the order date is in revenueByDate
+          revenueByDate[orderDateString] += order.total; // Add order total to the existing value
+        } else {
+          revenueByDate[orderDateString] = order.total; // Initialize if not present
+        }
+      }
+
+
+// Logic for monthly aggregation
+if (timeframe === "month" && orderMonth === currentMonth) {
+  const monthYear = orderDate.toLocaleDateString("fr-FR", {
+    month: "long",
+    year: "numeric",
+  });
+
+  // Add the order's total to the revenue for the current month
+  revenueByDate[monthYear] = (revenueByDate[monthYear] || 0) + order.total;
+
+  // Initialize revenueByDate for the past 6 months
+  for (let monthOffset = 0; monthOffset < 6; monthOffset++) {
+    const pastMonthDate = new Date(); // Start with the current date
+    pastMonthDate.setMonth(currentMonth - monthOffset); // Move back month by month
+
+    // Handle year transitions properly
+    const pastMonthYear = pastMonthDate.toLocaleDateString("fr-FR", {
+      month: "long",
+      year: "numeric",
+    });
+
+    // Initialize to 0 if the month is not already present
+    revenueByDate[pastMonthYear] = revenueByDate[pastMonthYear] || 0;
+  }
+}
+
+      
+
+      // Logic for yearly aggregation
+      if (timeframe === "year" && orderYear >= currentYear - 2) {
+        revenueByDate[orderYear] = (revenueByDate[orderYear] || 0) + order.total;
+        
+        // Initialize revenue for each year in the last two years
+        for (let year = currentYear - 2; year <= currentYear; year++) {
+          revenueByDate[year] = revenueByDate[year] || 0;
+        }
       }
     });
 
@@ -141,24 +186,30 @@ const RevenueDashboard: React.FC = () => {
 
       {/* Revenue Section */}
       <div className="flex flex-col-2 gap-11 justify-center">
-        <div className="bg-white rounded-lg w-[50%] h-full border-2  p-36 ">
-          <div className="flex items-center  gap-4 flex-col-2 ">
+        <div className="bg-white rounded-lg w-[50%] h-full border-2 p-6">
+          <div className="flex items-center gap-4 flex-col-2">
             <h2 className="text-xl font-semibold">Revenue</h2>
             <button
               onClick={() => setTimeframe("year")}
-              className={`p-2 ${timeframe === "year" ? "bg-green-500 text-white" : "bg-gray-300 text-black"}`}
+              className={`p-2 ${
+                timeframe === "year" ? "bg-green-500 text-white" : "bg-gray-300 text-black"
+              }`}
             >
               Par Année
             </button>
             <button
               onClick={() => setTimeframe("month")}
-              className={`p-2 ${timeframe === "month" ? "bg-green-500 text-white" : "bg-gray-300 text-black"}`}
+              className={`p-2 ${
+                timeframe === "month" ? "bg-green-500 text-white" : "bg-gray-300 text-black"
+              }`}
             >
               Par Mois
             </button>
             <button
               onClick={() => setTimeframe("day")}
-              className={`p-2 ${timeframe === "day" ? "bg-green-500 text-white" : "bg-gray-300 text-black"}`}
+              className={`p-2 ${
+                timeframe === "day" ? "bg-green-500 text-white" : "bg-gray-300 text-black"
+              }`}
             >
               Par Jour
             </button>
@@ -182,8 +233,10 @@ const RevenueDashboard: React.FC = () => {
             </h3>
             <p className="font-medium flex gap-2">
               <span className="font-bold text-green-600 flex gap-2 items-center">
-                <FaArrowTrendUp />100.00%
-              </span> Increase par rapport à la période précédente
+                <FaArrowTrendUp />
+                100.00%
+              </span>{" "}
+              Increase par rapport à la période précédente
             </p>
           </div>
         </div>
