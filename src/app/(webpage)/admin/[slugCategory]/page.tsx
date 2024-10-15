@@ -39,8 +39,12 @@ interface Brand {
 const fetchCategoryData = async (id: string): Promise<ICategory | null> => {
   try {
     if (!id) return notFound(); // Check if id is valid
-    const res = await fetch(`${process.env.NEXTAUTH_URL}/api/searchcategory/${id}`, {
+    const res = await fetch(`${process.env.NEXTAUTH_URL}/api/searchcategoryadmin/${id}`, {
       method: 'GET',
+      headers: {
+        "Content-Type": "application/json",
+      },
+      next: { revalidate: 0 }, 
     });
 
     if (!res.ok) {
@@ -59,8 +63,11 @@ const fetchCategoryData = async (id: string): Promise<ICategory | null> => {
 // Fetch products data by category ID
 const fetchProductsData = async (id: string): Promise<ProductData[]> => {
   try {
-    const res = await fetch(`${process.env.NEXTAUTH_URL}/api/search/${id}`, {
+    const res = await fetch(`${process.env.NEXTAUTH_URL}/api/searchadmin/${id}`, {
       method: 'GET',
+      headers: {
+        "Content-Type": "application/json",
+      },
       next: { revalidate: 0 }, // Disable caching
     });
 

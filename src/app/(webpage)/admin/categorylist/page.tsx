@@ -14,8 +14,8 @@ type Category = {
   imageUrl: string;
   logoUrl: string;
   user: { _id: string; username: string };
-  slug:string;
-  vadmin:string;
+  slug: string;
+  vadmin: string;
   createdAt: Date;
   updatedAt: Date;
 };
@@ -27,9 +27,11 @@ const AddedCategories: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [loading, setLoading] = useState(true);
-  const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<Category | null>(
+    null
+  );
 
-  const categoriesPerPage = 5; 
+  const categoriesPerPage = 5;
 
   const handleDeleteClick = (category: Category) => {
     setSelectedCategory(category);
@@ -43,9 +45,12 @@ const AddedCategories: React.FC = () => {
 
   const deleteCategory = async (categoryId: string) => {
     try {
-      const response = await fetch(`/api/category/deleteCategory/${categoryId}`, {
-        method: "DELETE",
-      });
+      const response = await fetch(
+        `/api/category/deleteCategory/${categoryId}`,
+        {
+          method: "DELETE",
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Failed to delete category");
@@ -63,16 +68,21 @@ const AddedCategories: React.FC = () => {
       handleClosePopup();
     }
   };
-  const updateCategoryvadmin = async (categoryId: string, newStatus: string) => {
-   
+  const updateCategoryvadmin = async (
+    categoryId: string,
+    newStatus: string
+  ) => {
     try {
       const updateFormData = new FormData();
       updateFormData.append("vadmin", newStatus);
 
-      const response = await fetch(`/api/category/updateCategoryvadmin/${categoryId}`, {
-        method: "PUT",
-        body: updateFormData,
-      });
+      const response = await fetch(
+        `/api/category/updateCategoryvadmin/${categoryId}`,
+        {
+          method: "PUT",
+          body: updateFormData,
+        }
+      );
 
       if (!response.ok) {
         throw new Error(`Error: ${response.statusText}`);
@@ -84,11 +94,10 @@ const AddedCategories: React.FC = () => {
       );
       const data = await response.json();
       console.log("Product status updated successfully:", data);
-    
     } catch (error) {
       console.error("Failed to update product status:", error);
       toast.error("Failed to update product status");
-    } 
+    }
   };
   useEffect(() => {
     const getCategory = async () => {
@@ -119,7 +128,6 @@ const AddedCategories: React.FC = () => {
       category.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
   }, [searchTerm, addedCategory]);
-
 
   const currentCategories = useMemo(() => {
     const indexOfLastCategory = currentPage * categoriesPerPage;
@@ -171,7 +179,12 @@ const AddedCategories: React.FC = () => {
           {currentCategories.map((category) => (
             <tr key={category._id} className="bg-white text-black">
               <td className="border px-4 py-2">
-                <Image src={category.logoUrl} width={30} height={30} alt="icon" />
+                <Image
+                  src={category.logoUrl}
+                  width={30}
+                  height={30}
+                  alt="icon"
+                />
               </td>
               <td className="border px-4 py-2">
                 <Link href={category.imageUrl}>
@@ -182,13 +195,26 @@ const AddedCategories: React.FC = () => {
               <td className="border px-4 py-2">{category?.user?.username}</td>
               <td className="border px-4 py-2">
                 <div className="flex items-center justify-center gap-2">
-                <select
-                    className={`w-50 text-black rounded-md p-2 ${category.vadmin === "not-approve" ? "bg-gray-400 text-white" : "bg-green-500 text-white"}`}
+                  <select
+                    className={`w-50 text-black rounded-md p-2 ${
+                      category.vadmin === "not-approve"
+                        ? "bg-gray-400 text-white"
+                        : "bg-green-500 text-white"
+                    }`}
                     value={category.vadmin}
-                    onChange={(e) => updateCategoryvadmin(category._id, e.target.value)}
+                    onChange={(e) =>
+                      updateCategoryvadmin(category._id, e.target.value)
+                    }
                   >
-                    <option value="approve" className="text-white uppercase">approve</option>
-                    <option value="not-approve" className="text-white uppercase">Not approve </option>
+                    <option value="approve" className="text-white uppercase">
+                      approve
+                    </option>
+                    <option
+                      value="not-approve"
+                      className="text-white uppercase"
+                    >
+                      Not approve{" "}
+                    </option>
                   </select>
                   <Link href={`/admin/categorylist/${category._id}`}>
                     <button className="bg-gray-800 text-white w-28 h-10 hover:bg-gray-600 rounded-md uppercase">
@@ -200,11 +226,18 @@ const AddedCategories: React.FC = () => {
                     className="bg-gray-800 text-white w-28 h-10 hover:bg-gray-600 rounded-md"
                     disabled={selectedCategory?._id === category._id}
                   >
-                    {selectedCategory?._id === category._id ? "Processing..." : "DELETE"}
+                    {selectedCategory?._id === category._id
+                      ? "Processing..."
+                      : "DELETE"}
                   </button>
-                  <Link href={`/${category.slug}`}>
+
+                  <Link
+                    href={`/${category.vadmin === "approve" ? "" : "admin/"}${
+                      category.slug
+                    }`}
+                  >
                     <button className="bg-gray-800 text-white w-36 h-10 hover:bg-gray-600 rounded-md uppercase">
-                      See Category
+                      See Category 
                     </button>
                   </Link>
                 </div>

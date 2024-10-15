@@ -3,10 +3,27 @@ import React from 'react';
 import Image from 'next/image';
 
 
-export default function Banner() {
+interface CompanyData {
+
+    imageUrl:string
+  }
+  async function fetchCompanyData() {
+    const res = await fetch(`${process.env.NEXTAUTH_URL}/api/company/getCompany`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        next:{revalidate:0}
+      });
+    if (!res.ok) {
+        throw new Error('Failed to fetch data');
+    }
+    return res.json();
+  }
+export default async function Banner() {
     /* const totalImages = slideData.length;
     const currentSlide = slideData[page - 1]; */
-
+    const companyData = await fetchCompanyData();
     return (
         <div className="relative md:h-[600px] bg-white rounded shadow-lg mb-6">
             <Image
@@ -14,7 +31,7 @@ export default function Banner() {
                 fill
                 style={{ objectFit: 'cover' }} 
                 alt="banner"
-                src='https://res.cloudinary.com/dx499gc6x/image/upload/v1723913588/pic3_pssxyx.png' // This assumes `pic3` is the image you want to display
+                src={companyData?.imageUrl} // This assumes `pic3` is the image you want to display
                 sizes="(max-width: 900px) 400px, 900px"
                 loading="eager"
                 decoding="async"

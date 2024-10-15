@@ -19,7 +19,7 @@ type Product = {
   ref: string;
   price: number;
   imageUrl: string;
-  category:Category;
+  category: Category;
   stock: number;
   user: User;
   discount: number;
@@ -28,12 +28,12 @@ type Product = {
   vadmin: string;
   createdAt: Date;
   updatedAt: Date;
-  slug:string;
+  slug: string;
 };
-interface Category{
-  _id:string;
-  name:string;
-  slug:string;
+interface Category {
+  _id: string;
+  name: string;
+  slug: string;
 }
 
 const AddedProducts: React.FC = () => {
@@ -60,8 +60,6 @@ const AddedProducts: React.FC = () => {
     setLoadingProductId(null);
   };
 
- 
-
   const deleteProduct = async (productId: string) => {
     try {
       const response = await fetch(`/api/products/deleteProduct/${productId}`, {
@@ -71,14 +69,11 @@ const AddedProducts: React.FC = () => {
       if (!response.ok) {
         throw new Error("Failed to delete the product");
       }
-      
+
       setCurrentPage(1);
-      setProducts(
-        products.filter((Product) => Product._id !== productId)
-      );
+      setProducts(products.filter((Product) => Product._id !== productId));
       toast.success(`Product ${selectedProduct.name} deleted successfully!`);
       handleClosePopup();
-
     } catch (err: any) {
       toast.error(`Failed to delete product: ${err.message}`);
     } finally {
@@ -92,10 +87,13 @@ const AddedProducts: React.FC = () => {
       const updateFormData = new FormData();
       updateFormData.append("status", newStatus);
 
-      const response = await fetch(`/api/products/updateStatusProduct/${productId}`, {
-        method: "PUT",
-        body: updateFormData,
-      });
+      const response = await fetch(
+        `/api/products/updateStatusProduct/${productId}`,
+        {
+          method: "PUT",
+          body: updateFormData,
+        }
+      );
 
       if (!response.ok) {
         throw new Error(`Error: ${response.statusText}`);
@@ -121,10 +119,13 @@ const AddedProducts: React.FC = () => {
       const updateFormData = new FormData();
       updateFormData.append("vadmin", newStatus);
 
-      const response = await fetch(`/api/products/updateProductvadmin/${productId}`, {
-        method: "PUT",
-        body: updateFormData,
-      });
+      const response = await fetch(
+        `/api/products/updateProductvadmin/${productId}`,
+        {
+          method: "PUT",
+          body: updateFormData,
+        }
+      );
 
       if (!response.ok) {
         throw new Error(`Error: ${response.statusText}`);
@@ -136,24 +137,29 @@ const AddedProducts: React.FC = () => {
       );
       const data = await response.json();
       console.log("Product status updated successfully:", data);
-    
     } catch (error) {
-      console.error("Failed to update product status:", error);
-      toast.error("Failed to update product status");
+      console.error("Failed to update product status approve:", error);
+      toast.error("Failed to update product approve");
     } finally {
       setLoadingProductId(null);
     }
   };
-  const updateProductStatusPlace = async (productId: string, statuspage: string) => {
+  const updateProductStatusPlace = async (
+    productId: string,
+    statuspage: string
+  ) => {
     setLoadingProductId(productId);
     try {
       const updateFormData = new FormData();
       updateFormData.append("statuspage", statuspage);
 
-      const response = await fetch(`/api/products/updatePlaceProduct/${productId}`, {
-        method: "PUT",
-        body: updateFormData,
-      });
+      const response = await fetch(
+        `/api/products/updatePlaceProduct/${productId}`,
+        {
+          method: "PUT",
+          body: updateFormData,
+        }
+      );
 
       if (!response.ok) {
         throw new Error(`Error: ${response.statusText}`);
@@ -177,40 +183,39 @@ const AddedProducts: React.FC = () => {
 
   useEffect(() => {
     const getProducts = async () => {
-        try {
-          const response = await fetch("/api/products/getAllProduct", {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          });
-          if (!response.ok) {
-            throw new Error("Failed to fetch products");
-          }
-          const data: Product[] = await response.json();
-          setProducts(data);
-          
-        } catch (err: any) {
-          setError(`[products_GET] ${err.message}`);
-        } finally {
-          setLoading(false);
+      try {
+        const response = await fetch("/api/products/getAllProduct", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        if (!response.ok) {
+          throw new Error("Failed to fetch products");
         }
-      };
-      const fetchCategories = async () => {
-        try {
-          const response = await fetch('/api/category/getAllCategoryAdmin', {
-            method: 'GET',
-            next: { revalidate: 0 }, // Disable caching to always fetch the latest data
-          });
-          if (!response.ok) throw new Error("Failed to fetch categories");
-          const data = await response.json();
-          setCategories(data);
-        } catch (error) {
-          console.error("Error fetching categories:", error);
-        }
-      };
-      fetchCategories();
-      getProducts();
+        const data: Product[] = await response.json();
+        setProducts(data);
+      } catch (err: any) {
+        setError(`[products_GET] ${err.message}`);
+      } finally {
+        setLoading(false);
+      }
+    };
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch("/api/category/getAllCategoryAdmin", {
+          method: "GET",
+          next: { revalidate: 0 }, // Disable caching to always fetch the latest data
+        });
+        if (!response.ok) throw new Error("Failed to fetch categories");
+        const data = await response.json();
+        setCategories(data);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+    fetchCategories();
+    getProducts();
   }, []);
 
   useEffect(() => {
@@ -229,7 +234,10 @@ const AddedProducts: React.FC = () => {
 
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  const currentProducts = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
+  const currentProducts = filteredProducts.slice(
+    indexOfFirstProduct,
+    indexOfLastProduct
+  );
   const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
 
   if (loading) {
@@ -256,9 +264,8 @@ const AddedProducts: React.FC = () => {
         onChange={(e) => setSearchTerm(e.target.value)}
         className="mt-4 p-2 border border-gray-300 rounded"
       />
-       <div>
-       <div className="flex justify-end items-center  ">
-       
+      <div>
+        <div className="flex justify-end items-center  ">
           <select
             name="category"
             value={selectedCategory}
@@ -266,7 +273,7 @@ const AddedProducts: React.FC = () => {
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-[20%] block p-2.5"
             required
           >
-            <option value="" >Select Category</option>
+            <option value="">Select Category</option>
             {categories.map((category) => (
               <option key={category._id} value={category._id}>
                 {category.name}
@@ -274,7 +281,7 @@ const AddedProducts: React.FC = () => {
             ))}
           </select>
         </div>
-    </div>
+      </div>
       <table className="table-auto w-full mt-4">
         <thead>
           <tr className="bg-gray-800">
@@ -290,39 +297,79 @@ const AddedProducts: React.FC = () => {
             <tr key={item._id} className="bg-white text-black">
               <td className="border px-4 py-2">{item.ref}</td>
               <td className="border px-4 py-2">{item.name}</td>
-              <td className="border px-4 py-2 "><div className="items-center justify-center flex"><Image alt={item.name} src={item.imageUrl} width={50} height={50}/></div></td>
+              <td className="border px-4 py-2 ">
+                <div className="items-center justify-center flex">
+                  <Image
+                    alt={item.name}
+                    src={item.imageUrl}
+                    width={50}
+                    height={50}
+                  />
+                </div>
+              </td>
               <td className="border px-4 py-2">{item.user.username}</td>
               <td className="border px-4 py-2">
                 <div className="flex items-center justify-center gap-2">
-                <select
-                    className={`w-50 text-black rounded-md p-2 ${item.vadmin === "not-approve" ? "bg-gray-400 text-white" : "bg-green-500 text-white"}`}
+                  <select
+                    className={`w-50 text-black rounded-md p-2 ${
+                      item.vadmin === "not-approve"
+                        ? "bg-gray-400 text-white"
+                        : "bg-green-500 text-white"
+                    }`}
                     value={item.vadmin}
-                    onChange={(e) => updateProductvadmin(item._id, e.target.value)}
+                    onChange={(e) =>
+                      updateProductvadmin(item._id, e.target.value)
+                    }
                   >
-                    <option value="approve" className="text-white uppercase">approve</option>
-                    <option value="not-approve" className="text-white uppercase">Not approve </option>
+                    <option value="approve" className="text-white uppercase">
+                      approve
+                    </option>
+                    <option
+                      value="not-approve"
+                      className="text-white uppercase"
+                    >
+                      Not approve{" "}
+                    </option>
                   </select>
                   <select
-                    className={`w-50 text-black rounded-md p-2 ${item.status === "in-stock" ? "bg-gray-800 text-white" : "bg-red-700 text-white"}`}
+                    className={`w-50 text-black rounded-md p-2 ${
+                      item.status === "in-stock"
+                        ? "bg-gray-800 text-white"
+                        : "bg-red-700 text-white"
+                    }`}
                     value={item.status}
-                    onChange={(e) => updateProductStatus(item._id, e.target.value)}
+                    onChange={(e) =>
+                      updateProductStatus(item._id, e.target.value)
+                    }
                   >
-                    <option value="in-stock" className="text-white">In stock</option>
-                    <option value="out-of-stock" className="text-white">Out of stock</option>
+                    <option value="in-stock" className="text-white">
+                      In stock
+                    </option>
+                    <option value="out-of-stock" className="text-white">
+                      Out of stock
+                    </option>
                   </select>
                   <select
-                    className={`w-50 text-black rounded-md p-2 ${item.statuspage === "none" ? "bg-gray-800 text-white" : "bg-emerald-950 text-white"}`}
+                    className={`w-50 text-black rounded-md p-2 ${
+                      item.statuspage === "none"
+                        ? "bg-gray-800 text-white"
+                        : "bg-emerald-950 text-white"
+                    }`}
                     value={item.statuspage || ""}
-                    onChange={(e) => updateProductStatusPlace(item._id, e.target.value)}
+                    onChange={(e) =>
+                      updateProductStatusPlace(item._id, e.target.value)
+                    }
                     disabled={loadingProductId === item._id}
                   >
                     <option value="">Select a Place</option>
-                    <option value="home-page">Home Page</option>
+                    <option value="home-page">Weekly Best Sellers</option>
                     <option value="best-collection">Best Collection</option>
                     <option value="promotion">Promotion</option>
                   </select>
                   <Link href={`/admin/productlist/${item._id}`}>
-                    <button className="bg-gray-800 text-white w-28 h-10 hover:bg-gray-600 rounded-md uppercase">Modify</button>
+                    <button className="bg-gray-800 text-white w-28 h-10 hover:bg-gray-600 rounded-md uppercase">
+                      Modify
+                    </button>
                   </Link>
                   <button
                     onClick={() => handleDeleteClick(item)}
@@ -331,9 +378,16 @@ const AddedProducts: React.FC = () => {
                   >
                     {loadingProductId === item._id ? "Processing..." : "DELETE"}
                   </button>
-                  <Link href={`/${item.category.slug}/${item.slug}`}>
-                    <button className="bg-gray-800 text-white w-36 h-10 hover:bg-gray-600 rounded-md uppercase">See Product</button>
+                  <Link
+                    href={`/${item.vadmin === "approve" ? "" : "admin/"}${
+                      item.category.slug
+                    }/${item.slug}`}
+                  >
+                    <button className="bg-gray-800 text-white w-36 h-10 hover:bg-gray-600 rounded-md uppercase">
+                      See Product
+                    </button>
                   </Link>
+
                   {isPopupOpen && (
                     <DeletePopup
                       handleClosePopup={handleClosePopup}

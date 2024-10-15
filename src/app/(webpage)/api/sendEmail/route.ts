@@ -12,6 +12,7 @@ const nodemailer = require('nodemailer');
 export async function POST(req: NextRequest) {
   await connectDB();
   try {
+
     await Address.find();
     const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
     if (!token) {
@@ -29,6 +30,7 @@ export async function POST(req: NextRequest) {
     }
 
     const ref = body;
+    console.log(ref)
     const orders = await Order.findOne({ ref });
     if (!orders) {
       return NextResponse.json({ message: 'Order not found' }, { status: 404 });
@@ -47,7 +49,7 @@ export async function POST(req: NextRequest) {
       discount: Number(item.discount),
     }));
 
-    const company = await Company.findOne().populate('addresse');
+    const company = await Company.findOne();
     const namecomapny = company?.name ?? 'Unknown Company';
     const emailcompany = company?.email ?? 'Unknown Email';
     const phonecompany = typeof company?.phone === 'number' ? company.phone.toString() : company?.phone ?? 'Unknown Phone';
@@ -55,7 +57,6 @@ export async function POST(req: NextRequest) {
     const companycity  =  company?.city || "Default city";
     const companygov  = company?.governorate || "Default governorate";
     const companyzip = company?.zipcode || "Default zipcode";
-
     const name = user.username;
     const email = user.email;
 
@@ -64,18 +65,17 @@ export async function POST(req: NextRequest) {
     }
 
     const transporter = nodemailer.createTransport({
-      host: process.env.EMAIL_HOST,
-      port: Number(process.env.EMAIL_PORT),
-      secure: true,
+      service: 'gmail', // or another email service provider
       auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS,
       },
     });
 
+
     const mailOptions = {
       from: process.env.EMAIL_FROM,
-      to: `${email},${process.env.EMAIL_FROM}`,
+      to: email,
       subject: 'Your Order Confirmation',
       html: orderFormTemplate(
         name,

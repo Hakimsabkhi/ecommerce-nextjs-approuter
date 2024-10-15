@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import connectToDatabase from '@/lib/db';
 import Review from '@/models/Review';
-
+import Product from '@/models/Product';
 export async function POST(req: NextRequest) {
     await connectToDatabase();
   
@@ -13,7 +13,13 @@ export async function POST(req: NextRequest) {
       const text = formData.get('text') as string | null;
       const name = formData.get('name') as string | null;
       const email = formData.get('email') as string | null;
- 
+      const productExist= await Product.findById(product)
+      if (!productExist){
+        return NextResponse.json({ message: 'Error product ' }, { status: 402 });
+      }
+      productExist.nbreview += 1; // Increment the review count
+
+      productExist.save();
 
          // Validate fields and prepare error message
     let errorMessage = '';

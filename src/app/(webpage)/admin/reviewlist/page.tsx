@@ -10,7 +10,7 @@ type Product = {
     imageUrl: string;
    
     user: {_id:string}; // Reference to a User document or User ID
-    
+    nbreview:number;
     createdAt: Date;
     updatedAt: Date;
 };
@@ -21,7 +21,7 @@ const Page = () => {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const response = await fetch('/api/products/getAllProduct', {
+                const response = await fetch('/api/review/getAllProductReview', {
                     method: "GET",
                     headers: {
                       "Content-Type": "application/json",

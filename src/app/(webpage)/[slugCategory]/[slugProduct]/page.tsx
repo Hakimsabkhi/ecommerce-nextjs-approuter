@@ -81,7 +81,7 @@ export default async function Page({ params }: { params: {slugCategory: string ,
     <div>
       <FirstBlock product={product} />
       <SecondBlock product={product} />
-      <ThirdBlock product={product} />
+      {product.brand!=null && <ThirdBlock product={product} /> }
       <ForthBlock product={product} />
       <FifthBlock />
     </div>

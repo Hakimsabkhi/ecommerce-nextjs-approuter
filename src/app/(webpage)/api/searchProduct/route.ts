@@ -15,7 +15,7 @@ export async function GET(req: NextRequest) {
   try {
     // Search for products matching the searchTerm
     const products = await Product.find({
-      name: { $regex: searchTerm, $options: 'i' }, // Case-insensitive search
+      name: { $regex: searchTerm, $options: 'i' }, vadmin: "approve" // Case-insensitive search
     }).populate("category name");
 
     // Return the search results as JSON

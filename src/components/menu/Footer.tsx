@@ -28,6 +28,7 @@ interface Address {
     addresse: Address;
     email: string;
     phone: number;
+    logoUrl:string
   }
   async function fetchCompanyData() {
     const res = await fetch(`${process.env.NEXTAUTH_URL}/api/company/getCompany`, {
@@ -35,6 +36,7 @@ interface Address {
         headers: {
           "Content-Type": "application/json",
         },
+        next:{revalidate:0},
       });
     if (!res.ok) {
         throw new Error('Failed to fetch data');
@@ -72,7 +74,7 @@ export default async function Bb() {
             <div className='bg-[#15335D] text-white items-center justify-center  flex py-16  max-md:py-8   w-full'>
                 <div className='flex items-start justify-between  w-[85%] max-lg:w-[98%] max-md:w-[95%] max-md:flex-col max-md:items-center max-md:gap-10'>
                     <div className='flex flex-col gap-8  items-center'>                    
-                        <Image src={luxehome} alt="luxehome" />
+                        <Image src={companyData.logoUrl} width={261} height={261} alt="luxehome" />
                         <div className="gap-5 flex flex-col max-md:items-center "> 
                             <p>{companyData.zipcode} {companyData.city} {companyData.governorate}, Tunisie</p>
                             <p className="flex items-center gap-2 "><CiPhone size={25} /> +216 {formatPhoneNumber(companyData.phone)}</p>

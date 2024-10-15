@@ -26,6 +26,7 @@ export interface IProduct extends Document {
   statuspage: string;
   vadmin: string;
   slug: string;
+  nbreview:number;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -51,13 +52,14 @@ const ProductSchema = new mongoose.Schema({
   price: { type: Number, required: true, min: 0 },  // Ensure price is a non-negative number
   discount: { type: Number, default: 0, min: 0, max: 100 },  // Discount should be a percentage between 0 and 100
   weight: { type: String },
-  status: { type: String, enum: ['in stock', 'out of stock', 'discontinued'], default: 'in stock' },  // Enum for status
+  status: { type: String, default: 'in stock' },  // Enum for status
   statuspage: { type: String, default: 'none' },
-  vadmin: { type: String, enum: ['not-approve', 'approved'], default: 'not-approve' },  // Enum for admin approval
+  vadmin: { type: String,  default: 'not-approve' },  // Enum for admin approval
   user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },  // Ensure product is associated with a user
   imageUrl: { type: String },
   images: [{ type: String }],  // Array of image URLs
   slug: { type: String, unique: true },  // Ensure `slug` is unique
+  nbreview:{type:Number, default: 0 }
 }, { timestamps: true });
 
 // Pre-save hook to generate the slug before saving the product

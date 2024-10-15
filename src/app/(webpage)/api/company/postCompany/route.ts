@@ -42,8 +42,7 @@ export async function POST(req: NextRequest) {
       const linkedin = formData.get('linkedin') as string | null;
       const instagram = formData.get('instagram') as string | null;
       const imageFile = formData.get('image') as File | null;
-
-  
+      const bannerFile = formData.get('banner') as File | null;
       if (!name||!address||!city||!governorate||!zipcode||!phone||!email ) {
         return NextResponse.json({ message: 'Name , Addres , City , Governorate , Zipcode And Phone is required' }, { status: 400 });
       }
@@ -54,11 +53,35 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ message: 'Company with this  already exists' }, { status: 400 });
       }
       
-      let imageUrl = '';
-    
+      let logoUrl = '';
   
       if (imageFile) {
         const imageBuffer = await imageFile.arrayBuffer();
+        const bufferStream = new stream.PassThrough();
+        bufferStream.end(Buffer.from(imageBuffer));
+  
+        const result = await new Promise<any>((resolve, reject) => {
+          const uploadStream = cloudinary.uploader.upload_stream(
+            { folder: 'company',
+              format: 'webp' 
+             },
+            (error, result) => {
+              if (error) {
+                return reject(error);
+              }
+              resolve(result);
+            }
+          );
+  
+          bufferStream.pipe(uploadStream);
+        });
+  
+        logoUrl = result.secure_url; // Extract the secure_url from the result
+      }
+        
+      let imageUrl = '';
+      if (bannerFile) {
+        const imageBuffer = await bannerFile.arrayBuffer();
         const bufferStream = new stream.PassThrough();
         bufferStream.end(Buffer.from(imageBuffer));
   
@@ -84,7 +107,7 @@ export async function POST(req: NextRequest) {
     
      
 
-      const newCompany = new Company({ name, governorate,city,address,zipcode ,email,logoUrl:imageUrl,phone,facebook,linkedin,instagram,user });
+      const newCompany = new Company({ name, governorate,city,address,zipcode ,email,logoUrl,imageUrl,phone,facebook,linkedin,instagram,user });
       await newCompany.save();
       return NextResponse.json(newCompany, { status: 201 });
     } catch (error) {
