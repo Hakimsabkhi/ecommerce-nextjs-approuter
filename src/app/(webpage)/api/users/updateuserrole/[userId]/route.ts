@@ -19,7 +19,7 @@ export async function PUT(req: NextRequest, { params }: { params: { userId: stri
     // Find the user by email
     const users = await User.findOne({ email:token.email});
   
-    if (!users || users.role !== 'Admin') {
+    if (!users || users.role !== 'Admin' && users.role !== 'SuperAdmin') {
       return NextResponse.json({ error: 'Foridden:Access is denied' }, { status: 404 });
     }
     
