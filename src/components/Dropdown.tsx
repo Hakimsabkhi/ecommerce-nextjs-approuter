@@ -25,8 +25,7 @@ const Dropdown: React.FC<DropdownProps> = ({ username, role }) => {
   }, []);
 
   return isOpen ? (
-    <div ref={dropdownRef} className="origin-top-right absolute right-0 z-50 mt-2 w-[269px] rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
-      <div className="py-1">
+    <div ref={dropdownRef} className="absolute right-0 z-50 mt-2 w-[180px] rounded-md shadow-lg bg-white">
         <div className="px-4 py-2 text-sm text-gray-900">
           <div className="font-bold">{username}</div>
           <div className="text-gray-500">Role: {role}</div>
@@ -35,26 +34,26 @@ const Dropdown: React.FC<DropdownProps> = ({ username, role }) => {
         {(role === 'Admin' || role === 'SuperAdmin') && (
           <Link
             href="/admin/dashboard"
-            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-400"
           >
             Dashboard
           </Link>
         )}
         <Link
           href="/settings"
-          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-400"
         >
           Settings
         </Link>
         <Link
           href="/orderhistory"
-          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-400"
         >
           Purchase History
         </Link>
         <Link
           href="#"
-          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-400"
           onClick={(e) => {
             e.preventDefault();
             signOut();
@@ -63,7 +62,6 @@ const Dropdown: React.FC<DropdownProps> = ({ username, role }) => {
           Sign out
         </Link>
       </div>
-    </div>
   ) : null;
 };
 

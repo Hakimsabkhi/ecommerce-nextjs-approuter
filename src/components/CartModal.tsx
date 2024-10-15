@@ -56,7 +56,7 @@ const CartModal: React.FC<CartModalProps> = ({ items }) => {
   const removeCartHandler = (_id: string) => dispatch(removeItem({ _id }));
 
   return (
-    <div className="absolute p-4 bg-white top-12 shadow-xl rounded-lg right-0 max-lg:right-0 w-[500px] max-md:w-[360px] flex gap-2 flex-col z-30">
+    <div className="absolute p-4 bg-white top-12 shadow-xl rounded-lg left-1/2 transform -translate-x-1/2 max-lg:right-0 w-[500px] max-md:w-[360px] flex gap-2 flex-col z-30">
       <div className="flex flex-col gap-4">
         {items.length === 0 ? (
           <p className="text-center text-black">Your cart is empty.</p>
