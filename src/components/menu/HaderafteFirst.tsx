@@ -109,7 +109,7 @@ const HaderafteFirst = () => {
       
     };
   return (
-    <div className="flex gap-4 items-center justify-around"> <div className="relative w-[800px]">
+    <div className="flex gap-4 items-center justify-around w-[75%]"> <div className="relative w-[800px]">
     <input
       className="w-full h-12 px-4 py-2 rounded-full max-lg:hidden border border-gray-300"
       type="text"

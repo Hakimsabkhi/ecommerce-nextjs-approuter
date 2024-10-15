@@ -53,7 +53,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
   };
 
   return (
-    <div className=" flex gap-2 h-fit flex-col duration-500 lg:group-hover:scale-[0.85] lg:hover:!scale-100 max-md:h-[320px] relative">
+    <div className=" flex gap-2 h-fit flex-col duration-500 lg:group-hover:scale-[0.85] lg:hover:!scale-100 max-md:h-fit relative">
       <Link href={`/${item.category.slug}/${item.slug}`}>
         <Image
           className=" w-full h-auto mx-auto top-5"
