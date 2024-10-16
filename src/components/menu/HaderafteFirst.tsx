@@ -159,7 +159,7 @@ const HaderafteFirst = () => {
 
       {/* Fixed header clone */}
       {isScrolling && (
-        <div className="fixed top-5 right-5 rounded-full z-50 bg-[#15335D] w-fit p-4 flex items-center gap-4">
+        <div className="fixed top-5 right-5 rounded-full z-50 bg-[#15335D] w-fit p-4 flex items-center gap-4 border-10 border-black">
           <div className="relative" ref={cartmodalRef}>
             <div className="relative cursor-pointer text-white" onClick={toggleCartModal}>
               <SlBag size={25} />

@@ -2,7 +2,6 @@
 
 import React from "react";
 import Image from "next/image";
-
 import Link from "next/link";
 import HaderafteFirst from "./HaderafteFirst";
 
@@ -32,12 +31,11 @@ const Header: React.FC = async() => {
       <div className="flex w-fit max-lg:w-fit gap-4 items-center justify-around">
         <Link href="/" aria-label="Home page">    
           <Image
-              width={250}
-              height={250}
-              className="rounded-[5px]"
+              width={300}
+              height={300}
+              className="w-[300px]"
               src={companyData?.logoUrl}
               alt="Luxe Home logo"
-              style={{ objectFit: "contain" }}
             />
         </Link>
         <HaderafteFirst/>
