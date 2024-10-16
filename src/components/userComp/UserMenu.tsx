@@ -22,10 +22,10 @@ const UserMenu: React.FC<UserMenuProps> = ({ session }) => {
       <div className="relative inline-block">
         <button
           onClick={toggleDropdown}
-          className="flex items-center gap-4 justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 w-[269px] bg-white font-bold text-primary"
+          className="flex w-fit items-center gap-4 justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white font-bold text-primary"
         >
           <FaRegUserCircle size={25} />
-          <p>MON COMPTE</p>
+          <p className="max-lg:hidden">MON COMPTE</p>
         </button>
 
         {isDropdownOpen && (

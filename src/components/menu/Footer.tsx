@@ -174,30 +174,6 @@ export default async function Bb() {
                 </div>
             </div>
             </div>            
-            <div className="fixed lg:hidden bottom-0 left-0 z-50 w-full h-16 bg-white border-t border-gray-200 dark:bg-gray-700 dark:border-gray-600">
-                <div className="flex justify-between px-2 h-full max-w-lg grid-cols-4 mx-auto font-medium">
-                    <button className="inline-flex flex-col items-center justify-center   dark:hover:bg-gray-800 group">
-                        <CiShop size={25} className="   dark:text-gray-400 group-hover:text-orange-600 dark:group-hover:text-orange-500" aria-hidden="true" fill="currentColor" />
-                        <span className="text-sm  dark:text-gray-400 group-hover:text-orange-600 dark:group-hover:text-secondary">shop</span>
-                    </button>
-                    <button type="button" className="inline-flex flex-col items-center justify-center   dark:hover:bg-gray-800 group">
-                        <CiFilter size={25} className="   dark:text-gray-400 group-hover:text-orange-600 dark:group-hover:text-secondary" aria-hidden="true" fill="currentColor" />
-                        <span className="text-sm  dark:text-gray-400 group-hover:text-orange-600 dark:group-hover:text-secondary">Filters</span>
-                    </button>
-                    <button type="button" className="inline-flex flex-col items-center justify-center   dark:hover:bg-gray-800 group">
-                        <GoHeart size={25} className="   dark:text-gray-400 group-hover:text-orange-600 dark:group-hover:text-secondary" aria-hidden="true" fill="currentColor" />
-                        <span className="text-sm  dark:text-gray-400 group-hover:text-orange-600 dark:group-hover:text-secondary">Whishlist</span>
-                    </button>
-                    <button type="button" className="inline-flex flex-col items-center justify-center   dark:hover:bg-gray-800 group">
-                        <CiShoppingCart size={25} className="   dark:text-gray-400 group-hover:text-orange-600 dark:group-hover:text-secondary" aria-hidden="true" fill="currentColor" />
-                        <span className="text-sm  dark:text-gray-400 group-hover:text-orange-600 dark:group-hover:text-secondary">Cart</span>
-                    </button>
-                    <button type="button" className="inline-flex flex-col items-center justify-center   dark:hover:bg-gray-800 group">
-                        <CiUser size={25} className="   dark:text-gray-400 group-hover:text-orange-600 dark:group-hover:text-secondary" aria-hidden="true" fill="currentColor" />
-                        <span className="text-sm  dark:text-gray-400 group-hover:text-orange-600 dark:group-hover:text-secondary  ">Account</span>
-                    </button>
-                </div>
-            </div>
         </div>
     );
 }

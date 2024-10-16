@@ -40,31 +40,32 @@ const Brands = async () => {
                 </h3>
                 <p className='text-base text-[#525566]'>Discover lots of products from popular brands</p>
             </div>
-            <div className='flex items-center max-lg:flex-col w-full justify-between gap-6'>
+            <div className='grid grid-cols-4 w-full max-md:grid-cols-2 group max-xl:grid-cols-3 gap-8 max-md:gap-3'>
                 {brands.map((brand, index) => (
-                    <div key={index} className='relative group cursor-pointer'>
+                    <div key={index} className=' flex flex-col group cursor-pointer'>
+                        <div className='flex gap-4 justify-center rounded-t border-x border-t-2 border-black py-4'>
+                            <Image 
+                                className='max-xl:w-10 max-xl:h-auto max-lg:w-10 max-lg:h-auto' 
+                                src={brand.logoUrl} 
+                                alt={brand.name} 
+                                width={40} 
+                                height={40} 
+                            />
+                            <div className="flex flex-col gap-2">
+                                <p className='text-xl max-xl:text-base max-lg:text-sm font-bold'>{brand.name}</p>
+                                <p className='max-xl:text-xs max-lg:text-sm text-sm'>{brand.place}</p>
+                            </div>
+                        </div>
                         
                         <Image 
-                            className='w-[300px] max-lg:w-[500px]' 
+                            className='w-full h-auto' 
                             src={brand.imageUrl} 
                             alt={brand.name} 
                             width={300} // Set appropriate width
                             height={200} // Set appropriate height
                             priority={index === 0} // Eagerly load the first image
                         />
-                        <div className='absolute pl-4 top-0 bg-white w-full h-20 max-lg:h-[100px] flex items-center gap-4 border-x-2 border-t-2 rounded-t-lg border-gray-400'>
-                            <Image 
-                                className='max-xl:w-10 max-xl:h-10 max-lg:w-20 max-lg:h-20' 
-                                src={brand.logoUrl} 
-                                alt={brand.name} 
-                                width={40} // Set appropriate width
-                                height={40} // Set appropriate height
-                            />
-                            <div className="flex flex-col gap-2">
-                                <p className='text-xl max-xl:text-base max-lg:text-3xl font-bold'>{brand.name}</p>
-                                <p className='max-xl:text-xs max-lg:text-2xl text-sm'>{brand.place}</p>
-                            </div>
-                        </div>
+                      
                     </div>
                 ))}
             </div>

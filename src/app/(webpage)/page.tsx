@@ -5,7 +5,6 @@ import Brands from "@/components/Brands";
 import Collection from "@/components/Collection";
 import Furniture from "@/components/Furniture";
 import Rules from "@/components/Rules";
-import Latestarticle from "@/components/Latestarticle";
 import Categories from "@/components/Categorys/Categories";
 
 export default function HomePage() {
@@ -18,7 +17,7 @@ export default function HomePage() {
       <Collection />
       <Furniture />
       <Rules />
-      <Latestarticle />
+  
     </>
   );
 }

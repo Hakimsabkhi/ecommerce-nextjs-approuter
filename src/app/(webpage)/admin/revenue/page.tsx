@@ -21,22 +21,13 @@ interface Order {
 }
 
 // Register the necessary components
-ChartJS.register(
-  LinearScale,
-  CategoryScale,
-  PointElement,
-  LineElement,
-  Tooltip,
-  Legend
-);
+ChartJS.register(LinearScale, CategoryScale, PointElement, LineElement, Tooltip, Legend);
 
 const RevenueDashboard: React.FC = () => {
   const [orders, setOrders] = useState<Order[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [timeframe, setTimeframe] = useState<"year" | "month" | "day">("month");
-  const [selectedDate, setSelectedDate] = useState<string>(
-    new Date().toISOString().split("T")[0]
-  );
+  const [selectedDate, setSelectedDate] = useState<string>(new Date().toISOString().split("T")[0]);
 
   useEffect(() => {
     const getOrders = async () => {
@@ -61,70 +52,68 @@ const RevenueDashboard: React.FC = () => {
   const aggregateRevenue = () => {
     const revenueByDate: Record<string, number> = {};
     const selectedDateObj = new Date(selectedDate);
-    const currentDays = selectedDateObj.getDate();
     const currentYear = selectedDateObj.getFullYear();
     const currentMonth = selectedDateObj.getMonth();
+    const currentDay = selectedDateObj.getDate();
 
+    if (timeframe === "day") {
+      // Display the last 7 days including the selected date
+      for (let i = 6; i >= 0; i--) {
+        const date = new Date(selectedDateObj);
+        date.setDate(currentDay - i); // Move back days
+        const dayString = date.toISOString().split("T")[0];
+        revenueByDate[dayString] = 0; // Initialize to 0 if no orders for the date
+      }
+    }
+
+    if (timeframe === "month") {
+      // Display the last 4 months including the selected month
+      for (let i = 3; i >= 0; i--) {
+        const date = new Date(selectedDateObj);
+        date.setMonth(currentMonth - i); // Move back months
+        const monthYear = date.toLocaleDateString("fr-FR", {
+          month: "long",
+          year: "numeric",
+        });
+        revenueByDate[monthYear] = 0; // Initialize to 0 if no orders for the month
+      }
+    }
+
+    if (timeframe === "year") {
+      // Display the last 4 years including the selected year
+      for (let i = 3; i >= 0; i--) {
+        const year = currentYear - i;
+        revenueByDate[year] = 0; // Initialize to 0 if no orders for the year
+      }
+    }
+
+    // Aggregate the orders into the appropriate timeframe
     orders.forEach((order) => {
       const orderDate = new Date(order.updatedAt);
       const orderYear = orderDate.getFullYear();
       const orderMonth = orderDate.getMonth();
       const orderDay = orderDate.getDate();
 
-      if (timeframe === "day" && orderDate.toDateString() === selectedDateObj.toDateString()) {
-        // Initialize revenueByDate for the last 6 days including today
-        for (let i = 0; i < 6; i++) { // Loop for the last 6 days including today
-          const date = new Date(selectedDateObj);
-          date.setDate(selectedDateObj.getDate() + i); // Set to the i-th previous day (subtracting i)
-          const dayString = date.toISOString().split('T')[0]; // Get the date in 'YYYY-MM-DD' format
-          revenueByDate[dayString] = revenueByDate[dayString] || 0; // Initialize if not set
-        }
-        
-        // Accumulate the total for the order date
-        const orderDateString = orderDate.toISOString().split('T')[0]; // Format order date in 'YYYY-MM-DD'
-        if (revenueByDate[orderDateString] !== undefined) { // Check if the order date is in revenueByDate
-          revenueByDate[orderDateString] += order.total; // Add order total to the existing value
-        } else {
-          revenueByDate[orderDateString] = order.total; // Initialize if not present
+      if (timeframe === "day") {
+        const orderDateString = orderDate.toISOString().split("T")[0];
+        if (revenueByDate[orderDateString] !== undefined) {
+          revenueByDate[orderDateString] += order.total;
         }
       }
 
+      if (timeframe === "month") {
+        const orderMonthYear = orderDate.toLocaleDateString("fr-FR", {
+          month: "long",
+          year: "numeric",
+        });
+        if (revenueByDate[orderMonthYear] !== undefined) {
+          revenueByDate[orderMonthYear] += order.total;
+        }
+      }
 
-// Logic for monthly aggregation
-if (timeframe === "month" && orderMonth === currentMonth) {
-  const monthYear = orderDate.toLocaleDateString("fr-FR", {
-    month: "long",
-    year: "numeric",
-  });
-
-  // Add the order's total to the revenue for the current month
-  revenueByDate[monthYear] = (revenueByDate[monthYear] || 0) + order.total;
-
-  // Initialize revenueByDate for the past 6 months
-  for (let monthOffset = 0; monthOffset < 6; monthOffset++) {
-    const pastMonthDate = new Date(); // Start with the current date
-    pastMonthDate.setMonth(currentMonth - monthOffset); // Move back month by month
-
-    // Handle year transitions properly
-    const pastMonthYear = pastMonthDate.toLocaleDateString("fr-FR", {
-      month: "long",
-      year: "numeric",
-    });
-
-    // Initialize to 0 if the month is not already present
-    revenueByDate[pastMonthYear] = revenueByDate[pastMonthYear] || 0;
-  }
-}
-
-      
-
-      // Logic for yearly aggregation
-      if (timeframe === "year" && orderYear >= currentYear - 2) {
-        revenueByDate[orderYear] = (revenueByDate[orderYear] || 0) + order.total;
-        
-        // Initialize revenue for each year in the last two years
-        for (let year = currentYear - 2; year <= currentYear; year++) {
-          revenueByDate[year] = revenueByDate[year] || 0;
+      if (timeframe === "year") {
+        if (revenueByDate[orderYear] !== undefined) {
+          revenueByDate[orderYear] += order.total;
         }
       }
     });
@@ -151,29 +140,31 @@ if (timeframe === "month" && orderMonth === currentMonth) {
     ],
   };
 
-  // Chart options
-  const options = {
-    responsive: true,
-    scales: {
-      y: {
-        beginAtZero: true,
-        ticks: {
-          color: "#000",
-        },
-        grid: {
-          color: "rgba(0, 0, 0, 0.1)",
-        },
+// Chart options
+const options = {
+  responsive: true,
+  scales: {
+    y: {
+      beginAtZero: true,
+      ticks: {
+        color: "#000",
       },
-      x: {
-        ticks: {
-          color: "#000",
-        },
-        grid: {
-          color: "rgba(0, 0, 0, 0.1)",
-        },
+      grid: {
+        color: "rgba(0, 0, 0, 0.1)",
       },
     },
-  };
+    x: {
+      ticks: {
+        color: "#000",
+      },
+      grid: {
+        color: "rgba(0, 0, 0, 0.1)",
+      },
+      offset: true,  // This adds spacing before the first label and after the last label
+    },
+  },
+};
+
 
   const totalRevenue = data.reduce((a, b) => a + b, 0).toFixed(2);
 

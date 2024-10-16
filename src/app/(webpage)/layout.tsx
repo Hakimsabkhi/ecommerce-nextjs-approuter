@@ -26,10 +26,11 @@ const RootLayout = async ({ children }: { children: React.ReactNode }) => {
 
   return (
     <html lang="en">
-      <body className={poppins.className}>
+      <body className={`${poppins.className} w-full`}>
+
         <StoreProviders>
           <Headertop />
-          <div className="w-full h-[109px] bg-[#15335E] flex justify-center items-center gap-4">
+          <div className="w-full h-[109px] bg-[#15335E] flex justify-center max-lg:justify-around items-center gap-4">
             <HeaderFirstSection />
             <UserMenu session={session} />
           </div>

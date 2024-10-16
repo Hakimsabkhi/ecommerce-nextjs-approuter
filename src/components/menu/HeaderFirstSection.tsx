@@ -2,7 +2,6 @@
 
 import React from "react";
 import Image from "next/image";
-
 import Link from "next/link";
 import HaderafteFirst from "./HaderafteFirst";
 
@@ -29,18 +28,15 @@ const Header: React.FC = async() => {
   const companyData = await fetchCompanyData();
   return (
     
-      <div className="flex w-[80%] gap-4 items-center justify-around">
-        <Link href="/" aria-label="Home page">
-          <div>
-            <Image
-              width={250}
-              height={250}
-              className="h-auto lg:w-[400px] xl:w-[300px] rounded-[5px] max-lg:hidden"
+      <div className="flex w-fit max-lg:w-fit gap-4 items-center justify-around">
+        <Link href="/" aria-label="Home page">    
+          <Image
+              width={300}
+              height={300}
+              className="w-[300px]"
               src={companyData?.logoUrl}
               alt="Luxe Home logo"
-              style={{ objectFit: "contain" }}
             />
-          </div>
         </Link>
         <HaderafteFirst/>
        

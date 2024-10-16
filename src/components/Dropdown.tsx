@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useCallback, useState } from 'react';
 import { signOut } from 'next-auth/react';
 import Link from 'next/link';
 
@@ -9,24 +9,40 @@ interface DropdownProps {
 
 const Dropdown: React.FC<DropdownProps> = ({ username, role }) => {
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const [isOpen, setIsOpen] = React.useState(true); // Initially open when rendered
+  const [dropdownOpen, setDropdownOpen] = useState(true);
 
-  const handleClickOutside = (event: MouseEvent) => {
-    if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-      setIsOpen(false);
-    }
-  };
-
-  useEffect(() => {
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
+  const closeDropdown = useCallback(() => {
+    setDropdownOpen(false);
   }, []);
 
-  return isOpen ? (
-    <div ref={dropdownRef} className="origin-top-right absolute right-0 z-50 mt-2 w-[269px] rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
-      <div className="py-1">
+  const handleClickOutside = useCallback((event: MouseEvent) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      closeDropdown();
+    }
+  }, [closeDropdown]);
+
+  const handleScroll = useCallback(() => {
+    closeDropdown();
+  }, [closeDropdown]);
+
+  useEffect(() => {
+    if (dropdownOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+      document.addEventListener("scroll", handleScroll, true);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("scroll", handleScroll, true);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("scroll", handleScroll, true);
+    };
+  }, [dropdownOpen, handleClickOutside, handleScroll]);
+
+  return dropdownOpen ? (
+    <div ref={dropdownRef} className="relative">
+      <div className="absolute right-0 z-50 mt-2 w-[180px] rounded-md shadow-lg bg-white">
         <div className="px-4 py-2 text-sm text-gray-900">
           <div className="font-bold">{username}</div>
           <div className="text-gray-500">Role: {role}</div>
@@ -35,26 +51,26 @@ const Dropdown: React.FC<DropdownProps> = ({ username, role }) => {
         {(role === 'Admin' || role === 'SuperAdmin') && (
           <Link
             href="/admin/dashboard"
-            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-400"
           >
             Dashboard
           </Link>
         )}
         <Link
           href="/settings"
-          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-400"
         >
           Settings
         </Link>
         <Link
           href="/orderhistory"
-          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-400"
         >
           Purchase History
         </Link>
         <Link
           href="#"
-          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-400"
           onClick={(e) => {
             e.preventDefault();
             signOut();
