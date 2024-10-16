@@ -48,8 +48,8 @@ const Brands = async () => {
                                 className='max-xl:w-10 max-xl:h-auto max-lg:w-10 max-lg:h-auto' 
                                 src={brand.logoUrl} 
                                 alt={brand.name} 
-                                width={40} // Set appropriate width
-                                height={40} // Set appropriate height
+                                width={40} 
+                                height={40} 
                             />
                             <div className="flex flex-col gap-2">
                                 <p className='text-xl max-xl:text-base max-lg:text-sm font-bold'>{brand.name}</p>

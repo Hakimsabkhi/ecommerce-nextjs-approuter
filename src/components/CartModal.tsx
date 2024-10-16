@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { FaRegTrashAlt } from "react-icons/fa";
 import Link from "next/link";
@@ -29,9 +29,10 @@ interface CartModalProps {
 const CartModal: React.FC<CartModalProps> = ({ items }) => {
   const totalQuantity = items.reduce((total, item) => total + item.quantity, 0);
   const totalPrice = items.reduce((total, item) => {
-    const finalPrice = item.discount != null && item.discount > 0 
-      ? item.price - (item.price * item.discount / 100)
-      : item.price;
+    const finalPrice =
+      item.discount != null && item.discount > 0
+        ? item.price - (item.price * item.discount) / 100
+        : item.price;
     return total + finalPrice * item.quantity;
   }, 0);
 
@@ -56,7 +57,9 @@ const CartModal: React.FC<CartModalProps> = ({ items }) => {
   const removeCartHandler = (_id: string) => dispatch(removeItem({ _id }));
 
   return (
-    <div className="absolute p-4 bg-white top-12 shadow-xl rounded-lg left-1/2 transform -translate-x-1/2 max-lg:right-0 w-[500px] max-md:w-[360px] flex gap-2 flex-col z-30">
+    <div
+      className={`absolute p-4 bg-white shadow-xl rounded-lg z-30 flex gap-2 flex-col top-12 right-0 w-[500px] max-md:w-[360px]`} // Fixed to the right and no scroll-based position change
+    >
       <div className="flex flex-col gap-4">
         {items.length === 0 ? (
           <p className="text-center text-black">Your cart is empty.</p>
@@ -67,25 +70,25 @@ const CartModal: React.FC<CartModalProps> = ({ items }) => {
                 className="w-20 h-20 object-cover"
                 src={item.imageUrl || "/path/to/default-image.jpg"}
                 alt={item.name}
-                width={80} // Add width
-                height={80} // Add height
+                width={80}
+                height={80}
               />
               <div className="text-black flex-col flex gap-2">
                 <p className="text-xl font-bold">{item.name}</p>
                 <p className="text-gray-400 text-xs">Size: XXS</p>
-                <p className="text-gray-400 text-xs">
-                  Quantity: {item.quantity}
-                </p>
+                <p className="text-gray-400 text-xs">Quantity: {item.quantity}</p>
                 {item.discount != null && item.discount > 0 ? (
-  <p className="text-gray-400 text-xs">
-    Price Unit: TND {(item.price - item.price * (item.discount ?? 0) / 100).toFixed(2)}
-  </p>
-) : (
-  <p className="text-gray-400 text-xs">
-    Price Unit: TND {item.price.toFixed(2)}
-  </p>
-)}
-
+                  <p className="text-gray-400 text-xs">
+                    Price Unit: TND {(
+                      item.price - 
+                      item.price * (item.discount ?? 0) / 100
+                    ).toFixed(2)}
+                  </p>
+                ) : (
+                  <p className="text-gray-400 text-xs">
+                    Price Unit: TND {item.price.toFixed(2)}
+                  </p>
+                )}
               </div>
               <div className="flex items-center gap-2">
                 <button
@@ -117,7 +120,6 @@ const CartModal: React.FC<CartModalProps> = ({ items }) => {
         Total: TND {totalPrice.toFixed(2)}
       </p>
 
-     
       <Link href="/checkout" passHref>
         <button
           aria-label="check"
