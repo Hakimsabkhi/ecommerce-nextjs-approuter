@@ -4,6 +4,7 @@ import { FaRegTrashAlt } from "react-icons/fa";
 import Link from "next/link";
 import { useDispatch } from "react-redux";
 import { removeItem, updateItemQuantity } from "../store/cartSlice";
+import Pagination from "@/components/Pagination";
 
 // Define the shape of the cart item
 interface CartItem {
@@ -59,13 +60,19 @@ const CartModal: React.FC<CartModalProps> = React.memo(({ items }) => {
 
   const removeCartHandler = (_id: string) => dispatch(removeItem({ _id }));
 
+  // Pagination state (example implementation)
+  const [currentPage, setCurrentPage] = React.useState(1);
+  const itemsPerPage = 4; // Adjust as necessary
+  const totalPages = Math.ceil(items.length / itemsPerPage);
+  const paginatedItems = items.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+
   return (
     <div className="absolute p-4 bg-white shadow-xl rounded-lg z-30 flex gap-2 flex-col top-12 right-0 w-[500px] max-md:w-[360px] border-[#15335D] border-[4px]">
       <div className="flex flex-col gap-4">
-        {items.length === 0 ? (
+        {paginatedItems.length === 0 ? (
           <p className="text-center text-black">Your cart is empty.</p>
         ) : (
-          items.map((item) => (
+          paginatedItems.map((item) => (
             <div key={item._id} className="flex items-center justify-between">
               <Image
                 className="w-20 h-20 object-cover"
@@ -78,17 +85,11 @@ const CartModal: React.FC<CartModalProps> = React.memo(({ items }) => {
                 <p className="text-xl font-bold">{item.name}</p>
                 <p className="text-gray-400 text-xs">Size: XXS</p>
                 <p className="text-gray-400 text-xs">Quantity: {item.quantity}</p>
-                {item.discount != null && item.discount > 0 ? (
-                  <p className="text-gray-400 text-xs">
-                    Price Unit: TND {(
-                      item.price - item.price * (item.discount ?? 0) / 100
-                    ).toFixed(2)}
-                  </p>
-                ) : (
-                  <p className="text-gray-400 text-xs">
-                    Price Unit: TND {item.price.toFixed(2)}
-                  </p>
-                )}
+                <p className="text-gray-400 text-xs">
+                  Price Unit: TND {(
+                    item.price - (item.discount ? item.price * item.discount / 100 : 0)
+                  ).toFixed(2)}
+                </p>
               </div>
               <div className="flex items-center gap-2">
                 <button
@@ -115,13 +116,19 @@ const CartModal: React.FC<CartModalProps> = React.memo(({ items }) => {
             </div>
           ))
         )}
+        <div className="flex justify-center mt-4 text-gray-500">
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+          />
+        </div>
       </div>
       {items.length > 0 && (
         <>
           <p className="text-gray-400 text-2xl flex items-center justify-center flex-col gap-4 mt-9">
             Total: TND {totalPrice.toFixed(2)}
           </p>
-
           <Link href="/checkout" passHref>
             <button
               aria-label="check"
