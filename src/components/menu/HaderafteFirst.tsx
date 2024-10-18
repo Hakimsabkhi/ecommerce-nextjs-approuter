@@ -124,9 +124,9 @@ const HaderafteFirst = () => {
 
   return (
     <>
-      <div className="flex gap-4 items-center justify-around w-[80%] max-lg:hidden">
+      <div className="flex gap-4 items-center justify-around w-[80%] max-lg:w-fit">
         {/* Main header content */}
-        <div className="relative w-[750px] max-2xl:w-[500px] max-xl:w-[250px]">
+        <div className="relative w-[750px] max-2xl:w-[500px] max-xl:w-[250px] max-lg:hidden">
           <input
             className="w-full h-12 px-4 py-2 rounded-full max-lg:hidden border border-gray-300"
             type="text"
@@ -143,7 +143,7 @@ const HaderafteFirst = () => {
             <CiSearch className="w-8 h-8 transform duration-500 group-hover:w-10 group-hover:h-10" />
           </button>
         </div>
-        <div className="flex items-center justify-center gap-4 w-[200px] text-white">
+        <div className="flex items-center justify-center gap-4 w-[200px] max-lg:w-fit text-white">
           <div className="relative" ref={cartmodalRef}>
             <div className="relative cursor-pointer" onClick={toggleCartModal}>
               <SlBag size={25} />
@@ -151,8 +151,9 @@ const HaderafteFirst = () => {
                 <p>{totalQuantity}</p>
               </span>
             </div>
+            <div className="absolute shadow-xl z-30 flex gap-2 flex-col top-12 -translate-x-1/2 ">
             {isCartOpen && items.length > 0 && <CartModal items={items} />}
-          </div>
+          </div>  </div>
           <Total items={items} />
         </div>
       </div>
@@ -167,7 +168,8 @@ const HaderafteFirst = () => {
                 <p>{totalQuantity}</p>
               </span>
             </div>
-            {isCartOpen && items.length > 0 && <CartModal items={items} />}
+            <div className="absolute bg-white shadow-xl z-30 flex gap-2 flex-col top-0 right-12">
+            {isCartOpen && items.length > 0 && <CartModal items={items} />}</div>
           </div>
         </div>
       )}
