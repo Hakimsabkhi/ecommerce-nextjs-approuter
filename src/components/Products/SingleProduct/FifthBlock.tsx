@@ -36,8 +36,8 @@ interface Brand {
 }
 
 const FifthBlock: React.FC = () => {
-  const params = useParams<{ product?: string }>(); // Adjust params based on your route setup
-  const categoryId = params.product; // Safe access
+  const params = useParams<{ slugCategory?: string }>(); // Adjust params based on your route setup
+  const categoryId = params.slugCategory; // Safe access
   const [products, setProducts] = useState<ProductData[]>([]);
   const [clickedStates, setClickedStates] = useState<boolean[]>([]);
   const [loading, setLoading] = useState(true);
