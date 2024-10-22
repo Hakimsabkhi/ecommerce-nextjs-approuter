@@ -91,7 +91,7 @@ const HaderafteFirst = () => {
       <div className="flex gap-4 items-center justify-around w-[80%] max-lg:w-fit">
         <SearchBar onSearch={() => {}} />
         <div
-          className="flex items-center justify-center gap-4 w-[200px] max-lg:w-fit text-white cursor-pointer"
+          className="flex items-center justify-center gap-4 w-[200px] max-lg:w-fit text-white cursor-pointer select-none"
           ref={cartModalWrapperRef}
           onClick={toggleCartModal}
         >
@@ -117,7 +117,7 @@ const HaderafteFirst = () => {
       {/* Show the floating cart button when scrolling */}
       {isScrolling && (
         <div
-          className="fixed top-5 right-5 rounded-full z-50 bg-[#15335D] w-fit p-4 flex items-center gap-4 border-10 border-black"
+          className="fixed top-5 right-5 rounded-full z-50 bg-[#15335D] w-fit p-4 flex items-center gap-4 border-10 border-black select-none"
           ref={onscrollCartModalWrapperRef} // Use the new ref for onscroll cart modal
           onClick={toggleCartOnscrollModal}
         >
@@ -129,7 +129,7 @@ const HaderafteFirst = () => {
 
             {/* Scrolling Cart Modal */}
             <div
-                   className="absolute max-md:fixed shadow-xl z-30 flex gap-2 flex-col max-md:top-[53%] max-md:left-[50%] max-md:transform max-md:-translate-x-1/2 max-md:-translate-y-1/2"
+                   className="absolute max-md:fixed shadow-xl z-30 flex gap-2 top-12 right-0 flex-col max-md:top-[53%] max-md:right-[50%] max-md:transform max-md:translate-x-1/2 max-md:-translate-y-1/2 transition-all duration-900 ease-in-out "
               onClick={(e) => e.stopPropagation()} // Prevent modal close when clicking inside
             >
               {isCartOpen && isOnscrollCart && items.length > 0 && (
