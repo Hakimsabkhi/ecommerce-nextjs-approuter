@@ -95,14 +95,14 @@ const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
             5
           </p>
         </div>
-        <div className="flex mb-1 text-lg max-md:text-sm justify-between">
+        <div className="flex text-lg max-md:text-sm justify-between">
           {item.status !== "out-of-stock" ? (
             item.stock > 0 ? (
               <button
                 onClick={() => addToCartHandler(item, 1)}
                 className="AddtoCart bg-primary hover:bg-[#15335D] text-white w-[50%] max-md:rounded-[3px] max-2xl:text-sm group/box"
               >
-                <p className="absolute flex items-center justify-center w-full h-full transition-all duration-300 transform lg:group-hover/box:translate-x-[10%] ease">
+                <p className="absolute flex items-center justify-center w-full h-full transition-all duration-300 transform lg:group-hover/box:translate-x-[10%] ease max-md:text-xs">
                   Add to cart
                 </p>
                 <p className="text-white absolute flex items-center justify-center w-full h-full duration-300 -translate-x-[100%] lg:group-hover/box:translate-x-[-30%] ease">
@@ -118,7 +118,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
                 className="AddtoCart bg-gray-400 hover:bg-gray-500 text-white w-[50%] max-md:rounded-[3px] max-2xl:text-sm group/box"
                 disabled
               >
-                <p className="absolute flex items-center justify-center w-full h-full transition-all duration-300 transform lg:group-hover/box:translate-x-[10%] ease">
+                <p className="absolute flex items-center justify-center w-full h-full transition-all duration-300 transform lg:group-hover/box:translate-x-[10%] ease max-md:text-xs">
                   Out of stock
                 </p>
               </button>
@@ -128,15 +128,15 @@ const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
               className="AddtoCart bg-gray-400 hover:bg-gray-500 text-white w-[50%] max-md:rounded-[3px] max-2xl:text-sm group/box"
               disabled
             >
-              <p className="absolute flex items-center justify-center w-full h-full transition-all duration-300 ease">
+              <p className="absolute flex items-center justify-center w-full h-full transition-all duration-300 ease max-md:text-xs">
                 Out of stock
               </p>
             </button>
           )}
 
-          <a href={`/${item.category.slug}/${item.slug}`} className="w-[30%]">
+          <a href={`/${item.category.slug}/${item.slug}`} className="w-[25%]">
             <button className="AddtoCart bg-white max-md:rounded-[3px] w-full group/box text-primary border border-primary">
-              <p className="absolute flex items-center justify-center w-full h-full transition-all duration-300 transform lg:group-hover/box:translate-y-[-100%] ease">
+              <p className="absolute flex items-center justify-center w-full h-full transition-all duration-300 transform lg:group-hover/box:translate-y-[-100%] ease max-md:text-xs">
                 View
               </p>
               <p className="text-primary absolute w-full h-full flex items-center justify-center duration-300 -translate-y-[-100%] lg:group-hover/box:translate-y-0 ease">
@@ -150,7 +150,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
           </a>
           <button
             onClick={handleClick}
-            className="relative bg-white hover:bg-primary max-md:rounded-[3px] AddtoCart w-[13%] group/box text-primary hover:text-white border border-[#8D4407]"
+            className="relative bg-white hover:bg-primary max-md:rounded-[3px] AddtoCart w-[15%] group/box text-primary hover:text-white border border-[#8D4407]"
             aria-label="wishlist"
           >
             <p className="absolute flex items-center justify-center w-full h-full">

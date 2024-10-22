@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { SlBag } from "react-icons/sl";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
@@ -8,29 +8,54 @@ import Total from "./Total";
 import CartModal from "../CartModal";
 import CartModalOnscroll from "../CartModalOnscroll";
 import SearchBar from "./SearchBar";
+import { usePathname } from "next/navigation";
 
 const HaderafteFirst = () => {
-  const [isCartOpen, setIsCartOpen] = useState(false); 
-  const [isOnscrollCart, setIsOnscrollCart] = useState(false); 
+  const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isOnscrollCart, setIsOnscrollCart] = useState(false);
   const items = useSelector((state: RootState) => state.cart.items);
   const [totalQuantity, setTotalQuantity] = useState(0);
   const [isScrolling, setIsScrolling] = useState(false);
-  const [products, setProducts] = useState<any[]>([]); 
+
+  const cartModalWrapperRef = useRef<HTMLDivElement>(null);
+  const onscrollCartModalWrapperRef = useRef<HTMLDivElement>(null); // New ref for onscroll modal
+  const pathname = usePathname();
 
   const toggleCartModal = () => {
-    setIsOnscrollCart(false); 
-    setIsCartOpen((prev) => !prev); 
+    setIsOnscrollCart(false);
+    setIsCartOpen((prev) => !prev);
   };
 
   const toggleCartOnscrollModal = () => {
-    setIsOnscrollCart(true); 
-    setIsCartOpen((prev) => !prev); 
+    setIsOnscrollCart(true);
+    setIsCartOpen((prev) => !prev);
   };
 
   const closeCartModal = () => {
     setIsCartOpen(false);
   };
 
+  // Handle clicks outside of the cart modal
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (isCartOpen && !isOnscrollCart && cartModalWrapperRef.current && !cartModalWrapperRef.current.contains(event.target as Node)) {
+        closeCartModal();
+      }
+      if (isCartOpen && isOnscrollCart && onscrollCartModalWrapperRef.current && !onscrollCartModalWrapperRef.current.contains(event.target as Node)) {
+        closeCartModal();
+      }
+    };
+
+    if (isCartOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isCartOpen, isOnscrollCart]);
+
+  // Handle scroll events
   useEffect(() => {
     const handleScroll = () => {
       if (isCartOpen) {
@@ -45,7 +70,7 @@ const HaderafteFirst = () => {
     };
   }, [isCartOpen]);
 
-
+  // Calculate total quantity of items in the cart
   useEffect(() => {
     if (items) {
       const quantity = items.reduce(
@@ -56,35 +81,30 @@ const HaderafteFirst = () => {
     }
   }, [items]);
 
-  const handleSearch = async (searchTerm: string) => {
-    if (!searchTerm.trim()) return;
-
-    try {
-      const res = await fetch(
-        `/api/searchProduct?searchTerm=${encodeURIComponent(searchTerm)}`
-      );
-      const data = await res.json();
-      setProducts(data.products); 
-    } catch (error) {
-      console.error("Error searching for products:", error);
-    }
-  };
+  // Close cart on route change
+  useEffect(() => {
+    closeCartModal();
+  }, [pathname]);
 
   return (
     <>
       <div className="flex gap-4 items-center justify-around w-[80%] max-lg:w-fit">
-    
-        <SearchBar onSearch={handleSearch} />
+        <SearchBar onSearch={() => {}} />
         <div
           className="flex items-center justify-center gap-4 w-[200px] max-lg:w-fit text-white cursor-pointer"
-          onClick={toggleCartModal} 
+          ref={cartModalWrapperRef}
+          onClick={toggleCartModal}
         >
           <div className="relative">
             <SlBag size={25} />
             <span className="w-4 flex justify-center h-4 items-center text-xs rounded-full absolute -top-1 -right-1 text-white bg-primary">
               <p>{totalQuantity}</p>
             </span>
-            <div className="absolute shadow-xl z-30 flex gap-2 flex-col top-12 -translate-x-1/2">
+
+            <div
+              className="absolute shadow-xl z-30 flex gap-2 flex-col top-12 -translate-x-1/2"
+              onClick={(e) => e.stopPropagation()} // Prevent modal close when clicking inside
+            >
               {isCartOpen && !isOnscrollCart && items.length > 0 && (
                 <CartModal items={items} onClose={closeCartModal} />
               )}
@@ -94,25 +114,26 @@ const HaderafteFirst = () => {
         </div>
       </div>
 
-    
+      {/* Show the floating cart button when scrolling */}
       {isScrolling && (
         <div
           className="fixed top-5 right-5 rounded-full z-50 bg-[#15335D] w-fit p-4 flex items-center gap-4 border-10 border-black"
-          onClick={toggleCartOnscrollModal} 
+          ref={onscrollCartModalWrapperRef} // Use the new ref for onscroll cart modal
+          onClick={toggleCartOnscrollModal}
         >
           <div className="relative">
             <SlBag size={25} className="text-white" />
             <span className="w-4 flex justify-center h-4 items-center text-xs rounded-full absolute -top-1 -right-1 text-white bg-primary">
               <p>{totalQuantity}</p>
             </span>
-            <div className="absolute shadow-xl z-30 flex gap-2 flex-col top-0 right-12">
+
+            {/* Scrolling Cart Modal */}
+            <div
+                   className="absolute max-md:fixed shadow-xl z-30 flex gap-2 flex-col max-md:top-[53%] max-md:left-[50%] max-md:transform max-md:-translate-x-1/2 max-md:-translate-y-1/2"
+              onClick={(e) => e.stopPropagation()} // Prevent modal close when clicking inside
+            >
               {isCartOpen && isOnscrollCart && items.length > 0 && (
-                <div onClick={(event) => event.stopPropagation()}>
-                  <CartModalOnscroll
-                    items={items}
-                    onClose={closeCartModal} 
-                  />
-                </div>
+                <CartModalOnscroll items={items} onClose={closeCartModal} />
               )}
             </div>
           </div>

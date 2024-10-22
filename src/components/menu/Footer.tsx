@@ -163,10 +163,10 @@ export default async function Bb() {
                     </div>
                 </div>
             </div>
-            <div className="bg-white flex items-center justify-center w-full py-3 max-lg:pb-20">
-                <div className="w-[60%] flex items-center justify-between text-[#525566] font-bold max-lg:w-[95%] max-md:text-[10px]">
+        
+                <div className="w-[60%] items-center justify-between text-[#525566] font-bold max-lg:w-[95%] max-md:text-[10px] flex max-md:flex-col gap-2">
                     <p>© {companyData.name} - All rights reserved</p>
-                    <div className=" flex items-center gap-8 max-md:gap-1">
+                    <div className=" flex items-center gap-4">
                         <p>Terms and conditions</p>
                         <p>Privacy Policy</p>
                         <p>Disclaimer</p>
@@ -174,6 +174,5 @@ export default async function Bb() {
                 </div>
             </div>
             </div>            
-        </div>
     );
 }

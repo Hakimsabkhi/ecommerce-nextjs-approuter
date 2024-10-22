@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useMemo, useCallback, useState } from "react";
+import React, { useMemo, useCallback, useState } from "react";
 import Image from "next/image";
 import { FaRegTrashAlt } from "react-icons/fa";
 import Link from "next/link";
@@ -28,25 +28,6 @@ interface CartModalProps {
 
 const CartModal: React.FC<CartModalProps> = ({ items, onClose }) => {
   const dispatch = useDispatch();
-  const modalRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
-        onClose();
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [onClose]);
-
-  const totalQuantity = useMemo(
-    () => items.reduce((total, item) => total + item.quantity, 0),
-    [items]
-  );
 
   const totalPrice = useMemo(() => {
     return items.reduce((total, item) => {
@@ -90,19 +71,19 @@ const CartModal: React.FC<CartModalProps> = ({ items, onClose }) => {
 
   return (
     <div
-      ref={modalRef}
-      className="px-4 w-[400px] max-md:w-full border-[#15335D] border-[4px] rounded-lg bg-white"
+      className="flex flex-col px-4 w-[400px] max-md:w-[350px] border-[#15335D] border-4 rounded-lg bg-white z-30"
+      onClick={(event) => event.stopPropagation()} // Prevents modal from closing when clicking inside
     >
-      <h1 className="text-lg font-bold text-black border-b-2 text-center py-2">
+      <h1 className="text-lg font-bold text-black border-b-2 text-center py-2 max-md:text-sm">
         Your shopping cart ({items.length} items)
       </h1>
-      <div className="flex justify-center py-2 text-gray-500 border-b-2">
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={setCurrentPage}
-          />
-        </div>
+      <div className="py-2 text-gray-500 border-b-2">
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+        />
+      </div>
       <div className="flex flex-col">
         {paginatedItems.length === 0 ? (
           <p className="text-center text-black">Your cart is empty.</p>
@@ -145,7 +126,7 @@ const CartModal: React.FC<CartModalProps> = ({ items, onClose }) => {
                   </button>
                 </div>
                 <button
-                  className="flex gap-2 items-center justify-center hover:bg-[#15335E]  border-2 border-[#15335E] rounded text-black hover:text-white cursor-pointer"
+                  className="flex gap-2 items-center justify-center hover:bg-[#15335E]  border-2 max-md:border-none border-[#15335E] rounded text-black hover:text-white cursor-pointer"
                   onClick={(event) => removeCartHandler(item._id, event)}
                 >
                   <span className="max-md:hidden">Remove</span>
@@ -158,13 +139,13 @@ const CartModal: React.FC<CartModalProps> = ({ items, onClose }) => {
       </div>
       {items.length > 0 && (
         <>
-          <p className="text-black text-lg font-bold flex items-center justify-center flex-col gap-4 my-2">
+          <p className="text-black text-lg font-bold flex items-center justify-center flex-col gap-4 my-2 max-md:text-lg">
             Total: TND {totalPrice.toFixed(2)}
           </p>
           <Link href="/checkout" passHref>
             <button
               aria-label="check"
-              className="w-full h-10 rounded-lg bg-orange-400 hover:bg-[#15335D] flex items-center justify-center my-2"
+              className="w-full h-10 rounded-lg bg-orange-400 hover:bg-[#15335D] flex items-center justify-center mb-2"
             >
               <p className="text-xl text-white">Checkout</p>
             </button>

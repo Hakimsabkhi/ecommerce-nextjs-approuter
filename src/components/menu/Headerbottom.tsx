@@ -34,7 +34,7 @@ const Headerbottom: React.FC = async () => {
   return (
     <header>
       <nav className="w-full h-[72px] flex justify-center bg-white max-lg:hidden">
-        <div className="flex justify-start gap-8 w-fit max-xl:w-[95%] font-bold items-center text-xl max-2xl:text-sm">
+        <div className="flex justify-start gap-8 w-fit max-xl:w-[95%] font-bold items-center text-lg max-xl:text-xs">
           {categories?.map((category: Category) => (
             <Link 
               href={`/${category.slug}`} 

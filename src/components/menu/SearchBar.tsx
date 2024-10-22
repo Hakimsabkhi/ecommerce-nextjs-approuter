@@ -1,13 +1,38 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { CiSearch } from "react-icons/ci";
 
 interface SearchBarProps {
-  onSearch: (searchTerm: string) => void;
+  onSearch: (products: any[]) => void;
 }
 
 const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState(searchTerm);
+
+  const handleSearch = useCallback(async (searchTerm: string) => {
+    if (!searchTerm.trim()) return;
+
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/searchProduct?searchTerm=${encodeURIComponent(searchTerm)}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (!res.ok) {
+        throw new Error('Failed to fetch search results');
+      }
+
+      const data = await res.json();
+      onSearch(data.products); // Pass the products data back to the parent
+    } catch (error) {
+      console.error("Error searching for products:", error);
+    }
+  }, [onSearch]);
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -21,13 +46,13 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
 
   useEffect(() => {
     if (debouncedSearchTerm.trim() !== "") {
-      onSearch(debouncedSearchTerm);
+      handleSearch(debouncedSearchTerm);
     }
-  }, [debouncedSearchTerm, onSearch]);
+  }, [debouncedSearchTerm, handleSearch]);
 
-  const handleSearch = () => {
+  const handleSearchButtonClick = () => {
     if (!searchTerm.trim()) return;
-    onSearch(searchTerm);
+    handleSearch(searchTerm); // Trigger search manually on button click
   };
 
   return (
@@ -43,7 +68,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
       <button
         className="absolute h-full px-4 group right-0 top-1/2 -translate-y-1/2 rounded-r-full text-[#15335D]"
         aria-label="Search"
-        onClick={handleSearch}
+        onClick={handleSearchButtonClick} // Use the handleSearch function directly on button click
       >
         <CiSearch className="w-8 h-8 transform duration-500 group-hover:w-10 group-hover:h-10" />
       </button>
