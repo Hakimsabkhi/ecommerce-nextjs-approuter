@@ -10,37 +10,32 @@ import CartModalOnscroll from "../CartModalOnscroll";
 import SearchBar from "./SearchBar";
 
 const HaderafteFirst = () => {
-  const [isCartOpen, setIsCartOpen] = useState(false); // Single state for both CartModal and CartModalOnscroll
-  const [isOnscrollCart, setIsOnscrollCart] = useState(false); // State to differentiate between normal and on-scroll modal
+  const [isCartOpen, setIsCartOpen] = useState(false); 
+  const [isOnscrollCart, setIsOnscrollCart] = useState(false); 
   const items = useSelector((state: RootState) => state.cart.items);
   const [totalQuantity, setTotalQuantity] = useState(0);
   const [isScrolling, setIsScrolling] = useState(false);
-  const [products, setProducts] = useState<any[]>([]); // This line is added to fix the error
+  const [products, setProducts] = useState<any[]>([]); 
 
-  // Toggle cart modal in the header
   const toggleCartModal = () => {
-    setIsOnscrollCart(false); // Ensure normal cart modal is triggered
-    setIsCartOpen((prev) => !prev); // Toggle the modal based on its previous state
+    setIsOnscrollCart(false); 
+    setIsCartOpen((prev) => !prev); 
   };
 
-  // Toggle cart modal when scrolling (floating button)
   const toggleCartOnscrollModal = () => {
-    setIsOnscrollCart(true); // Set this to true for the on-scroll modal
-    setIsCartOpen((prev) => !prev); // Toggle the modal based on its previous state
+    setIsOnscrollCart(true); 
+    setIsCartOpen((prev) => !prev); 
   };
 
   const closeCartModal = () => {
     setIsCartOpen(false);
   };
 
-  // Optimize the scroll event listener and handle scroll-triggered changes
   useEffect(() => {
     const handleScroll = () => {
       if (isCartOpen) {
-        closeCartModal(); // Close the cart modal on scroll
+        closeCartModal();
       }
-
-      // Handle showing the fixed header
       setIsScrolling(window.scrollY > 200);
     };
 
@@ -50,7 +45,7 @@ const HaderafteFirst = () => {
     };
   }, [isCartOpen]);
 
-  // Update total quantity when items in the cart change
+
   useEffect(() => {
     if (items) {
       const quantity = items.reduce(
@@ -69,7 +64,7 @@ const HaderafteFirst = () => {
         `/api/searchProduct?searchTerm=${encodeURIComponent(searchTerm)}`
       );
       const data = await res.json();
-      setProducts(data.products); // Update products state with the search results
+      setProducts(data.products); 
     } catch (error) {
       console.error("Error searching for products:", error);
     }
@@ -78,11 +73,11 @@ const HaderafteFirst = () => {
   return (
     <>
       <div className="flex gap-4 items-center justify-around w-[80%] max-lg:w-fit">
-        {/* Main header content */}
+    
         <SearchBar onSearch={handleSearch} />
         <div
           className="flex items-center justify-center gap-4 w-[200px] max-lg:w-fit text-white cursor-pointer"
-          onClick={toggleCartModal} // Toggle main cart modal
+          onClick={toggleCartModal} 
         >
           <div className="relative">
             <SlBag size={25} />
@@ -99,11 +94,11 @@ const HaderafteFirst = () => {
         </div>
       </div>
 
-      {/* Fixed floating cart when scrolling */}
+    
       {isScrolling && (
         <div
           className="fixed top-5 right-5 rounded-full z-50 bg-[#15335D] w-fit p-4 flex items-center gap-4 border-10 border-black"
-          onClick={toggleCartOnscrollModal} // Toggle onscroll cart modal
+          onClick={toggleCartOnscrollModal} 
         >
           <div className="relative">
             <SlBag size={25} className="text-white" />
@@ -115,7 +110,7 @@ const HaderafteFirst = () => {
                 <div onClick={(event) => event.stopPropagation()}>
                   <CartModalOnscroll
                     items={items}
-                    onClose={closeCartModal} // Close passed as prop
+                    onClose={closeCartModal} 
                   />
                 </div>
               )}

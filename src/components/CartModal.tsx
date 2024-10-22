@@ -91,12 +91,19 @@ const CartModal: React.FC<CartModalProps> = ({ items, onClose }) => {
   return (
     <div
       ref={modalRef}
-      className="p-4 w-[450px] max-md:w-full border-[#15335D] border-[4px] rounded-lg bg-white"
+      className="px-4 w-[400px] max-md:w-full border-[#15335D] border-[4px] rounded-lg bg-white"
     >
-      <h1 className="text-xl font-bold text-black border-b-2 text-center py-2">
+      <h1 className="text-lg font-bold text-black border-b-2 text-center py-2">
         Your shopping cart ({items.length} items)
       </h1>
-      <div className="flex flex-col gap-2">
+      <div className="flex justify-center py-2 text-gray-500 border-b-2">
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+          />
+        </div>
+      <div className="flex flex-col">
         {paginatedItems.length === 0 ? (
           <p className="text-center text-black">Your cart is empty.</p>
         ) : (
@@ -106,11 +113,11 @@ const CartModal: React.FC<CartModalProps> = ({ items, onClose }) => {
               className="flex items-center justify-between py-2 border-b-2"
             >
               <Image
-                className="w-20 h-20 object-cover"
+                className="object-cover"
                 src={item.imageUrl || "/path/to/default-image.jpg"}
                 alt={item.name}
-                width={80}
-                height={80}
+                width={60}
+                height={60}
               />
               <div className="text-black flex-col flex gap-2">
                 <p className="text-sm font-bold">{item.name}</p>
@@ -148,29 +155,22 @@ const CartModal: React.FC<CartModalProps> = ({ items, onClose }) => {
             </div>
           ))
         )}
-        <div className="flex justify-center mt-4 text-gray-500">
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={setCurrentPage}
-          />
-        </div>
       </div>
       {items.length > 0 && (
         <>
-          <p className="text-black text-2xl font-bold flex items-center justify-center flex-col gap-4">
+          <p className="text-black text-lg font-bold flex items-center justify-center flex-col gap-4 my-2">
             Total: TND {totalPrice.toFixed(2)}
           </p>
           <Link href="/checkout" passHref>
             <button
               aria-label="check"
-              className="w-full h-10 rounded-lg bg-orange-400 hover:bg-[#15335D] flex items-center justify-center mt-4"
+              className="w-full h-10 rounded-lg bg-orange-400 hover:bg-[#15335D] flex items-center justify-center my-2"
             >
               <p className="text-xl text-white">Checkout</p>
             </button>
           </Link>
           <button
-            className="w-full text-center text-black underline mt-4 cursor-pointer"
+            className="w-full text-center text-black underline cursor-pointer mb-2"
             onClick={(event) => {
               event.stopPropagation();
               onClose();
