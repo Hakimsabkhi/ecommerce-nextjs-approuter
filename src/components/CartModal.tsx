@@ -91,7 +91,7 @@ const CartModal: React.FC<CartModalProps> = ({ items, onClose }) => {
           paginatedItems.map((item) => (
             <div
               key={item._id}
-              className="flex items-center justify-between py-2 border-b-2"
+              className="flex items-center justify-between max-md:mx-[10%] py-2 border-b-2"
             >
               <Image
                 className="object-cover"
