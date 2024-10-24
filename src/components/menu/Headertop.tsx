@@ -54,20 +54,19 @@ const Headertop: React.FC = async () => {
   };
 
   return (
-    <header>
-      <div className="w-full h-[50px] justify-center flex bg-[#000000] max-lg:hidden">
-        <div className="flex text-white w-[90%] justify-around items-center max-2xl:text-base text-lg">
+    <div className="w-full h-[40px] flex bg-primary max-lg:hidden justify-center border-b-[0.5px]">
+        <div className="flex w-[90%] text-white justify-between max-2xl:text-base text-sm">
           <div className="flex gap-6 items-center">
-            <p className="flex gap-2 items-center uppercase">
-              Address: {companyData.address}, {companyData.zipcode}
+            <p className="flex gap-2 items-center">
+            <span className="font-semibold uppercase tracking-wider"> Address: </span>{companyData.address}, {companyData.zipcode}
               {companyData.addresse?.city}, {companyData.governorate}, Tunisie
             </p>
-            <p className="flex gap-2 items-center border-l-2 px-4">
-              TELE: +216 {formatPhoneNumber(companyData.phone)}
+            <p className="flex gap-2 items-center border-l px-4">
+            <span className="font-semibold uppercase tracking-wider">TELE: </span> +216 {formatPhoneNumber(companyData.phone)}
             </p>
-            <p className="flex gap-2 items-center border-l-2 px-4">EMAIL: {companyData.email}</p>
+            <p className="flex gap-2 items-center border-l px-4"><span className="font-semibold uppercase tracking-wider">EMAIL: </span>{companyData.email}</p>
           </div>
-          <div className="flex gap-4 items-center border-x-2 px-4">
+          <div className="flex w-[200px] gap-4 justify-center items-center px-4">
             {/* Social Media Icons */}
             <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
               <FaFacebookF className="text-white hover:text-blue-500 transition-colors" />
@@ -81,7 +80,6 @@ const Headertop: React.FC = async () => {
           </div>
         </div>
       </div>
-    </header>
   );
 };
 

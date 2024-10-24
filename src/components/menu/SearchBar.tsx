@@ -1,13 +1,11 @@
+"use client";
 import React, { useState, useEffect, useCallback } from "react";
 import { CiSearch } from "react-icons/ci";
 
-interface SearchBarProps {
-  onSearch: (products: any[]) => void;
-}
-
-const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
+const SearchBar: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState(searchTerm);
+  const [searchResults, setSearchResults] = useState<any[]>([]); // Store search results here
 
   const handleSearch = useCallback(async (searchTerm: string) => {
     if (!searchTerm.trim()) return;
@@ -24,15 +22,15 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
       );
 
       if (!res.ok) {
-        throw new Error('Failed to fetch search results');
+        throw new Error("Failed to fetch search results");
       }
 
       const data = await res.json();
-      onSearch(data.products); // Pass the products data back to the parent
+      setSearchResults(data.products); // Update search results with fetched products
     } catch (error) {
       console.error("Error searching for products:", error);
     }
-  }, [onSearch]);
+  }, []);
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -56,7 +54,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
   };
 
   return (
-    <div className="relative w-[750px] max-2xl:w-[500px] max-xl:w-[250px] max-lg:hidden">
+    <div className="relative w-[650px] max-2xl:w-[500px] max-xl:w-[250px] max-lg:hidden">
       <input
         className="w-full h-12 px-4 py-2 rounded-full max-lg:hidden border border-gray-300"
         type="text"
@@ -72,6 +70,17 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
       >
         <CiSearch className="w-8 h-8 transform duration-500 group-hover:w-10 group-hover:h-10" />
       </button>
+
+      {/* Display search results */}
+      {searchResults.length > 0 && (
+        <div className="absolute top-14 left-0 w-full bg-white shadow-lg max-h-60 overflow-y-auto">
+          {searchResults.map((product) => (
+            <div key={product.id} className="p-2 hover:bg-gray-200">
+              {product.name}
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

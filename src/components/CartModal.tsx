@@ -1,4 +1,4 @@
-import React, { useMemo, useCallback, useState } from "react";
+import React, { useMemo, useCallback, useState, useEffect } from "react";
 import Image from "next/image";
 import { FaRegTrashAlt } from "react-icons/fa";
 import Link from "next/link";
@@ -60,10 +60,17 @@ const CartModal: React.FC<CartModalProps> = ({ items, onClose }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 4;
   const totalPages = useMemo(() => Math.ceil(items.length / itemsPerPage), [items.length]);
-  
+
   const paginatedItems = useMemo(() => {
     return items.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
-  }, [items, currentPage]);
+  }, [items, currentPage, itemsPerPage]);
+
+  // Ensure that the current page is within bounds when items change
+  useEffect(() => {
+    if (currentPage > totalPages) {
+      setCurrentPage(totalPages);
+    }
+  }, [currentPage, totalPages]);
 
   if (items.length === 0) {
     return null;
@@ -85,13 +92,13 @@ const CartModal: React.FC<CartModalProps> = ({ items, onClose }) => {
         />
       </div>
       <div className="flex flex-col">
-        {paginatedItems.length === 0 ? (
+        {items.length === 0 ? (
           <p className="text-center text-black">Your cart is empty.</p>
         ) : (
           paginatedItems.map((item) => (
             <div
               key={item._id}
-              className="flex items-center justify-between max-md:mx-[10%] py-2 border-b-2"
+              className="flex items-center justify-between py-2 max-md:mx-[10%] border-b-2"
             >
               <Image
                 className="object-cover"

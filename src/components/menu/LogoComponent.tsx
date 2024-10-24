@@ -3,7 +3,6 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import HaderafteFirst from "./HaderafteFirst";
 
 interface CompanyData {
 
@@ -37,9 +36,7 @@ const Header: React.FC = async() => {
               src={companyData?.logoUrl}
               alt="Luxe Home logo"
             />
-        </Link>
-        <HaderafteFirst/>
-       
+        </Link>       
       </div>
   
   );
