@@ -54,17 +54,17 @@ const Headertop: React.FC = async () => {
   };
 
   return (
-    <div className="w-full h-[40px] flex bg-primary max-lg:hidden justify-center border-b-[0.5px]">
+    <div className="w-full h-[40px] flex bg-primary max-lg:hidden justify-center">
         <div className="flex w-[90%] text-white justify-between max-2xl:text-base text-sm">
           <div className="flex gap-6 items-center">
             <p className="flex gap-2 items-center">
             <span className="font-semibold uppercase tracking-wider"> Address: </span>{companyData.address}, {companyData.zipcode}
               {companyData.addresse?.city}, {companyData.governorate}, Tunisie
             </p>
-            <p className="flex gap-2 items-center border-l px-4">
+            <p className="flex gap-2 items-center  px-4">
             <span className="font-semibold uppercase tracking-wider">TELE: </span> +216 {formatPhoneNumber(companyData.phone)}
             </p>
-            <p className="flex gap-2 items-center border-l px-4"><span className="font-semibold uppercase tracking-wider">EMAIL: </span>{companyData.email}</p>
+            <p className="flex gap-2 items-center px-4"><span className="font-semibold uppercase tracking-wider">EMAIL: </span>{companyData.email}</p>
           </div>
           <div className="flex w-[200px] gap-4 justify-center items-center px-4">
             {/* Social Media Icons */}

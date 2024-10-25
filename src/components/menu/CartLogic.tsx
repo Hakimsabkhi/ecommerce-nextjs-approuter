@@ -8,7 +8,6 @@ import Total from "./Total";
 import CartModal from "../CartModal";
 import CartModalOnscroll from "../CartModalOnscroll";
 import { usePathname } from "next/navigation";
-import { AiOutlineHeart } from "react-icons/ai";
 
 const CartLogic = () => {
   const [isCartOpen, setIsCartOpen] = useState(false);
@@ -18,7 +17,7 @@ const CartLogic = () => {
   const [isScrolling, setIsScrolling] = useState(false);
 
   const cartModalWrapperRef = useRef<HTMLDivElement>(null);
-  const onscrollCartModalWrapperRef = useRef<HTMLDivElement>(null); // New ref for onscroll modal
+  const onscrollCartModalWrapperRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
 
   const toggleCartModal = () => {
@@ -133,7 +132,7 @@ const CartLogic = () => {
       {isScrolling && (
         <div
           className="fixed top-5 right-5 rounded-full z-50 bg-[#15335D] w-fit p-4 flex items-center gap-4 border-10 border-black select-none"
-          ref={onscrollCartModalWrapperRef} // Use the new ref for onscroll cart modal
+          ref={onscrollCartModalWrapperRef} 
           onClick={toggleCartOnscrollModal}
         >
           <div className="relative">
