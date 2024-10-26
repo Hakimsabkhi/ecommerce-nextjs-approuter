@@ -52,7 +52,7 @@ const fetchReviews = async (productId: string) => {
   return data; // Ensure you return the fetched data
 };
 
-const ReviewBlock: React.FC<ReviewBlockProps> = ({ productId, product,refresh }) => {
+const ReviewBlock2: React.FC<ReviewBlockProps> = ({ productId, product,refresh }) => {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -113,8 +113,8 @@ const ReviewBlock: React.FC<ReviewBlockProps> = ({ productId, product,refresh })
 
 
   return (
-    <div className="flex flex-col gap-4">
-      <div className="px-4 flex items-center justify-between">
+    <div className="flex flex-col gap-4 bg-red-200">
+      <div className="px-4 flex items-center justify-between bg-orange-300">
         <label htmlFor="review" className="text-lg uppercase">
           {numberOfReviews} reviews for {product?.name}
         </label>
@@ -129,10 +129,10 @@ const ReviewBlock: React.FC<ReviewBlockProps> = ({ productId, product,refresh })
         ) : (
           reviews.map((review) => (
             <div key={review._id} className="w-full max-lg:w-full flex flex-col p-4">
-              <div className="flex flex-col gap-8  rounded-t-lg drop-shadow-md px-4 py-8 bg-white">
-                <div className="flex flex-col gap-8 ">
+              <div className="flex flex-col gap-8 border-2 border-[#525566] rounded-t-lg px-4 py-8">
+                <div className="flex flex-col gap-8">
                   <div>
-                    <div className="flex  justify-between items-center">
+                    <div className="flex justify-between items-center">
                       <p className="text-lg font-bold uppercase">{review.name}</p>
                       <p className="text-[#525566]">
                         {new Date(review.createdAt).toLocaleDateString("en-US", {
@@ -173,7 +173,7 @@ const ReviewBlock: React.FC<ReviewBlockProps> = ({ productId, product,refresh })
     
 
 
-             {review.user && <div className="flex flex-col mt-2 bg-white rounded-b-lg drop-shadow-md px-4 py-8">
+             {review.user && <div className="flex flex-col border-2 bg-gray-200 border-[#525566] rounded-b-lg px-4 py-8">
                 <div className="flex flex-col gap-4">
                   <div className="flex justify-between items-center">
                     
@@ -201,4 +201,4 @@ const ReviewBlock: React.FC<ReviewBlockProps> = ({ productId, product,refresh })
   );
 };
 
-export default ReviewBlock;
+export default ReviewBlock2;
