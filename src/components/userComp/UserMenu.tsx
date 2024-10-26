@@ -1,61 +1,97 @@
-'use client'; // UserMenu remains a client component
+"use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
-import { FaRegUserCircle } from 'react-icons/fa';
+import { AiOutlineUser } from "react-icons/ai";
 import Dropdown from "@/components/Dropdown";
+import { usePathname } from "next/navigation";
 import { Session } from "next-auth";
 
 interface UserMenuProps {
-  session: Session | null; 
+  session: Session | null;
 }
 
 const UserMenu: React.FC<UserMenuProps> = ({ session }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const pathname = usePathname();
+
   const toggleDropdown = () => {
     setIsDropdownOpen((prev) => !prev);
   };
 
-  if (session) {
-    return (
-      <div className="relative inline-block">
-        <button
-          onClick={toggleDropdown}
-          className="flex w-fit items-center gap-4 justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white font-bold text-primary"
-        >
-          <FaRegUserCircle size={25} />
-          <p className="max-lg:hidden">MON COMPTE</p>
-        </button>
+  const closeDropdown = () => {
+    setIsDropdownOpen(false);
+  };
 
-        {isDropdownOpen && (
-          <Dropdown
-            username={session.user?.name ?? ""}
-            role={session.user?.role ?? ""}
-          />
-        )}
-      </div>
-    );
-  }
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        isDropdownOpen &&
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        closeDropdown();
+      }
+    };
+
+    const handleScroll = () => {
+      if (isDropdownOpen) closeDropdown();
+    };
+
+    if (isDropdownOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+      window.addEventListener("scroll", handleScroll);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [isDropdownOpen]);
+
+  useEffect(() => {
+    closeDropdown();
+  }, [pathname]);
 
   return (
-    <div className="flex gap-4">
-      <Link href="/signin" aria-label="Sign in page">
-        <button
-          aria-label="Sign in"
-          className="flex items-center space-x-2 text-white bg-primary hover:bg-white hover:text-primary font-bold rounded-md px-8 py-2"
-        >
-          <span>LOGIN</span>
-        </button>
-      </Link>
-      <Link href="/signup" aria-label="Sign up page">
-        <button
-          aria-label="Register"
-          className="flex items-center space-x-2 text-primary bg-white hover:text-white hover:bg-primary font-bold rounded-md px-8 py-2"
-        >
-          <span>REGISTER</span>
-        </button>
-      </Link>
+    <div className="flex items-center justify-center w-[200px] max-lg:w-fit text-white cursor-pointer select-none">
+      <div
+        className="flex items-center justify-center gap-2 w-fit max-lg:w-fit text-white"
+        ref={dropdownRef}
+        onClick={toggleDropdown}
+      >
+        <div className="relative my-auto mx-2">
+          <AiOutlineUser size={40} />
+          {isDropdownOpen && (
+            session ? (
+              <div
+                className="absolute shadow-xl z-30 flex gap-2 flex-col top-12 -translate-x-1/5"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <Dropdown
+                  username={session.user?.name ?? ""}
+                  role={session.user?.role ?? ""}
+                />
+              </div>
+            ) : (
+              <div className="absolute shadow-xl z-30 flex flex-col gap-4 top-12 -translate-x-1/5 bg-white p-4 border-[#15335D] border-4 rounded-lg">
+                <Link href="/signin" className="bg-primary px-8 py-2 rounded border-2 border-primary text-center hover:bg-white hover:text-black ">
+                  LOGIN
+                </Link>
+                <Link href="/signup" className="bg-secondary px-8 py-2 border-2 border-secondary rounded text-center hover:bg-white hover:text-black">
+                  REGISTER
+                </Link>
+              </div>
+            )
+          )}
+        </div>
+        <div className="flex flex-col">
+          <p className="text-[#C1C4D6] text-sm">My Account</p>
+          <p className="text-white font-bold">Details</p>
+        </div>
+      </div>
     </div>
   );
 };

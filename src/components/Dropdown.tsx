@@ -41,8 +41,8 @@ const Dropdown: React.FC<DropdownProps> = ({ username, role }) => {
   }, [dropdownOpen, handleClickOutside, handleScroll]);
 
   return dropdownOpen ? (
-    <div ref={dropdownRef} className="relative">
-      <div className="absolute right-0 z-50 mt-2 w-[180px] rounded-md shadow-lg bg-white">
+
+      <div className="flex flex-col px-4 w-[200px] max-md:w-[350px] border-[#15335D] border-4 rounded-lg bg-white z-30">
         <div className="px-4 py-2 text-sm text-gray-900">
           <div className="font-bold">{username}</div>
           <div className="text-gray-500">Role: {role}</div>
@@ -79,7 +79,6 @@ const Dropdown: React.FC<DropdownProps> = ({ username, role }) => {
           Sign out
         </Link>
       </div>
-    </div>
   ) : null;
 };
 

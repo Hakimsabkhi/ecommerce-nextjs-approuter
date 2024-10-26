@@ -29,7 +29,7 @@ interface CartItem {
         return total + finalPrice * item.quantity;
       }, 0);
     return (
-        <span className=" w-[120px] text-xl text-center max-lg:hidden">{totalPrice} TND</span>
+        <span className=" w-[120px] text-lg max-lg:hidden">{totalPrice} TND</span>
     );
 };
 

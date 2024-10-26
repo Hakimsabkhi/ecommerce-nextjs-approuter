@@ -25,9 +25,9 @@ export default async function Banner() {
     const currentSlide = slideData[page - 1]; */
     const companyData = await fetchCompanyData();
     return (
-        <div className="relative md:h-[600px] bg-white rounded shadow-lg mb-6">
+        <div className="relative md:h-[600px] shadow-lg">
             <Image
-                className="w-full md:h-full rounded shadow-lg bg-white"
+                className="w-full md:h-full"
                 fill
                 style={{ objectFit: 'cover' }} 
                 alt="banner"

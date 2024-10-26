@@ -1,6 +1,6 @@
 import React from "react";
 import Footer from "@/components/menu/Footer";
-import Header from "./menu/HeaderFirstSection";
+import Header from "./menu/LogoComponent";
 import Headertop from "./menu/Headertop";
 import HeaderBottom from "./menu/Headerbottom";
 import UserMenu from "@/components/userComp/UserMenu";

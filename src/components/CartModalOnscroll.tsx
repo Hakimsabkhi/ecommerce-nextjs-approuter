@@ -21,12 +21,12 @@ interface CartItem {
   quantity: number;
 }
 
-interface CartModalProps {
+interface CartModalOnscrollProps {
   items: CartItem[];
   onClose: () => void;
 }
 
-const CartModal: React.FC<CartModalProps> = ({ items, onClose }) => {
+const CartModalOnscroll: React.FC<CartModalOnscrollProps> = ({ items, onClose }) => {
   const dispatch = useDispatch();
 
   const totalPrice = useMemo(() => {
@@ -172,4 +172,4 @@ const CartModal: React.FC<CartModalProps> = ({ items, onClose }) => {
   );
 };
 
-export default CartModal;
+export default CartModalOnscroll;

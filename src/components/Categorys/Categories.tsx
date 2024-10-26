@@ -50,7 +50,7 @@ const Categories: React.FC=  async () => {
                             <p className='cursor-pointer absolute xl:group-hover:top-32 lg:group-hover:top-12 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white text-black text-xl max-xl:text-sm max-md:text-sm rounded-3xl max-xl:px-3 w-[70%] text-center py-1 duration-500 max-lg:text-xs'>
                                 {category.name}
                             </p>
-                            <p className='cursor-pointer absolute top-[80%] xl:group-hover:top-44 lg:group-hover:top-20 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-xl max-xl:text-xs opacity-0 lg:group-hover:opacity-100 pt-2 duration-500'>
+                            <p className='cursor-pointer absolute top-[80%] xl:group-hover:top-44 lg:group-hover:top-20 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-lg max-xl:text-xs opacity-0 lg:group-hover:opacity-100 pt-2 duration-500'>
                                 16 products
                             </p>
                             <Image

@@ -3,7 +3,6 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import HaderafteFirst from "./HaderafteFirst";
 
 interface CompanyData {
 
@@ -28,7 +27,7 @@ const Header: React.FC = async() => {
   const companyData = await fetchCompanyData();
   return (
     
-      <div className="flex w-fit max-lg:w-[200px] gap-4 items-center justify-around">
+      <div className="flex w-fit max-lg:w-[50%] gap-4 items-center justify-around">
         <Link href="/" aria-label="Home page">    
           <Image
               width={300}
@@ -37,9 +36,7 @@ const Header: React.FC = async() => {
               src={companyData?.logoUrl}
               alt="Luxe Home logo"
             />
-        </Link>
-        <HaderafteFirst/>
-       
+        </Link>       
       </div>
   
   );
