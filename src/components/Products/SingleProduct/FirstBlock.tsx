@@ -33,7 +33,6 @@ interface Product {
   color?: string;
   material?: string;
   status?: string;
-  
 }
 
 interface Brand {
@@ -85,13 +84,13 @@ const FirstBlock: React.FC<FirstBlockProps> = ({ product }) => {
   const items = useSelector((state: RootState) => state.cart.items);
   console.log(items);
   const dispatch = useDispatch();
- 
+
   const addToCartHandler = (product: Product, quantity: number) => {
-     // Ensure dispatch is available
-  
+    // Ensure dispatch is available
+
     // Dispatch the action with item and quantity
     dispatch(addItem({ item: product, quantity }));
-  
+
     // Show success notification
     toast.success(`${product.name} added to cart with quantity ${quantity}!`);
   };
@@ -100,12 +99,13 @@ const FirstBlock: React.FC<FirstBlockProps> = ({ product }) => {
       <Head>
         <link rel="preload" as="image" href={product?.imageUrl || noimage} />
       </Head>
-      <main className="w-full bg-white pb-10 pt-20 flex justify-center">
+      <main className="p-10 flex justify-center ">
         {product ? (
-          <div className="flex gap-10 max-2xl:flex-col w-[80%] max-lg:w-[95%] max-lg:h-[1062px] items-center">
-            <div className="relative w-[50%] gap-2 pb-5 items-center">
+          <div className="flex max-xl:flex-col gap-10 2xl:w-[80%] xl:w-[90%] max-xl:w-[95%]">
+            <div className="mx-auto">
               <div
-                className="relative w-[500px] h-[500px] overflow-hidden cursor-zoom-in	"
+                className="relative max-lg:h-96 max-md:h-80 xl:w-[800px] xl:h-[430px] 
+                            lg:w-[866px] lg:h-[513px] overflow-hidden cursor-zoom-in"
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
                 onMouseMove={handleMouseMove}
@@ -113,9 +113,9 @@ const FirstBlock: React.FC<FirstBlockProps> = ({ product }) => {
                 <Image
                   src={mainImage}
                   alt={product.name || "Product image"}
-                  layout="fill"
-                  objectFit="cover"
                   loading="eager"
+                  width={1000}
+                  height={1000}
                   className="transition-transform duration-300 ease-in-out"
                 />
                 {isZoomed && (
@@ -131,25 +131,26 @@ const FirstBlock: React.FC<FirstBlockProps> = ({ product }) => {
                   />
                 )}
               </div>
-              <div className="flex gap-8 max-sm:justify-around">
+
+              <div className="gap-8 flex justify-center p-4">
                 {product.images && product.images.length > 0 ? (
                   product.images.map((image, index) => (
                     <div
                       key={index}
-                      className={`relative cursor-pointer max-md:w-[30%] max-sm:w-[20%] ${
-                        selectedImage === image
-                          ? "border-2 border-[#15335D]"
-                          : ""
-                      }`}
+                      className={`relative overflow-hidden cursor-pointer max-sm:w-[20%] w-[100px] h-[60px]   ${
+                                    selectedImage === image
+                                      ? "border-2 border-[#15335D]"
+                                      : ""
+                                  }`}
                     >
                       <Image
                         src={image}
                         alt={`Image ${index + 1}`}
                         onClick={() => handleImageClick(image)}
-                        layout="responsive" // Ensures the image scales correctly
-                        width={500} // Example width, can be adjusted
-                        height={500} // Example height, can be adjusted
-                        style={{ objectFit: "cover", height: "50%" }} // Adjust height to 50% of parent container
+                        layout="" // Ensures the image scales correctly
+                        width={1000} // Example width, can be adjusted
+                        height={1000} // Example height, can be adjusted
+                        // Adjust height to 50% of parent container
                       />
                     </div>
                   ))
@@ -158,21 +159,25 @@ const FirstBlock: React.FC<FirstBlockProps> = ({ product }) => {
                 )}
               </div>
             </div>
+
             <div
-              className={`flex flex-col ${
-                hasNoImages ? "w-[50%]" : "w-full"
-              } gap-5`}
+              className={`flex flex-col  max-lg:w-[100%] ${
+                hasNoImages ? "w-[50%]" : ""
+              } gap-2`}
             >
-              <p className="text-3xl font-bold">{product.name}</p>
-              <div className="flex gap-4 items-center">
+              <p className="text-4xl uppercase">{product.name}</p>
+
+              <div className=" gap-4 flex">
                 <p className="flex items-center font-bold">
-                  SKU <span className="text-[#525566]">: {product.ref}</span>
+                  SKU :&nbsp;
+                  <span className="text-[#525566]">{product.ref}</span>
                 </p>
                 <p className="text-[#525566] font-bold flex items-center gap-2">
                   <IoCheckboxOutline size={25} /> {product.status}
                 </p>
               </div>
-              <div className="flex gap-3 items-center">
+
+              <div className="flex gap-3 items-center pb-5">
                 <div className="flex gap-1">
                   <Image
                     className="size-4 max-md:size-4"
@@ -202,13 +207,14 @@ const FirstBlock: React.FC<FirstBlockProps> = ({ product }) => {
                 </div>
                 <p>(2 customer reviews)</p>
               </div>
-              <p>{product.info}</p>
+              <p className="text-sm">{product.info}</p>
+              <hr className="bg-gray-500 mt-5 mb-5"></hr>
 
               <ProductQ product={product} addToCartHandler={addToCartHandler} />
             </div>
           </div>
         ) : (
-          <div className="h-[465.59px] max-lg:h-[1062px]"></div>
+          <div className=""></div>
         )}
       </main>
     </>

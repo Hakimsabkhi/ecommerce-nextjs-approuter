@@ -87,5 +87,3 @@ export default async function Page({ params }: { params: {slugCategory: string ,
     </div>
   );
 };
-
-
