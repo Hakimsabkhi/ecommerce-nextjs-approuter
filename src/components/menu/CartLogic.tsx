@@ -113,16 +113,16 @@ const CartLogic = () => {
               
               </div>
               <div
-                className="absolute shadow-xl z-30 flex gap-2 flex-col top-12 -translate-x-1/3"
-                onClick={(e) => e.stopPropagation()} // Prevent modal close when clicking inside
-              >
+  className="absolute max-md:fixed shadow-xl z-30 flex gap-2 flex-col top-12 left-1/2 -translate-x-1/3 max-md:-translate-x-1/2 max-md:top-1/2 max-md:-translate-y-1/2"
+  onClick={(e) => e.stopPropagation()} // Prevent modal close when clicking inside
+>
                 {isCartOpen && !isOnscrollCart && items.length > 0 && (
                   <CartModal items={items} onClose={closeCartModal} />
                 )}
               </div>
             </div>
             <div className="flex flex-col">
-              <p className="text-text text-sm">Mon Panier</p>
+              <p className="text-text text-sm max-md:hidden">Mon Panier</p>
               <Total items={items} />
             </div>
           </div>      

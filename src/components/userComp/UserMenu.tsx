@@ -67,7 +67,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ session }) => {
           {isDropdownOpen && (
             session ? (
               <div
-                className="absolute shadow-xl z-30 flex gap-2 flex-col top-12 -translate-x-1/5"
+                className="absolute shadow-xl z-30 flex gap-2 flex-col top-12 -translate-x-1/5 max-md:-translate-x-1/2"
                 onClick={(e) => e.stopPropagation()}
               >
                 <Dropdown
@@ -88,8 +88,8 @@ const UserMenu: React.FC<UserMenuProps> = ({ session }) => {
           )}
         </div>
         <div className="flex flex-col">
-          <p className="text-[#C1C4D6] text-sm">My Account</p>
-          <p className="text-white font-bold">Details</p>
+          <p className="text-[#C1C4D6] text-sm max-md:hidden">My Account</p>
+          <p className="text-white font-bold max-lg:hidden">Details</p>
         </div>
       </div>
     </div>

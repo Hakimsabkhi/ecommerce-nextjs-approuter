@@ -54,7 +54,7 @@ const SearchBar: React.FC = () => {
   };
 
   return (
-    <div className="relative w-[650px] max-2xl:w-[500px] max-xl:w-[250px] max-lg:hidden">
+    <div className="relative w-[650px] max-2xl:w-[500px] max-xl:w-[250px] max-xl:hidden">
       <input
         className="w-full h-12 px-4 py-2 rounded-full max-lg:hidden border border-gray-300"
         type="text"

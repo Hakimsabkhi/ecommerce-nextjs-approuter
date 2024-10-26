@@ -56,7 +56,7 @@ const Headertop: React.FC = async () => {
   return (
     <div className="w-full h-[40px] flex bg-primary max-lg:hidden justify-center">
         <div className="flex w-[90%] text-white justify-between max-2xl:text-base text-sm">
-          <div className="flex gap-6 items-center">
+          <div className="flex gap-2 items-center text-sm max-xl:text-xs">
             <p className="flex gap-2 items-center">
             <span className="font-semibold uppercase tracking-wider"> Address: </span>{companyData.address}, {companyData.zipcode}
               {companyData.addresse?.city}, {companyData.governorate}, Tunisie
