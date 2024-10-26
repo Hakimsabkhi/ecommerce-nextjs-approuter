@@ -67,7 +67,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ session }) => {
           {isDropdownOpen && (
             session ? (
               <div
-                className="absolute shadow-xl z-30 flex gap-2 flex-col top-12 -translate-x-1/5 max-md:-translate-x-1/2"
+                className="absolute shadow-xl z-30 flex gap-2 flex-col top-12 -translate-x-1/5 max-md:-translate-x-28"
                 onClick={(e) => e.stopPropagation()}
               >
                 <Dropdown
