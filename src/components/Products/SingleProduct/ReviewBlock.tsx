@@ -154,7 +154,7 @@ const ReviewBlock: React.FC<ReviewBlockProps> = ({ productId, product,refresh })
                               <FaStar key={index + review.rating} className="text-gray-300" />
                             ))}
                           </div>
-                          <div className="flex gap-4 pb-2">
+                          <div className="flex gap-4 pb-1">
                             <div className="flex gap-1">
                             <button  onClick={() => handleVote('like',review._id)}>
                               <AiOutlineLike size={25} color={getlikeColor(review)} />
