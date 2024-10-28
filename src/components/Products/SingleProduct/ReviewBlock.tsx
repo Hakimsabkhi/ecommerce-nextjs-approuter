@@ -113,7 +113,7 @@ const ReviewBlock: React.FC<ReviewBlockProps> = ({ productId, product,refresh })
 
 
   return (
-    <div className="flex flex-col gap-4 ">
+    <div className="flex flex-col gap-4 bg-slate-400">
       <div className="px-4 flex items-center justify-between">
         <label htmlFor="review" className="text-lg uppercase">
           {numberOfReviews} reviews for {product?.name}
@@ -124,7 +124,7 @@ const ReviewBlock: React.FC<ReviewBlockProps> = ({ productId, product,refresh })
       <div className="grid grid-cols-1 max-md:grid-cols-1">
         {reviews.length === 0 ? (
          
-           <hr className="h-px w-[200%] bg-gray-200 border-0 dark:bg-gray-700"/>
+           <hr className="h-px w-[200%] bg-gray-200 hidden border-0 dark:bg-gray-700"/>
         
         ) : (
           reviews.map((review) => (
@@ -132,10 +132,10 @@ const ReviewBlock: React.FC<ReviewBlockProps> = ({ productId, product,refresh })
               <div className="flex flex-col gap-8  rounded-t-lg drop-shadow-md px-4 py-8 bg-white">
                 <div className="flex flex-col gap-8 ">
                 <p className="text-[#525566]">{review.text}</p>
-                <hr></hr>
-                  <div>
+              <hr></hr>
+                  
                     <div className="flex gap-4 justify-between items-center">
-                       <div className="flex gap-4"> 
+                       <div className="flex gap-4 items-center"> 
                         <p className="text-lg font-bold uppercase">{review.name}</p>
                         <p className="text-[#525566]">
                           {new Date(review.createdAt).toLocaleDateString("en-US", {
@@ -146,32 +146,32 @@ const ReviewBlock: React.FC<ReviewBlockProps> = ({ productId, product,refresh })
                         </p> 
                         </div>
                         <div className="flex gap-4" >
-                        <div className="text-primary flex items-center gap-1">
-                          {[...Array(review.rating)].map((_, index) => (
-                            <FaStar key={index} />
-                          ))}
-                          {[...Array(5 - review.rating)].map((_, index) => (
-                            <FaStar key={index + review.rating} className="text-gray-300" />
-                          ))}
-                        </div>
-                        <div className="flex items-center gap-4">
-                          <div className="flex items-center gap-1">
-                          <button  onClick={() => handleVote('like',review._id)}>
-                            <AiOutlineLike size={25} color={getlikeColor(review)} />
-                            </button>
-                            <p className="text-2xl text-gray-400">{review.likes ? review.likes.length : 0}</p>
+                          <div className="text-primary flex items-center gap-1">
+                            {[...Array(review.rating)].map((_, index) => (
+                              <FaStar key={index} />
+                            ))}
+                            {[...Array(5 - review.rating)].map((_, index) => (
+                              <FaStar key={index + review.rating} className="text-gray-300" />
+                            ))}
                           </div>
+                          <div className="flex gap-4 pb-2">
+                            <div className="flex gap-1">
+                            <button  onClick={() => handleVote('like',review._id)}>
+                              <AiOutlineLike size={25} color={getlikeColor(review)} />
+                              </button>
+                              <p className="text-2xl text-gray-400">{review.likes ? review.likes.length : 0}</p>
+                            </div>
 
-                          <div className="flex items-center gap-1">
-                          <button  onClick={() => handleVote('dislike',review._id)}>
-                            <AiOutlineDislike size={25} color={getDislikeColor(review) } />
-                          </button>
-                            <p className="text-2xl text-gray-400">{review.dislikes ? review.dislikes.length : 0}</p>
+                            <div className="flex gap-1">
+                            <button  onClick={() => handleVote('dislike',review._id)}>
+                              <AiOutlineDislike size={25} color={getDislikeColor(review) } />
+                            </button>
+                              <p className="text-2xl text-gray-400">{review.dislikes ? review.dislikes.length : 0}</p>
+                            </div>
                           </div>
-                        </div>
                         </div>
                     </div>
-                  </div>
+                  
                  
                 </div>
                 

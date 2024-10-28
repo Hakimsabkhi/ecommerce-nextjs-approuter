@@ -99,9 +99,9 @@ const FirstBlock: React.FC<FirstBlockProps> = ({ product }) => {
       <Head>
         <link rel="preload" as="image" href={product?.imageUrl || noimage} />
       </Head>
-      <main className="p-10 flex justify-center ">
+      <main className="p-10 flex justify-center">
         {product ? (
-          <div className="flex max-xl:flex-col gap-10 2xl:w-[80%] xl:w-[90%] max-xl:w-[95%]">
+          <div className="flex max-xl:flex-col gap-10 2xl:w-[80%] xl:w-[95%] max-xl:w-[95%]">
             <div className="mx-auto">
               <div
                 className="relative max-lg:h-96 max-md:h-80 xl:w-[800px] xl:h-[430px] 
