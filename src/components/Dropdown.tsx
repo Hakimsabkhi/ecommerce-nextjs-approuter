@@ -50,7 +50,7 @@ const Dropdown: React.FC<DropdownProps> = ({ username, role }) => {
         <div className="border-t border-gray-100"></div>
         {(role === 'Admin' || role === 'SuperAdmin') && (
           <Link
-            href="/admin/dashboard"
+            href="/admin/users"
             className="block px-4 py-2 text-sm text-primary hover:bg-primary hover:text-white"
           >
             Dashboard

@@ -8,6 +8,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { addItem } from "@/store/cartSlice";
 import { RootState } from "@/store";
 import { toast } from "react-toastify";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 interface Brand {
   _id: string;
@@ -41,9 +43,30 @@ interface ProductCardProps {
 
 const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
   const [clicked, setClicked] = useState(false);
+  const session = useSession();
+  const route = useRouter();
 
-  const handleClick = () => {
-    setClicked(!clicked);
+  const handleClick = async (_id:string) => {
+    if(session.status==="unauthenticated")
+    {
+      route.push("/signin")
+    }
+    try {
+      const formData = new FormData();
+      formData.append("product_id", _id);
+      const response = await fetch(`/api/favorite/postfavorite`, {
+        method: 'POST',
+       
+        body: formData,
+      });
+ 
+      if (!response.ok) {
+        throw new Error('Failed to favorite');
+      }
+      
+    } catch (error) {
+      console.error('Failed to favorite', error);
+    }
   };
 
   const dispatch = useDispatch();
@@ -149,8 +172,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
             </button>
           </a>
           <button
-            onClick={handleClick}
-            className="relative bg-white hover:bg-primary max-md:rounded-[3px] AddtoCart w-[15%] group/box text-primary hover:text-white border border-[#8D4407] max-lg:hidden"
+            onClick={()=>handleClick(item._id)}
+            className="relative bg-white hover:bg-primary max-md:rounded-[3px] AddtoCart w-[15%] group/box text-primary hover:text-white border border-primary max-lg:hidden"
             aria-label="wishlist"
           >
             <p className="absolute flex items-center justify-center w-full h-full">
