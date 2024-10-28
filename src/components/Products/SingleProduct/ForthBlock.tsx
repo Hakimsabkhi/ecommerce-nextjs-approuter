@@ -1,6 +1,7 @@
 "use client";
 import React, { FormEvent, useRef, useState } from "react";
 import ReviewBlock from "./ReviewBlock";
+import ReviewBlock2 from "./ReviewBlock2";
 import { FaStar } from "react-icons/fa";
 import { FaRegStar } from "react-icons/fa";
 import { useParams } from "next/navigation";
@@ -85,7 +86,7 @@ const ForthBlock: React.FC<{ product: Product | null }> = ({ product }) => {
   }
 };
   return (
-    <main className=" desktop max-lg:w-[95%] my-10 bg-white rounded-lg flex flex-col gap-20  ">
+    <main className="bg-blue-50 desktop max-lg:w-[95%] my-10  rounded-lg flex flex-col gap-20  ">
       {/* top */}
       <div className="flex max-lg:flex-col justify-between">
         <div className="w-[50%] max-lg:w-full flex flex-col  gap-8 p-4">
@@ -162,7 +163,8 @@ const ForthBlock: React.FC<{ product: Product | null }> = ({ product }) => {
           </div>
         </div>
         <div className="w-[50%] max-lg:w-full p-4 ">
-          <div className="flex flex-col  gap-5">
+          <ReviewBlock product={product} productId={productId} key={key} />
+          <div className="flex flex-col w-[95%] mx-auto gap-5">
             <p className="text-xl">ADD A REVIEW</p>
             <p className="text-[#525566]">
               Your email adress will not be published. Required fields are
@@ -251,7 +253,7 @@ const ForthBlock: React.FC<{ product: Product | null }> = ({ product }) => {
         </div>
       </div>
       {/* mid */}
-     <ReviewBlock product={product} productId={productId} key={key} /> 
+      
     </main>
   );
 };
