@@ -1,6 +1,8 @@
 "use client"
 import LoadingSpinner from '@/components/LoadingSpinner';
 import Image from 'next/image';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
 
@@ -21,7 +23,8 @@ function CreateCompany() {
   const [iconPreview, setIconPreview] = useState<string | null>(null);
   const [iconFile, setIconFile] = useState<File | null>(null);
   const [iconPreviewBanner, setIconPreviewBanner] = useState<string | null>(null);
-  const [bannerFile, setBannerFile] = useState<File | null>(null); 
+  const [bannerFile, setBannerFile] = useState<File | null>(null);
+  const router=useRouter(); 
   const handleIconChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -47,6 +50,7 @@ function CreateCompany() {
       if (!response.ok) {
         throw new Error('Error fetching company data');
       }
+      
       const data = await response.json();
       setCompanyData(data);
       setIdCompany(data._id || '');
@@ -112,6 +116,7 @@ function CreateCompany() {
 
       const data = await response.json();
       fetchCompanyData();
+      router.push("/admin/company");
       console.log('Company added successfully:', data);
     } catch (error) {
       console.error('Error submitting the form:', error);
@@ -153,6 +158,7 @@ function CreateCompany() {
 
       const data = await response.json();
       fetchCompanyData();
+      router.push("/admin/company");
       console.log('Company added successfully:', data);
     } catch (error) {
       console.error('Error submitting the form:', error);
@@ -326,10 +332,20 @@ function CreateCompany() {
           </div>
         </div>
        
-        <div className="flex justify-center items-center">
+        <div className="flex justify-center items-center gap-4">
+     
       <button
+            type="button"
+            className="bg-gray-400 text-white hover:bg-gray-600 rounded-md w-[30%] h-10"
+          >
+             <Link href={"/admin/company"}>
+            <p className="text-white"> Cancel</p>
+            </Link>
+          </button>
+          
+          <button
             type="submit"
-            className="bg-gray-800 text-white hover:bg-gray-600 rounded-md w-[50%] h-10"
+            className="bg-gray-800 text-white hover:bg-gray-600 rounded-md w-[30%] h-10"
           >
             <p className="text-white">  {companyData ? 'Update Company' : 'Create Company'}</p>
           </button>
