@@ -43,7 +43,7 @@ export async function middleware(req: NextRequest) {
     }
   }
 // If the path is /admin, check the user's role
-if (req.nextUrl.pathname.startsWith('/admin/dashboard')) {
+if (req.nextUrl.pathname.startsWith('/admin/users')) {
   const userRole = token?.role;
 
   if (userRole !== 'SuperAdmin' && userRole !== 'Admin') {
