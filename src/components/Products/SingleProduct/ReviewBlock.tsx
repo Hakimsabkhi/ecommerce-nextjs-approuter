@@ -98,10 +98,10 @@ const ReviewBlock: React.FC<ReviewBlockProps> = ({ productId, product,refresh })
     }
   };
   const getDislikeColor = (review:Review) => {
-    return review.dislikes.some(user => user.email === session?.user?.email) ? 'red' : 'black';
+    return review.dislikes.some(user => user.email === session?.user?.email) ? 'red' : '#9CA3AF';
   };
   const getlikeColor = (review:Review) => {
-    return review.likes.some(user => user.email === session?.user?.email) ? 'blue' : 'black';
+    return review.likes.some(user => user.email === session?.user?.email) ? 'blue' : '#9CA3AF';
   };
 
  
@@ -159,14 +159,14 @@ const ReviewBlock: React.FC<ReviewBlockProps> = ({ productId, product,refresh })
                           <button  onClick={() => handleVote('like',review._id)}>
                             <AiOutlineLike size={25} color={getlikeColor(review)} />
                             </button>
-                            <p className="text-2xl">{review.likes ? review.likes.length : 0}</p>
+                            <p className="text-2xl text-gray-400">{review.likes ? review.likes.length : 0}</p>
                           </div>
 
                           <div className="flex items-center gap-1">
                           <button  onClick={() => handleVote('dislike',review._id)}>
-                            <AiOutlineDislike size={25} color={getDislikeColor(review)} />
+                            <AiOutlineDislike size={25} color={getDislikeColor(review) } />
                           </button>
-                            <p className="text-2xl">{review.dislikes ? review.dislikes.length : 0}</p>
+                            <p className="text-2xl text-gray-400">{review.dislikes ? review.dislikes.length : 0}</p>
                           </div>
                         </div>
                         </div>
