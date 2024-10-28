@@ -66,7 +66,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
       <div className="flex-col flex bottom-0 gap-2 w-full">
         <Link href={`/${item.category.slug}/${item.slug}`}>
           <div className="h-24 max-md:h-20">
-            <p className="text-gray-700 cursor-pointer text-3xl max-md:text-xl font-bold">
+            <p className="text-gray-700 cursor-pointer text-3xl max-lg:text-xl font-bold">
               {item.name}
             </p>
             <div className="flex-col gap-1">
@@ -100,7 +100,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
             item.stock > 0 ? (
               <button
                 onClick={() => addToCartHandler(item, 1)}
-                className="AddtoCart bg-primary hover:bg-[#15335D] text-white w-[50%] max-md:rounded-[3px] max-2xl:text-sm group/box"
+                className="AddtoCart bg-primary hover:bg-[#15335D] text-white w-[50%] max-lg:w-[60%] max-md:rounded-[3px] max-2xl:text-sm group/box"
               >
                 <p className="absolute flex items-center justify-center w-full h-full transition-all duration-300 transform lg:group-hover/box:translate-x-[10%] ease max-md:text-xs">
                   Add to cart
@@ -115,7 +115,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
               </button>
             ) : (
               <button
-                className="AddtoCart bg-gray-400 hover:bg-gray-500 text-white w-[50%] max-md:rounded-[3px] max-2xl:text-sm group/box"
+                className="AddtoCart bg-gray-400 hover:bg-gray-500 text-white w-[50%] max-lg:w-[60%] max-md:rounded-[3px] max-2xl:text-sm group/box"
                 disabled
               >
                 <p className="absolute flex items-center justify-center w-full h-full transition-all duration-300 transform lg:group-hover/box:translate-x-[10%] ease max-md:text-xs">
@@ -125,7 +125,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
             )
           ) : (
             <button
-              className="AddtoCart bg-gray-400 hover:bg-gray-500 text-white w-[50%] max-md:rounded-[3px] max-2xl:text-sm group/box"
+              className="AddtoCart bg-gray-400 hover:bg-gray-500 text-white max-lg:w-[60%] w-[50%]  max-md:rounded-[3px] max-2xl:text-sm group/box"
               disabled
             >
               <p className="absolute flex items-center justify-center w-full h-full transition-all duration-300 ease max-md:text-xs">
@@ -134,7 +134,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
             </button>
           )}
 
-          <a href={`/${item.category.slug}/${item.slug}`} className="w-[25%]">
+          <a href={`/${item.category.slug}/${item.slug}`} className="w-[25%] max-lg:w-[30%]">
             <button className="AddtoCart bg-white max-md:rounded-[3px] w-full group/box text-primary border border-primary">
               <p className="absolute flex items-center justify-center w-full h-full transition-all duration-300 transform lg:group-hover/box:translate-y-[-100%] ease max-md:text-xs">
                 View
@@ -150,7 +150,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
           </a>
           <button
             onClick={handleClick}
-            className="relative bg-white hover:bg-primary max-md:rounded-[3px] AddtoCart w-[15%] group/box text-primary hover:text-white border border-[#8D4407]"
+            className="relative bg-white hover:bg-primary max-md:rounded-[3px] AddtoCart w-[15%] group/box text-primary hover:text-white border border-[#8D4407] max-lg:hidden"
             aria-label="wishlist"
           >
             <p className="absolute flex items-center justify-center w-full h-full">
@@ -161,7 +161,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
               />
             </p>
             <p
-              className={`absolute flex items-center justify-center w-full h-full group-hover/box:opacity-100`}
+              className="absolute flex items-center justify-center w-full h-full group-hover/box:opacity-100"
             >
               <FaHeart
                 className="w-5 h-5 max-2xl:w-3 max-2xl:h-3"

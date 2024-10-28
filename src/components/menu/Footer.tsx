@@ -70,7 +70,7 @@ export default async function Bb() {
     }
     return (
         <div>
-            <div className="pt-8">
+            <div className="pt-8 flex flex-col justify-center items-center">
             <div className='bg-[#15335D] text-white items-center justify-center  flex py-16  max-md:py-8   w-full'>
                 <div className='flex items-start justify-between  w-[85%] max-lg:w-[98%] max-md:w-[95%] max-md:flex-col max-md:items-center max-md:gap-10'>
                     <div className='flex flex-col gap-8  items-center'>                    
@@ -164,7 +164,7 @@ export default async function Bb() {
                 </div>
             </div>
         
-                <div className="w-[60%] items-center justify-between text-[#525566] font-bold max-lg:w-[95%] max-md:text-[10px] flex max-md:flex-col gap-2">
+                <div className="w-[85%] items-center justify-between text-[#525566] font-bold max-lg:w-[95%] max-md:text-[10px] flex max-md:flex-col gap-2">
                     <p>© {companyData.name} - All rights reserved</p>
                     <div className=" flex items-center gap-4">
                         <p>Terms and conditions</p>
