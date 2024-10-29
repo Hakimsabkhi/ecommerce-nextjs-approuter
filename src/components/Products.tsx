@@ -80,10 +80,10 @@ const Products: React.FC<ProductsProps> = ({ products, brands }) => {
   });
 
   return (
-    <div className="py-8 desktop max-md:w-[95%] gap-8 max-md:items-center flex flex-cols-2">
+    <div className="py-8 desktop max-2xl:w-[95%] gap-8 max-md:items-center xl:flex xl:flex-cols-2 ">
       {/* Filter */}
         
-      <div className="w-1/6 border-2 p-2 rounded-lg shadow-md">
+      <div className="xl:w-1/6 sm:w-5/6 mx-auto  border-2 p-2 rounded-lg shadow-md ">
         <FilterProducts
           selectedBrand={selectedBrand}
           setSelectedBrand={setSelectedBrand}
@@ -104,7 +104,7 @@ const Products: React.FC<ProductsProps> = ({ products, brands }) => {
 
  
       {/* Products */}
-      <div className="w-5/6">
+      <div className="xl:w-5/6">
         <OrderPrice  setSortOrder={setSortOrder} sortOrder={sortOrder} />
         <ProductList products={sortedProducts} />
       </div>

@@ -11,7 +11,7 @@ const OrderPrice: React.FC<OrderPriceProps> = ({ setSortOrder, sortOrder }) => {
       <label htmlFor="sort-order" className="font-bold">Sort by Price:</label>
       <select
         id="sort-order"
-        className="w-[10%] p-2  border border-gray-300 rounded"
+        className="w-[150px] p-2  border border-gray-300 rounded"
         value={sortOrder}
         onChange={(e) => setSortOrder(e.target.value as "asc" | "desc")}
       >

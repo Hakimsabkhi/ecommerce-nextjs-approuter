@@ -92,18 +92,18 @@ const FilterProducts: React.FC<FilterProductsProps> = ({
       {/* Price Range Filter */}
       <div className="mb-4">
         <label className="font-bold">Price:</label>
-        <div className="flex justify-between mb-2">
+        <div className="flex justify-between mb-2 xl:max-2xl:grid gap-2 ">
           <input
             type="number"
             placeholder="Min Price"
-            className="w-1/2 p-2 border border-gray-300 rounded mr-2"
+            className="w-1/2 p-2 border border-gray-300 rounded  xl:max-2xl:w-full "
             value={minPrice || ''}
             onChange={(e) => setMinPrice(Number(e.target.value) || null)}
           />
           <input
             type="number"
             placeholder="Max Price"
-            className="w-1/2 p-2 border border-gray-300 rounded"
+            className="w-1/2 p-2 border border-gray-300 rounded xl:max-2xl:w-full"
             value={maxPrice || ''}
             onChange={(e) => setMaxPrice(Number(e.target.value) || null)}
           />
