@@ -111,8 +111,8 @@ const FilterProducts: React.FC<FilterProductsProps> = ({
         <Slider
           className="slider"
           min={1}
-          max={20000}
-          value={[minPrice || 1, maxPrice || 20000]}
+          max={200000}
+          value={[minPrice || 1, maxPrice || 200000]}
           onChange={(values) => {
             setMinPrice(values[0]);
             setMaxPrice(values[1]);
