@@ -23,10 +23,14 @@ export async function POST(req: NextRequest) {
       // Handle form data
       const formData = await req.formData();
       const product = formData.get('product_id') as string | null;
+      const lastFavorit = await Favorite.findOne({ product: product, user: user });
+    if(lastFavorit){
+        return NextResponse.json({ message: 'Error product exist in list your Favorite' }, { status: 301 });
+    }
       const newFavorite = new Favorite({ product,user });
       await newFavorite.save();
       return NextResponse.json(newFavorite, { status: 201 });
     } catch (error) {
-      return NextResponse.json({ message: 'Error creating Company' }, { status: 500 });
+      return NextResponse.json({ message: 'Error creating Favorite' }, { status: 500 });
     }
   }
