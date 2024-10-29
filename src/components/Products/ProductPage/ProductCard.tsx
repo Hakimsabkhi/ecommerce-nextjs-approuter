@@ -86,12 +86,22 @@ const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
           width={300}
         />
       </Link>
-      <div className="flex-col flex bottom-0 gap-2 w-full">
+      <div className="flex-col flex bottom-0 gap-2 pl-2 pr-2 w-full">
         <Link href={`/${item.category.slug}/${item.slug}`}>
-          <div className="h-24 max-md:h-20">
-            <p className="text-gray-700 cursor-pointer text-3xl max-lg:text-xl font-bold">
+          <div className=" flex justify-between h-24 max-md:h-20">
+            <div className="flex-col gap-1" >
+              <p className="text-gray-700 cursor-pointer text-3xl max-lg:text-xl font-bold">
               {item.name}
             </p>
+            <div className="flex gap-2 items-center">
+          {[...Array(5)].map((_, index) => (
+            <FaStar key={index} className="text-yellow-500 size-5 max-md:size-4" />
+          ))}
+          <p className="flex gap-2 text-xl max-md:text-sm font-bold items-center">
+            5
+          </p>
+        </div>
+             </div>
             <div className="flex-col gap-1">
               {item.discount && item.discount !== 0 ? (
                 <div className="flex-col flex gap-1">
@@ -110,14 +120,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
             </div>
           </div>
         </Link>
-        <div className="flex gap-2 items-center">
-          {[...Array(5)].map((_, index) => (
-            <FaStar key={index} className="text-yellow-500 size-5 max-md:size-4" />
-          ))}
-          <p className="flex gap-2 text-xl max-md:text-sm font-bold items-center">
-            5
-          </p>
-        </div>
+
         <div className="flex text-lg max-md:text-sm justify-between">
           {item.status !== "out-of-stock" ? (
             item.stock > 0 ? (

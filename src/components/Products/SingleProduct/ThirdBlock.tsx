@@ -43,7 +43,7 @@ const ThirdBlock: React.FC<{ product: Product | null }> = ({ product }) => {
                     </div>
                 </div>
                 <div className='w-[50%] max-lg:w-full flex flex-col gap-8  justify-center'>
-                    <div className="flex max-md:flex-col items-center justify-between">
+                    <div className="flex flex-col items-center justify-between gap-4">
                         <p className="text-3xl  uppercase">{product.brand?.name}</p>
                         <div className="flex items-center gap-3">
                             <p className="text-[#525566]">Share:</p>    

@@ -88,8 +88,8 @@ const ForthBlock: React.FC<{ product: Product | null }> = ({ product }) => {
   return (
     <main className="bg-blue-50 desktop max-lg:w-[95%] my-10  rounded-lg flex flex-col gap-20  ">
       {/* top */}
-      <div className="flex max-lg:flex-col justify-between">
-        <div className="w-[50%] max-lg:w-full flex flex-col  gap-8 p-4">
+      <div className="flex max-xl:flex-col justify-between">
+        <div className="w-[50%] max-xl:w-full flex flex-col  gap-8 p-4">
           <div>
             <p className="text-xl ">Customer Review</p>
           </div>
@@ -162,7 +162,7 @@ const ForthBlock: React.FC<{ product: Product | null }> = ({ product }) => {
             </div>
           </div>
         </div>
-        <div className="w-[50%] max-lg:w-full p-4 ">
+        <div className="w-[50%] max-xl:w-full p-4 ">
           <ReviewBlock product={product} productId={productId} key={key} />
           <div className="flex flex-col w-[95%] mx-auto gap-5">
             <p className="text-xl">ADD A REVIEW</p>

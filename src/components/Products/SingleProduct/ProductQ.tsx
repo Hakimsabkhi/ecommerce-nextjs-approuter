@@ -84,12 +84,11 @@ const ProductQ: React.FC<ProductQProps> = ({ product, addToCartHandler }) => {
                     -
                   </button>
                   <input
-                    type="number"
                     value={quantity}
                     onChange={handleQuantityChange}
                     min="1"
                     max={product.stock}
-                    className="p-2 border text-xl text-center"
+                    className="p-2 border text-xl text-center w-[20%] "
                   />
                   <button
                     onClick={increaseQuantity}
