@@ -76,7 +76,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
   };
 
   return (
-    <div className=" flex gap-2 h-fit flex-col duration-500 lg:group-hover:scale-[0.85] lg:hover:!scale-100 max-md:h-fit relative">
+    <div className="flex gap-2 h-fit flex-col duration-500 lg:group-hover:scale-[0.85] lg:hover:!scale-100 max-md:h-fit relative">
       <Link href={`/${item.category.slug}/${item.slug}`}>
         <Image
           className=" w-full h-auto mx-auto top-5"
@@ -90,7 +90,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
         <Link href={`/${item.category.slug}/${item.slug}`}>
           <div className=" flex justify-between h-24 max-md:h-20">
             <div className="flex-col gap-1" >
-              <p className="text-gray-700 cursor-pointer text-3xl max-lg:text-xl font-bold">
+              <p className="text-gray-700 cursor-pointer text-[calc(1.25rem+1vw)] max-lg:text-xl font-bold">
               {item.name}
             </p>
             <div className="flex gap-2 items-center">

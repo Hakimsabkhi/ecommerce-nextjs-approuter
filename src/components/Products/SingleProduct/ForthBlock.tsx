@@ -1,7 +1,6 @@
 "use client";
-import React, { FormEvent, useRef, useState } from "react";
+import React, { FormEvent, useState } from "react";
 import ReviewBlock from "./ReviewBlock";
-import ReviewBlock2 from "./ReviewBlock2";
 import { FaStar } from "react-icons/fa";
 import { FaRegStar } from "react-icons/fa";
 import { useParams } from "next/navigation";
