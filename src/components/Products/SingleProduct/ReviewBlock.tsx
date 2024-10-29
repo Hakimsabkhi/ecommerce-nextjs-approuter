@@ -113,7 +113,7 @@ const ReviewBlock: React.FC<ReviewBlockProps> = ({ productId, product,refresh })
 
 
   return (
-    <div className="flex flex-col gap-4 bg-slate-400">
+    <div className="flex flex-col gap-4">
       <div className="px-4 flex items-center justify-between">
         <label htmlFor="review" className="text-lg uppercase">
           {numberOfReviews} reviews for {product?.name}
