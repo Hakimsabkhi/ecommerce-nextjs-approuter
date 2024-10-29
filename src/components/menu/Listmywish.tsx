@@ -122,7 +122,7 @@ const Listmywish: React.FC<ListmywishProps> = ({ data: initialData }) => {
                             })}
                         </div>
                     ) : (
-                        <p className="text-gray-500">No items in your wishlist.</p>
+                        <p className="hidden">No items in your wishlist.</p>
                     )}
                 </div>
             )}
