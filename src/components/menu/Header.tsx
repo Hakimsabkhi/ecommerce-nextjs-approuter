@@ -23,7 +23,7 @@ const Header = async () => {
           <SearchBar />
           <div className="flex">
             <CartLogic />
-            <Wishlist session={session} />
+            <Wishlist />
             <UserMenu session={session} />
           </div>
         </div>
