@@ -4,12 +4,12 @@ import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { FaEye, FaRegHeart, FaHeart, FaCartShopping, FaStar } from "react-icons/fa6";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { addItem } from "@/store/cartSlice";
-import { RootState } from "@/store";
 import { toast } from "react-toastify";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { addToWishlist } from "@/store/wishlistSlice";
 
 interface Brand {
   _id: string;
@@ -45,30 +45,12 @@ const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
   const [clicked, setClicked] = useState(false);
   const session = useSession();
   const route = useRouter();
-
-  const handleClick = async (_id:string) => {
-    if(session.status==="unauthenticated")
-    {
-      route.push("/signin")
-    }
-    try {
-      const formData = new FormData();
-      formData.append("product_id", _id);
-      const response = await fetch(`/api/favorite/postfavorite`, {
-        method: 'POST',
-       
-        body: formData,
-      });
- 
-      if (!response.ok) {
-        throw new Error('Failed to favorite');
-      }
-      
-    } catch (error) {
-      console.error('Failed to favorite', error);
-    }
-  };
-
+  const handleClick = async (product: ProductData) => {
+  
+    dispatch(addToWishlist(product));
+  
+   
+};
   const dispatch = useDispatch();
   const addToCartHandler = (product: ProductData, quantity: number) => {
     dispatch(addItem({ item: product, quantity }));
@@ -176,7 +158,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
             </button>
           </a>
           <button
-            onClick={()=>handleClick(item._id)}
+            onClick={()=>handleClick(item)}
             className="relative bg-white hover:bg-primary max-md:rounded-[3px] AddtoCart w-[15%] group/box text-primary hover:text-white border border-primary max-lg:hidden"
             aria-label="wishlist"
           >
