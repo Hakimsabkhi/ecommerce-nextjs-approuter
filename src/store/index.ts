@@ -3,6 +3,7 @@ import { persistStore, persistReducer } from 'redux-persist';
 import createWebStorage from "redux-persist/lib/storage/createWebStorage";
 //import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
 import cartReducer from './cartSlice';
+import wishlistReducer from './wishlistSlice'; // Import your wishlist reducer
 
 const createNoopStorage = () => {
   return {
@@ -22,6 +23,7 @@ const storage = typeof window !== "undefined" ? createWebStorage("local") : crea
 // Combine your reducers
 const rootReducer = combineReducers({
   cart: cartReducer,
+  wishlist: wishlistReducer,
 });
 
 // Create a persist configuration
