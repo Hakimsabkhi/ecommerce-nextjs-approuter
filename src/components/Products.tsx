@@ -1,14 +1,14 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ProductList from "./Products/ProductPage/ProductList";
 import FilterProducts from "./Products/ProductPage/FilterProducts"; // Import the new FilterProducts component
 import OrderPrice from "./Products/ProductPage/OrderPrice";
 
-interface ProductsProps {
+/* interface ProductsProps {
   products: ProductData[];
   brands: Brand[];
 }
-
+ */
 interface ProductData {
   _id: string;
   name: string;
@@ -35,8 +35,67 @@ interface Brand {
   _id: string;
   name: string;
 }
+interface ProductsProps {
+  params: {
+    slugCategory?: string;
+  };
+}
 
-const Products: React.FC<ProductsProps> = ({ products, brands }) => {
+const Products: React.FC<ProductsProps> = ({params}) => {
+  const { slugCategory: id } = params;
+
+  const [products, setProducts] = useState<ProductData[]>([]);
+  const [brands, setBrands] = useState<Brand[]>([]);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchProductsData = async () => {
+      try {
+        const res = await fetch(`/api/search/${id}`, {
+          method: 'GET',
+          headers: {
+            "Content-Type": "application/json",
+          },
+          next: { revalidate: 0 }, // Disable caching
+        });
+
+        if (!res.ok) {
+          throw new Error('Products not found');
+        }
+
+        const data: ProductData[] = await res.json();
+        setProducts(data);
+      } catch (error) {
+        console.error('Error fetching products data:', error);
+        setError('Failed to fetch products.');
+      }
+    };
+
+    const fetchBrandData = async () => {
+      try {
+        const res = await fetch(`/api/brand/getAllBrand`, {
+          method: 'GET',
+          headers: {
+            "Content-Type": "application/json",
+          },
+          next: { revalidate: 0 }, // Disable caching
+        });
+
+        if (!res.ok) {
+          throw new Error('Brand not found');
+        }
+
+        const data: Brand[] = await res.json();
+        setBrands(data);
+      } catch (error) {
+        console.error('Error fetching brand data:', error);
+        setError('Failed to fetch brands.');
+      }
+    };
+
+    fetchProductsData();
+    fetchBrandData();
+  }, [id]);
   const [selectedBrand, setSelectedBrand] = useState<string | null>(null);
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
   const [selectedMaterial, setSelectedMaterial] = useState<string | null>(null);
