@@ -69,9 +69,11 @@ const Headerbottom: React.FC = () => {
           ALL OUR CATEGORIES
         </button>
 
-        <div className="flex justify-between gap-8 w-[90%] max-xl:w-[95%] font-bold items-center text-white text-base max-2xl:text-xs">
+        <div className="flex justify-start gap-8 w-[90%] max-xl:w-[95%] font-bold items-center text-white text-base max-2xl:text-xs">
           <Link href={"/"}>HOME</Link>
-          <Link href={"/blog"}>BLOG</Link>
+          <Link href={"/promotion"}>PROMOTION</Link>
+        {/*  <Link href={"/blog"}>BLOG</Link> */}
+ 
         </div>
       </nav>
 
