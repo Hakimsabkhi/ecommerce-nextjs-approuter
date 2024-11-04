@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { FaStar } from 'react-icons/fa';
-import { AiOutlineLike, AiOutlineDislike } from 'react-icons/ai';
+import { AiOutlineLike} from 'react-icons/ai';
 import { IoStorefrontOutline } from 'react-icons/io5';
 import { useSession } from 'next-auth/react';
 
@@ -16,7 +16,7 @@ interface Review {
     username: string;
   };
   likes:User[]; 
-  dislikes:User[];
+  
   createdAt: string;
   updatedAt: string;
 }
@@ -111,8 +111,7 @@ const ReviewBlock: React.FC<ReviewBlockProps> = ({ productId, product,refresh })
 
 
   return (
-    <div className="flex flex-col gap-4 
- sm:bg-slate-400 md:bg-cyan-800 lg:bg-violet-600  xl:bg-yellow-400 2xl:bg-green-400">
+    <div className="flex flex-col gap-4 ">
       <div className="px-4 flex items-center justify-between">
         <label htmlFor="review" className="text-lg uppercase">
           {numberOfReviews} reviews for {product?.name}
@@ -133,8 +132,8 @@ const ReviewBlock: React.FC<ReviewBlockProps> = ({ productId, product,refresh })
                 <p className="text-[#525566]">{review.text}</p>
               <hr></hr>
                   
-                    <div className="flex justify-between bg-yellow-300">
-                       <div className="flex  bg-slate-200"> 
+                    <div className="flex justify-between ">
+                       <div className="flex "> 
                         <p className="text-lg max-md:text-xs font-medium uppercase">{review.name}</p>
                         <p className="text-[#525566] max-md:text-xs max-md:hidden">
                           {new Date(review.createdAt).toLocaleDateString("en-US", {
@@ -155,7 +154,7 @@ const ReviewBlock: React.FC<ReviewBlockProps> = ({ productId, product,refresh })
                               <AiOutlineLike  className="md:hidden" size={15}  color={getlikeColor(review)} />
                               <AiOutlineLike  className="max-md:hidden" size={25}  color={getlikeColor(review)} />
                               </button>
-                              <p className="text-2xl max-md:text-xs text-gray-400">{review.likes ? review.likes.length : 0}</p>
+                              <p className="text-2xl max-md:text-xs">{review.likes ? review.likes.length : 0}</p>
                             </div>
                           </div>
                         </div>
@@ -176,7 +175,7 @@ const ReviewBlock: React.FC<ReviewBlockProps> = ({ productId, product,refresh })
                   </p>
               <hr></hr>
                   
-                    <div className="flex justify-between bg-red-300">
+                    <div className="flex justify-between">
                         
                           <div className="flex gap-2">
                             <IoStorefrontOutline size={15}  className="text-primary md:hidden" />
