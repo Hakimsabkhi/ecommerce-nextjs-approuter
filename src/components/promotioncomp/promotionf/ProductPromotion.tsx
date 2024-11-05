@@ -1,14 +1,11 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import ProductList from "./Products/ProductPage/ProductList";
-import FilterProducts from "./Products/ProductPage/FilterProducts"; // Import the new FilterProducts component
-import OrderPrice from "./Products/ProductPage/OrderPrice";
+import ProductList from "@/components/Products/ProductPage/ProductList";
+import FilterProducts from "@/components/Products/ProductPage/FilterProducts"; // Import the new FilterProducts component
+import OrderPrice from "@/components/Products/ProductPage/OrderPrice";
 
-/* interface ProductsProps {
-  products: ProductData[];
-  brands: Brand[];
-}
- */
+
+
 interface ProductData {
   _id: string;
   name: string;
@@ -41,8 +38,8 @@ interface ProductsProps {
   };
 }
 
-const Products: React.FC<ProductsProps> = ({params}) => {
-  const { slugCategory: id } = params;
+const ProductPromotion: React.FC = () => {
+
 
   const [products, setProducts] = useState<ProductData[]>([]);
   const [brands, setBrands] = useState<Brand[]>([]);
@@ -51,7 +48,7 @@ const Products: React.FC<ProductsProps> = ({params}) => {
   useEffect(() => {
     const fetchProductsData = async () => {
       try {
-        const res = await fetch(`/api/search/${id}`, {
+        const res = await fetch(`/api/promotion/getproductpromotion`, {
           method: 'GET',
           headers: {
             "Content-Type": "application/json",
@@ -95,7 +92,7 @@ const Products: React.FC<ProductsProps> = ({params}) => {
 
     fetchProductsData();
     fetchBrandData();
-  }, [id]);
+  }, []);
   const [selectedBrand, setSelectedBrand] = useState<string | null>(null);
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
   const [selectedMaterial, setSelectedMaterial] = useState<string | null>(null);
@@ -171,4 +168,4 @@ const Products: React.FC<ProductsProps> = ({params}) => {
   );
 };
 
-export default Products;
+export default ProductPromotion;

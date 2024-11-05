@@ -1,18 +1,15 @@
-
 import React from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
 
 
-interface ChairsbannerProps {
-  category?: {
-    slug:string;
+interface ChairsPromotionProps {
+  promotion?: {
     name: string;
     bannerUrl?: string;
   };
 }
 
-const Chairsbanner: React.FC <ChairsbannerProps>= ({ category }) => {
+const ChairsPromation: React.FC <ChairsPromotionProps>= ({ promotion }) => {
 
 
 
@@ -20,16 +17,15 @@ const Chairsbanner: React.FC <ChairsbannerProps>= ({ category }) => {
   return (
     <div className='max-lg:pt-16'>
       <div className='relative w-full'>
-        <Link 
-          href={`/${category?.slug}`}
+        <div 
 
           className='text-8xl max-md:text-3xl text-white transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/4 absolute font-bold'>
-          {category ? category.name : 'Loading...'}
-        </Link>
-        <div className='w-full h-full flex items-center justify-center'>        
+          {promotion ? promotion.name : 'Loading...'}
+        </div>
+        <div className='w-full h-full flex items-center justify-center  '>        
               <Image
-              className='object-cover w-full h-[400px]'
-              src={category?.bannerUrl || 'default'}
+              className='object-fill w-full h-[400px]'
+              src={promotion?.bannerUrl || 'default'}
               alt='category logo'
               height={400}
               width={1920}
@@ -46,4 +42,4 @@ const Chairsbanner: React.FC <ChairsbannerProps>= ({ category }) => {
   );
 }
 
-export default Chairsbanner;
+export default ChairsPromation;

@@ -65,6 +65,16 @@ const NavAdmin = () => {
                   Products
                 </p>
               </Link>
+              <Link href="/admin/promotionlist">
+                <p
+                  onClick={() => handleClick('promotionlist')}
+                  className={`text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium cursor-pointer ${
+                    activeLink === 'promotionlist' ? 'bg-gray-700' : ''
+                  }`}
+                >
+                  Promation
+                </p>
+              </Link>
               <Link href="/admin/reviewlist">
                 <p
                   onClick={() => handleClick('reviewlist')}
@@ -107,92 +117,6 @@ const NavAdmin = () => {
               </Link>
             </div>
           </div>
-        </div>
-      </div>
-
-      {/* Mobile menu, shown when isOpen is true */}
-      <div className={`md:hidden ${isOpen ? 'block' : 'hidden'}`}>
-        <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-        <Link href="/admin/users">
-            <p
-              onClick={() => handleClick('users')}
-              className={`text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium cursor-pointer ${
-                activeLink === 'users' ? 'bg-gray-700' : ''
-              }`}
-            >
-              Users
-            </p>
-          </Link>
-          <Link href="/admin/brandlist">
-            <p
-              onClick={() => handleClick('brandlist')}
-              className={`text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium cursor-pointer ${
-                activeLink === 'brandlist' ? 'bg-gray-700' : ''
-              }`}
-            >
-              Brands
-            </p>
-          </Link>
-          <Link href="/admin/categorylist">
-            <p
-              onClick={() => handleClick('categorylist')}
-              className={`text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium cursor-pointer ${
-                activeLink === 'categorylist' ? 'bg-gray-700' : ''
-              }`}
-            >
-              Categories
-            </p>
-          </Link>
-          <Link href="/admin/productlist">
-            <p
-              onClick={() => handleClick('productlist')}
-              className={`text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium cursor-pointer ${
-                activeLink === 'productlist' ? 'bg-gray-700' : ''
-              }`}
-            >
-              Products
-            </p>
-          </Link>
-          <Link href="/admin/reviewlist">
-            <p
-              onClick={() => handleClick('reviewlist')}
-              className={`text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium cursor-pointer ${
-                activeLink === 'reviewlist' ? 'bg-gray-700' : ''
-              }`}
-            >
-              Reviews
-            </p>orderlist
-          </Link>
-          <Link href="/admin/orderlist">
-            <p
-              onClick={() => handleClick('orderlist')}
-              className={`text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium cursor-pointer ${
-                activeLink === 'orderlist' ? 'bg-gray-700' : ''
-              }`}
-            >
-              Orders
-            </p>
-          </Link>
-          <Link href="/admin/company">
-            <p
-              onClick={() => handleClick('company')}
-              className={`text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium cursor-pointer ${
-                activeLink === 'company' ? 'bg-gray-700' : ''
-              }`}
-            >
-              Company
-            </p>
-          </Link>
-          <Link href="/admin/revenue">
-            <p
-              onClick={() => handleClick('revenue')}
-              className={`text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium cursor-pointer ${
-                activeLink === 'revenue' ? 'bg-gray-700' : ''
-              }`}
-            >
-              Revenue
-            </p>
-          </Link>
         </div>
       </div>
     </nav>

@@ -110,7 +110,7 @@ const fetchBrandData = async (): Promise<Brand[]> => {
 // HomePage component
 async function CategoryPage({ params }: CategoryPageProps) {
 
-  const id = params?.slugCategory;
+ const id = params?.slugCategory;
 
   // Early return if no product id
   if (!id) {
@@ -118,19 +118,19 @@ async function CategoryPage({ params }: CategoryPageProps) {
   }
 
   const category = await fetchCategoryData(id);
-  const products = await fetchProductsData(id);
-  const brand = await fetchBrandData();
+  /* const products = await fetchProductsData(id);
+  const brand = await fetchBrandData(); */
 
   // Return 404 if no category or products found
   if (!category ) {
     return notFound();
-  }
+  } 
 
   return (
     <div>
       {/* Uncomment the following if you need to show a banner */}
       <Chairsbanner category={category} />
-      <Products products={products} brands={brand} />
+        <Products params={params}  /> 
     </div>
   );
 }
