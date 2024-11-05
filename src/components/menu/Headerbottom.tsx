@@ -82,12 +82,12 @@ const Headerbottom: React.FC = () => {
 
   return (
     <header>
-      <nav className="w-full h-[72px] flex justify-center items-center gap-6 bg-primary max-lg:hidden">
-       <div  className="flex justify-center items-center w-[20%] h-[90%]">
+      <nav className="w-full h-[72px] flex justify-center items-center gap-6 bg-primary  sm:bg-slate-400 md:bg-cyan-800 lg:bg-violet-600  xl:bg-yellow-400 2xl:bg-green-400">
+       <div  className="flex justify-center items-center w-[20%] h-[90%] max-2xl:w-[30%] max-xl:w-[40%] max-lg:w-[60%] max-md:text-[82%] max-sm:w-[100%] max-sm:text-[60%]">
         <button
           type="button"
           onClick={toggleListVisibility}
-          className="bg-orange-600 text-white font-bold flex justify-center items-center  gap-6 w-[80%] h-full"
+          className="bg-orange-600 text-white font-bold flex justify-center items-center gap-6 max-sm:gap-1 w-[80%] h-full "
         >
           <FaBars />
 
@@ -101,7 +101,7 @@ const Headerbottom: React.FC = () => {
       </nav>
 
       <div
-        className={`absolute flex flex-col px-4 w-[400px] max-md:w-[350px] max-h-64 overflow-y-auto border-[#15335D] border-4 rounded-lg bg-white z-30 left-8 transition-all duration-300 ease-in-out ${
+        className={`absolute flex flex-col px-4 w-[400px] max-md:w-[350px] max-h-64 max-sm:w-[100%] max-sm:left-0 overflow-y-auto border-[#15335D] border-4 rounded-lg bg-white z-30 left-8 transition-all duration-300 ease-in-out ${
           open ? 'max-h-64 opacity-100 visible' : 'max-h-0 opacity-0 invisible'
         }`}
         onMouseLeave={handleMouseLeave}
