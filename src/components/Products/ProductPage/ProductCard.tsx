@@ -76,7 +76,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
               <p className="text-gray-700 cursor-pointer text-2xl max-md:text-lg font-bold">
               {item.name}
             </p>
-            <div className="flex gap-2 items-center">
+            <div className="flex gap-2 items-center ">
           {[...Array(5)].map((_, index) => (
             <FaStar key={index} className="text-yellow-500 size-5 max-md:size-4" />
           ))}
@@ -88,10 +88,10 @@ const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
             <div className="flex-col gap-1">
               {item.discount && item.discount !== 0 ? (
                 <div className="flex-col flex gap-1">
-                  <p className="text-2xl font-bold rounded-lg text-primary">
+                  <p className="text-2xl max-md:text-lg font-bold rounded-lg text-primary">
                     {item.price - item.price * (item.discount / 100)} TND
                   </p>
-                  <span className="text-primary line-through text-xl font-bold">
+                  <span className="text-primary line-through text-xl max-md:text-sm font-bold">
                     <p className="text-gray-300">{item.price} TND</p>
                   </span>
                 </div>

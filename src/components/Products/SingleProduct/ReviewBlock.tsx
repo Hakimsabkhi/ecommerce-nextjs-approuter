@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { FaStar } from 'react-icons/fa';
-import { AiOutlineLike, AiOutlineDislike } from 'react-icons/ai';
+import { AiOutlineLike} from 'react-icons/ai';
 import { IoStorefrontOutline } from 'react-icons/io5';
 import { useSession } from 'next-auth/react';
 
@@ -16,7 +16,7 @@ interface Review {
     username: string;
   };
   likes:User[]; 
-  dislikes:User[];
+  
   createdAt: string;
   updatedAt: string;
 }
@@ -97,9 +97,7 @@ const ReviewBlock: React.FC<ReviewBlockProps> = ({ productId, product,refresh })
       console.error('Failed to vote', error);
     }
   };
-  const getDislikeColor = (review:Review) => {
-    return review.dislikes.some(user => user.email === session?.user?.email) ? 'red' : '#9CA3AF';
-  };
+  
   const getlikeColor = (review:Review) => {
     return review.likes.some(user => user.email === session?.user?.email) ? 'blue' : '#9CA3AF';
   };
@@ -113,7 +111,7 @@ const ReviewBlock: React.FC<ReviewBlockProps> = ({ productId, product,refresh })
 
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 ">
       <div className="px-4 flex items-center justify-between">
         <label htmlFor="review" className="text-lg uppercase">
           {numberOfReviews} reviews for {product?.name}
@@ -128,16 +126,16 @@ const ReviewBlock: React.FC<ReviewBlockProps> = ({ productId, product,refresh })
         
         ) : (
           reviews.map((review) => (
-            <div key={review._id} className="w-full max-lg:w-full flex flex-col p-4">
+            <div key={review._id} className="w-full max-lg:w-full flex flex-col p-4 gap-2">
               <div className="flex flex-col gap-8  rounded-t-lg drop-shadow-md px-4 py-8 bg-white">
                 <div className="flex flex-col gap-8 ">
                 <p className="text-[#525566]">{review.text}</p>
               <hr></hr>
                   
-                    <div className="flex gap-4 justify-between items-center">
+                    <div className="flex justify-between ">
                        <div className="flex gap-4 items-center"> 
-                        <p className="text-lg font-bold uppercase">{review.name}</p>
-                        <p className="text-[#525566]">
+                        <p className="text-lg max-md:text-xs font-medium uppercase">{review.name}</p>
+                        <p className="text-[#525566] max-md:text-xs max-md:hidden">
                           {new Date(review.createdAt).toLocaleDateString("en-US", {
                             day: "2-digit",
                             month: "long",
@@ -145,30 +143,20 @@ const ReviewBlock: React.FC<ReviewBlockProps> = ({ productId, product,refresh })
                           })}
                         </p> 
                         </div>
-                        <div className="flex gap-4" >
-                          <div className="text-primary flex items-center gap-1">
-                            {[...Array(review.rating)].map((_, index) => (
-                              <FaStar key={index} />
-                            ))}
-                            {[...Array(5 - review.rating)].map((_, index) => (
-                              <FaStar key={index + review.rating} className="text-gray-300" />
-                            ))}
+                        <div className="flex gap-2" >
+                          <div className="text-primary max-md:text-xs flex gap-1 justify-center items-center">
+                            
+                            <FaStar className="text-yellow-500 size-3 max-md:size-2.5"/>{review.rating} of 5
                           </div>
-                          <div className="flex gap-4 pb-1">
-                            <div className="flex gap-1">
-                            <button  onClick={() => handleVote('like',review._id)}>
-                              <AiOutlineLike size={25} color={getlikeColor(review)} />
+                          
+                            <div className="flex gap-1 items-center">
+                              <button  onClick={() => handleVote('like',review._id)}>
+                              <AiOutlineLike  className="md:hidden mb-0.5" size={12}  color={getlikeColor(review)} />
+                              <AiOutlineLike  className="max-md:hidden mb-1" size={17}  color={getlikeColor(review)} />
                               </button>
-                              <p className="text-2xl text-gray-400">{review.likes ? review.likes.length : 0}</p>
+                              <p className=" text-md  max-md:text-xs text-[#525566]">{review.likes ? review.likes.length : 0}</p>
                             </div>
-
-                            <div className="flex gap-1">
-                            <button  onClick={() => handleVote('dislike',review._id)}>
-                              <AiOutlineDislike size={25} color={getDislikeColor(review) } />
-                            </button>
-                              <p className="text-2xl text-gray-400">{review.dislikes ? review.dislikes.length : 0}</p>
-                            </div>
-                          </div>
+                          
                         </div>
                     </div>
                   
@@ -179,25 +167,30 @@ const ReviewBlock: React.FC<ReviewBlockProps> = ({ productId, product,refresh })
     
 
 
-             {review.user && <div className="flex flex-col mt-2 bg-white rounded-b-lg drop-shadow-md px-4 py-8">
-                <div className="flex flex-col gap-4">
-                  <div className="flex justify-between items-center">
-                    
-                    <p className="text-[#525566]"> {new Date(review.updatedAt).toLocaleDateString("en-US", {
-                          day: "2-digit",
-                          month: "long",
-                          year: "numeric",
-                        })}</p>
-                        <div className="flex items-center gap-2">
-                      
-                      <p className="text-lg font-bold">{review.user?.username}</p>
-                      <IoStorefrontOutline size={30} className="text-primary" />
-                    </div>
-                  </div>
-                  <p className="text-[#525566] text-end">
+             {review.user && <div className="flex flex-col gap-4 bg-white rounded-b-lg drop-shadow-md px-4 py-8">
+              
+                
+                <p className="text-[#525566]">
                    {review?.reply}
                   </p>
-                </div>
+              <hr></hr>
+                  
+                    <div className="flex justify-between">
+                        
+                          <div className="flex gap-2">
+                            <IoStorefrontOutline size={15}  className="text-primary md:hidden" />
+                            <IoStorefrontOutline size={30}  className="text-primary max-md:hidden" />
+                            <p className="text-lg max-md:text-xs font-medium">{review.user?.username}</p>
+                          </div> 
+                      
+                          <p className="text-[#525566] max-md:text-xs"> {new Date(review.updatedAt).toLocaleDateString("en-US", {
+                            day: "2-digit",
+                            month: "long",
+                            year: "numeric",
+                          })}</p>
+                        
+                        
+                    </div>
               </div> }
             </div>
           ))
