@@ -82,7 +82,7 @@ const Headerbottom: React.FC = () => {
 
   return (
     <header>
-      <nav className="w-full h-[72px] flex justify-center items-center gap-6 bg-primary  sm:bg-slate-400 md:bg-cyan-800 lg:bg-violet-600  xl:bg-yellow-400 2xl:bg-green-400">
+      <nav className="w-full h-[72px] flex justify-center items-center gap-6 bg-primary  ">
        <div  className="flex justify-center items-center w-[20%] h-[90%] max-2xl:w-[30%] max-xl:w-[40%] max-lg:w-[60%] max-md:text-[82%] max-sm:w-[100%] max-sm:text-[60%]">
         <button
           type="button"
