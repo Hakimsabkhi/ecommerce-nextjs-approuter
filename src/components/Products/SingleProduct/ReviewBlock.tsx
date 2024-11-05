@@ -133,7 +133,7 @@ const ReviewBlock: React.FC<ReviewBlockProps> = ({ productId, product,refresh })
               <hr></hr>
                   
                     <div className="flex justify-between ">
-                       <div className="flex "> 
+                       <div className="flex gap-4 items-center"> 
                         <p className="text-lg max-md:text-xs font-medium uppercase">{review.name}</p>
                         <p className="text-[#525566] max-md:text-xs max-md:hidden">
                           {new Date(review.createdAt).toLocaleDateString("en-US", {
@@ -144,19 +144,19 @@ const ReviewBlock: React.FC<ReviewBlockProps> = ({ productId, product,refresh })
                         </p> 
                         </div>
                         <div className="flex gap-2" >
-                          <div className="text-primary max-md:text-xs flex items-center">
+                          <div className="text-primary max-md:text-xs flex gap-1 justify-center items-center">
                             
-                            <FaStar/>{review.rating} of 5
+                            <FaStar className="text-yellow-500 size-3 max-md:size-2.5"/>{review.rating} of 5
                           </div>
-                          <div className="gap-4">
-                            <div className="flex">
+                          
+                            <div className="flex gap-1 items-center">
                               <button  onClick={() => handleVote('like',review._id)}>
-                              <AiOutlineLike  className="md:hidden" size={15}  color={getlikeColor(review)} />
-                              <AiOutlineLike  className="max-md:hidden" size={25}  color={getlikeColor(review)} />
+                              <AiOutlineLike  className="md:hidden mb-0.5" size={12}  color={getlikeColor(review)} />
+                              <AiOutlineLike  className="max-md:hidden mb-1" size={17}  color={getlikeColor(review)} />
                               </button>
-                              <p className="text-2xl max-md:text-xs">{review.likes ? review.likes.length : 0}</p>
+                              <p className=" text-md  max-md:text-xs text-[#525566]">{review.likes ? review.likes.length : 0}</p>
                             </div>
-                          </div>
+                          
                         </div>
                     </div>
                   
@@ -191,15 +191,6 @@ const ReviewBlock: React.FC<ReviewBlockProps> = ({ productId, product,refresh })
                         
                         
                     </div>
-                  
-                 
-                
-                
-              
-                        
-                 
-                
-                
               </div> }
             </div>
           ))
