@@ -18,12 +18,12 @@ const Chairsbanner: React.FC <ChairsbannerProps>= ({ category }) => {
 
 
   return (
-    <div className='max-lg:pt-16'>
+   
       <div className='relative w-full'>
         <Link 
           href={`/${category?.slug}`}
 
-          className='text-8xl max-md:text-3xl text-white transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/4 absolute font-bold'>
+          className='max-2xl:pl-40 max-sm:pl-2 text-xl md:text-4xl lg:text-7xl  text-white transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/4 absolute font-bold'>
           {category ? category.name : 'Loading...'}
         </Link>
         <div className='w-full h-full flex items-center justify-center'>        
@@ -42,7 +42,7 @@ const Chairsbanner: React.FC <ChairsbannerProps>= ({ category }) => {
          
         </div>
       </div>
-    </div>
+   
   );
 }
 
