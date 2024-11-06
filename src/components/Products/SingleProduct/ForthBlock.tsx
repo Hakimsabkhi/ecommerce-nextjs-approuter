@@ -6,6 +6,7 @@ import { FaRegStar } from "react-icons/fa";
 import { useParams } from "next/navigation";
 import {  toast } from "react-toastify";
 import { useSession } from "next-auth/react";
+import CustomerReview from "./CustomerReview";
 
 interface Product {
   _id: string;
@@ -38,10 +39,13 @@ interface user {
   username: string;
 }
 
+
 const ForthBlock: React.FC<{ product: Product | null }> = ({ product }) => {
   const [rating, setRating] = useState<number>(0);
   const [review, setReview] = useState<string>("");
-
+  const [ratingError, setRatingError] = useState("");
+  const [reviewError, setReviewError] = useState("");
+  
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [saveInfo, setSaveInfo] = useState<boolean>(false);
@@ -54,7 +58,18 @@ const ForthBlock: React.FC<{ product: Product | null }> = ({ product }) => {
     e.preventDefault();
     const finalName = name || session?.user?.name || '';
     const finalEmail = email || session?.user?.email || '';
-
+    if (rating < 1) {
+      setRatingError("Please provide a rating of at least 1.");
+      return;
+  } else {
+      setRatingError(""); // Clear the error if rating is valid
+  }
+  if (!review){
+    setReviewError("Please writing review.");
+    return;
+  }else {
+    setReviewError(""); // Clear the error if rating is valid
+}
     const reviewData = new FormData();
     reviewData.append("rating", rating.toString());
     reviewData.append("text", review);
@@ -84,83 +99,12 @@ const ForthBlock: React.FC<{ product: Product | null }> = ({ product }) => {
       toast.error("Do not add two reviews");
   }
 };
+
   return (
     <main className="bg-blue-50 desktop max-lg:w-[95%] my-10  rounded-lg flex flex-col gap-20  ">
       {/* top */}
       <div className="flex max-xl:flex-col justify-between">
-        <div className="w-[50%] max-xl:w-full flex flex-col  gap-8 p-4">
-          <div>
-            <p className="text-xl ">Customer Review</p>
-          </div>
-          <div className="flex flex-col items-center justify-center gap-2">
-            <p className="text-4xl font-bold">{/* {product.rating} */}5</p>
-            <div className="text-primary flex items-center gap-1">
-              <FaStar />
-              <FaStar />
-              <FaStar />
-              <FaStar />
-              <FaStar />
-            </div>
-            <p className="text-[#525566] text-sm">2 reviews</p>
-          </div>
-          <div className="flex flex-col gap-3">
-            <div className=" flex items-center gap-2">
-              <div className="flex gap-1 items-center text-primary">
-                <FaStar />
-                <FaStar />
-                <FaStar />
-                <FaStar />
-                <FaStar />
-              </div>
-              <div className="w-full bg-primary rounded-full h-2.5 dark:bg-gray-700"></div>
-              <p className="text-[#525566]">2</p>
-            </div>
-            <div className=" flex items-center gap-2">
-              <div className="flex gap-1 items-center text-primary">
-                <FaStar />
-                <FaStar />
-                <FaStar />
-                <FaStar />
-                <FaRegStar />
-              </div>
-              <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700"></div>
-              <p className="text-[#525566]">0</p>
-            </div>
-            <div className=" flex items-center gap-2">
-              <div className="flex gap-1 items-center text-primary">
-                <FaStar />
-                <FaStar />
-                <FaStar />
-                <FaRegStar />
-                <FaRegStar />
-              </div>
-              <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700"></div>
-              <p className="text-[#525566]">0</p>
-            </div>
-            <div className=" flex items-center gap-2">
-              <div className="flex gap-1 items-center text-primary">
-                <FaStar />
-                <FaStar />
-                <FaRegStar />
-                <FaRegStar />
-                <FaRegStar />
-              </div>
-              <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700"></div>
-              <p className="text-[#525566]">0</p>
-            </div>
-            <div className=" flex items-center gap-2">
-              <div className="flex gap-1 items-center text-primary">
-                <FaStar />
-                <FaRegStar />
-                <FaRegStar />
-                <FaRegStar />
-                <FaRegStar />
-              </div>
-              <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700"></div>
-              <p className="text-[#525566]">0</p>
-            </div>
-          </div>
-        </div>
+        <CustomerReview  productId={productId} key={key} />
         <div className="w-[50%] max-xl:w-full p-4 ">
           <ReviewBlock product={product} productId={productId} key={key} />
           <div className="flex flex-col w-[95%] mx-auto gap-5">
@@ -183,6 +127,10 @@ const ForthBlock: React.FC<{ product: Product | null }> = ({ product }) => {
                     />
                   ))}
                 </div>
+                 {/* Display rating error */}
+            {ratingError && (
+                <p className="text-red-500 text-sm">{ratingError}</p>
+            )}
               </div>
 
               <label className="flex flex-col gap-4">
@@ -194,6 +142,9 @@ const ForthBlock: React.FC<{ product: Product | null }> = ({ product }) => {
                   placeholder=""
                   required
                 />
+                 {reviewError && (
+                <p className="text-red-500 text-sm">{reviewError}</p>
+            )}
               </label>
 
            {!session &&   (
