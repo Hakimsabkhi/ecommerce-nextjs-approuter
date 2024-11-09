@@ -177,19 +177,13 @@ const ReviewBlock: React.FC<ReviewBlockProps> = ({ productId, product,refresh })
                   
                     <div className="flex justify-between">
                         
-                          <div className="flex gap-2">
-                            <IoStorefrontOutline size={15}  className="text-primary md:hidden" />
-                            <IoStorefrontOutline size={30}  className="text-primary max-md:hidden" />
-                            <p className="text-lg max-md:text-xs font-medium">{review.user?.username}</p>
-                          </div> 
-                      
+                          <p className="text-lg max-md:text-xs font-medium">{review.user?.username}</p>
                           <p className="text-[#525566] max-md:text-xs"> {new Date(review.updatedAt).toLocaleDateString("en-US", {
                             day: "2-digit",
                             month: "long",
                             year: "numeric",
                           })}</p>
-                        
-                        
+                          
                     </div>
               </div> }
             </div>
