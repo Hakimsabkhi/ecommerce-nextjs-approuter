@@ -2,7 +2,7 @@ import React from "react";
 import { notFound } from "next/navigation";
 import FirstBlock from "@/components/Products/SingleProduct/FirstBlock";
 import SecondBlock from "@/components/Products/SingleProduct/SecondBlock";
-import ThirdBlock from "@/components/Products/SingleProduct/ThirdBlock";
+
 import ForthBlock from "@/components/Products/SingleProduct/ForthBlock";
 import FifthBlock from "@/components/Products/SingleProduct/FifthBlock";
 
@@ -81,7 +81,7 @@ export default async function Page({ params }: { params: {slugCategory: string ,
     <div>
       <FirstBlock product={product} />
       <SecondBlock product={product} />
-      {product.brand!=null && <ThirdBlock product={product} /> }
+      
       <ForthBlock product={product} />
       <FifthBlock />
     </div>

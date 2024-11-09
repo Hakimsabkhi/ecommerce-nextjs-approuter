@@ -18,6 +18,8 @@ module.exports = {
         accent: 'var(--color-accent)',
         background: 'var(--color-background)',
         text: 'var(--color-text)',
+        starsCard: 'var(--color-starsCard)',
+        productNameCard: 'var(--color-nameCard)',
       }   
     },  
   },
