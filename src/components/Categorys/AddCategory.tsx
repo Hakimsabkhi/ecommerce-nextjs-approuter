@@ -150,16 +150,16 @@ const AddCategory = () => {
           <p className="max-lg:text-base font-bold">Upload Icon*</p>
           <input
             type="file"
-            accept="image/*"
+            accept="image/svg+xml"
             onChange={handleIconChange}
             className="hidden"
             id="upload-icon"
           />
           <label
             htmlFor="upload-icon"
-            className="bg-[#EFEFEF] max-xl:text-xs text-black rounded-md w-[50%] h-10 border-2 flex items-center justify-center cursor-pointer"
+            className="bg-[#EFEFEF] max-xl:text-xs text-black rounded-md w-[60%] h-10 border-2 flex items-center justify-center cursor-pointer"
           >
-            Select an Icon
+            Select an Icon Type SVG
           </label>
           {iconPreview && (
             <div className="w-[50%] max-lg:w-full">

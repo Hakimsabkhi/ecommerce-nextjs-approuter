@@ -113,7 +113,7 @@ const Headerbottom: React.FC = () => {
           <Link
             href={`/${category.slug}`}
             key={category._id}
-            className="flex items-center gap-3 pl-4 duration-300 hover:bg-slate-400  hover:text-white border-b-2"
+            className="flex items-center gap-3 pl-4 duration-300 hover:bg-orange-200  border-b-2 hover:filter hover:invert hover:brightness-100 "
             aria-label={category.name}
             onClick={handleLinkClick}
             style={{
@@ -122,7 +122,7 @@ const Headerbottom: React.FC = () => {
               transition: 'opacity 0.5s, transform 0.5s ease-out', // Animation timing
             }}
           >
-            <div className='flex gap-6 justify-center items-center h-16'>
+            <div className='flex gap-6 justify-center items-center h-16 '>
             {category.logoUrl && (
               <Image
                 src={category.logoUrl}
@@ -130,6 +130,8 @@ const Headerbottom: React.FC = () => {
                 width={40}
                 height={40}
                 className="rounded-full object-cover "
+               
+              
               />
             )}
             <span className='font-bold text-xl'>{category.name}</span>
