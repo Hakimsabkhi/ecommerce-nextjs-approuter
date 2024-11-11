@@ -73,12 +73,12 @@ const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
         <Link href={`/${item.category.slug}/${item.slug}`}>
           <div className=" flex justify-between h-24 max-md:h-20">
             <div className="flex-col gap-1" >
-              <p className="text-gray-700 cursor-pointer text-2xl max-md:text-lg font-bold">
+              <p className="text-productNameCard cursor-pointer text-2xl max-md:text-lg font-bold">
               {item.name}
             </p>
             <div className="flex gap-2 items-center ">
           {[...Array(5)].map((_, index) => (
-            <FaStar key={index} className="text-yellow-500 size-5 max-md:size-4" />
+            <FaStar key={index} className="text-starsCard size-5 max-md:size-4" />
           ))}
           <p className="flex gap-2 text-xl max-md:text-sm font-bold items-center">
             5

@@ -101,8 +101,11 @@ const Headerbottom: React.FC = () => {
       </nav>
 
       <div
-        className={`absolute flex flex-col px-4 w-[400px] max-md:w-[350px] max-h-64 max-sm:w-[100%] max-sm:left-0 overflow-y-auto border-[#15335D] border-4 rounded-lg bg-white z-30 left-8 transition-all duration-300 ease-in-out ${
-          open ? 'max-h-64 opacity-100 visible' : 'max-h-0 opacity-0 invisible'
+        className={`absolute flex flex-col  w-[400px] max-md:w-[350px] max-h-64 max-sm:w-[90%] 
+          max-sm:left-0 overflow-y-auto border-[#15335D] border-4 rounded-lg bg-white z-30 left-8 
+          transition-all duration-300 ease-in-out 
+          ${open ? 'max-h-96 max-sm:max-h-[100%] opacity-100 visible' : 'max-h-0 opacity-0 invisible'
+          
         }`}
         onMouseLeave={handleMouseLeave}
       >
@@ -110,7 +113,7 @@ const Headerbottom: React.FC = () => {
           <Link
             href={`/${category.slug}`}
             key={category._id}
-            className="flex items-center gap-3 duration-300 hover:bg-slate-400  hover:text-white border-b-2"
+            className="flex items-center gap-3 pl-4 duration-300 hover:bg-slate-400  hover:text-white border-b-2"
             aria-label={category.name}
             onClick={handleLinkClick}
             style={{

@@ -1,5 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 
 interface ChairsPromotionProps {
@@ -15,16 +16,16 @@ const ChairsPromation: React.FC <ChairsPromotionProps>= ({ promotion }) => {
 
 
   return (
-    <div className='max-lg:pt-16'>
+    
       <div className='relative w-full'>
-        <div 
-
-          className='text-8xl max-md:text-3xl text-white transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/4 absolute font-bold'>
+        <Link 
+ href={`/promotion`}
+          className='max-2xl:pl-40 max-sm:pl-2 text-xl md:text-4xl lg:text-6xl  text-white transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/4 absolute font-bold'>
           {promotion ? promotion.name : 'Loading...'}
-        </div>
+        </Link>
         <div className='w-full h-full flex items-center justify-center  '>        
               <Image
-              className='object-fill w-full h-[400px]'
+              className='object-cover w-full h-[400px]'
               src={promotion?.bannerUrl || 'default'}
               alt='category logo'
               height={400}
@@ -38,7 +39,7 @@ const ChairsPromation: React.FC <ChairsPromotionProps>= ({ promotion }) => {
          
         </div>
       </div>
-    </div>
+    
   );
 }
 

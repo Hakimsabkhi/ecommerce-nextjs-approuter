@@ -69,10 +69,10 @@ export default async function Bb() {
       return <></>;
     }
     return (
-        <div>
+        
             <div className="pt-8 flex flex-col justify-center items-center">
-            <div className='bg-[#15335D] text-white items-center justify-center  flex py-16  max-md:py-8   w-full'>
-                <div className='flex items-start justify-between  w-[85%] max-lg:w-[98%] max-md:w-[95%] max-md:flex-col max-md:items-center max-md:gap-10'>
+            <div className='bg-[#15335D] text-white justify-center flex py-16 max-md:py-8 w-full'>
+                <div className='flex items-start justify-between md:max-lg:justify-around w-[80%] max-xl:w-[90%] max-lg:w-[98%] max-md:w-[95%] max-md:flex-col max-md:items-center max-md:gap-10'>
                     <div className='flex flex-col gap-8  items-center'>                    
                         <Image src={companyData.logoUrl} width={261} height={261} alt="luxehome" />
                         <div className="gap-5 flex flex-col max-md:items-center "> 
@@ -81,7 +81,7 @@ export default async function Bb() {
                             <p className='flex gap-2 items-center'><CiMail  size={25}/> {companyData.email}</p>                                           
                         </div>
                     </div>
-                    <div className=" flex w-1/3 max-md:w-full justify-between max-md:justify-center items-center max-md:gap-20  ">
+                    <div className=" flex w-1/3 max-md:w-full justify-between max-md:justify-center items-center max-md:gap-20 md:max-lg:hidden ">
                         <div className='flex-col flex gap-4'>
                             <p className="text-white  text-xl max-md:text-2xl  ">Quick links</p>
                             <div className='flex-col gap-2 text-xs max-md:text-base flex'>
@@ -117,7 +117,7 @@ export default async function Bb() {
                                 </Link>                                
                             </div>
                         </div>
-                        <div className='flex flex-col mb-6 max-md:mb-9 gap-4'>
+                        <div className='flex flex-col mb-6 max-md:mb-9 gap-4 '>
                             <p className="text-white  text-xl max-md:text-2xl ">Découverte</p>                            
                             <ul className='flex flex-col text-xs max-md:text-base gap-2'>
                                 <li className="   hover:text-white cursor-pointer">
@@ -173,6 +173,6 @@ export default async function Bb() {
                     </div>
                 </div>
             </div>
-            </div>            
+                        
     );
 }

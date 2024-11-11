@@ -127,14 +127,14 @@ const ReviewBlock: React.FC<ReviewBlockProps> = ({ productId, product,refresh })
         ) : (
           reviews.map((review) => (
             <div key={review._id} className="w-full max-lg:w-full flex flex-col p-4 gap-2">
-              <div className="flex flex-col gap-8  rounded-t-lg drop-shadow-md px-4 py-8 bg-white">
-                <div className="flex flex-col gap-8 ">
+              <div className="flex flex-col rounded-r-3xl rounded-t-3xl mr-4 drop-shadow-md p-4 bg-white">
+                <div className="flex flex-col gap-3 ">
                 <p className="text-[#525566]">{review.text}</p>
               <hr></hr>
                   
                     <div className="flex justify-between ">
                        <div className="flex gap-4 items-center"> 
-                        <p className="text-lg max-md:text-xs font-medium uppercase">{review.name}</p>
+                        <p className="text-lg max-md:text-xs font-medium">{review.name}</p>
                         <p className="text-[#525566] max-md:text-xs max-md:hidden">
                           {new Date(review.createdAt).toLocaleDateString("en-US", {
                             day: "2-digit",
@@ -167,7 +167,7 @@ const ReviewBlock: React.FC<ReviewBlockProps> = ({ productId, product,refresh })
     
 
 
-             {review.user && <div className="flex flex-col gap-4 bg-white rounded-b-lg drop-shadow-md px-4 py-8">
+             {review.user && <div className="flex flex-col gap-3 ml-4 bg-white rounded-r-3xl rounded-b-3xl drop-shadow-md p-4">
               
                 
                 <p className="text-[#525566]">
@@ -177,19 +177,13 @@ const ReviewBlock: React.FC<ReviewBlockProps> = ({ productId, product,refresh })
                   
                     <div className="flex justify-between">
                         
-                          <div className="flex gap-2">
-                            <IoStorefrontOutline size={15}  className="text-primary md:hidden" />
-                            <IoStorefrontOutline size={30}  className="text-primary max-md:hidden" />
-                            <p className="text-lg max-md:text-xs font-medium">{review.user?.username}</p>
-                          </div> 
-                      
+                          <p className="text-lg max-md:text-xs font-medium">{review.user?.username}</p>
                           <p className="text-[#525566] max-md:text-xs"> {new Date(review.updatedAt).toLocaleDateString("en-US", {
                             day: "2-digit",
                             month: "long",
                             year: "numeric",
                           })}</p>
-                        
-                        
+                          
                     </div>
               </div> }
             </div>
