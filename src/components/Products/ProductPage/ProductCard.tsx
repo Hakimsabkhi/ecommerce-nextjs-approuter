@@ -1,21 +1,29 @@
 // components/ProductCard.tsx
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { FaEye, FaRegHeart, FaHeart, FaCartShopping, FaStar } from "react-icons/fa6";
+import { FaEye, FaRegHeart, FaHeart, FaCartShopping, FaStar, FaRegStar } from "react-icons/fa6";
 import { useDispatch } from "react-redux";
 import { addItem } from "@/store/cartSlice";
 import { toast } from "react-toastify";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
 import { addToWishlist } from "@/store/wishlistSlice";
+import { FaStarHalfAlt } from "react-icons/fa";
 
 interface Brand {
   _id: string;
   name: string;
 }
-
+interface Review {
+  _id: string;
+  name: string;
+  email: string;
+  text: string;
+  reply: string;
+  rating: number;
+  createdAt: string;
+  updatedAt: string;
+}
 interface ProductData {
   _id: string;
   name: string;
@@ -40,11 +48,54 @@ interface Category {
 interface ProductCardProps {
   item: ProductData;
 }
+const fetchReviews = async (productId: string) => {
+  if (!productId) {
+    throw new Error("Product ID is required");
+  }
+
+  const response = await fetch(
+    `/api/review/getAllReviewByProduct?id=${productId}`
+  );
+  if (!response.ok) {
+    throw new Error(`Error: ${response.statusText}`);
+  }
+
+  const data = await response.json();
+  return data; // Ensure you return the fetched data
+};
 
 const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
-  const [clicked, setClicked] = useState(false);
-  const session = useSession();
-  const route = useRouter();
+  const [reviews, setReviews] = useState<Review[]>([]);
+  useEffect(() => {
+    const loadReviews = async () => {
+
+        const data = await fetchReviews(item._id);
+        setReviews(data);
+      } 
+  
+  
+    loadReviews();
+  }, [item._id]);
+  
+  const countRatings = (reviews: Review[]): Record<number, number> => {
+    const counts: Record<number, number> = {};
+  
+    reviews.forEach((review) => {
+      counts[review.rating] = (counts[review.rating] || 0) + 1;
+    });
+  
+    return counts;
+  };
+  
+  const ratingCounts = countRatings(reviews);
+  const ratingCounts1 = ratingCounts[1] || 0;
+  const ratingCounts2 = ratingCounts[2] || 0;
+  const ratingCounts3 = ratingCounts[3] || 0;
+  const ratingCounts4 = ratingCounts[4] || 0;
+  const ratingCounts5 = ratingCounts[5] || 0;
+  
+  const numberOfReviews = reviews.length;
+  const reatingstatictotal=((ratingCounts1*1)+(ratingCounts2*2)+(ratingCounts3*3)+(ratingCounts4*4)+(ratingCounts5*5))/numberOfReviews;
   const handleClick = async (product: ProductData) => {
   
     dispatch(addToWishlist(product));
@@ -76,13 +127,18 @@ const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
               <p className="text-productNameCard cursor-pointer text-2xl max-md:text-lg font-bold">
               {item.name}
             </p>
-            <div className="flex gap-2 items-center ">
-          {[...Array(5)].map((_, index) => (
-            <FaStar key={index} className="text-starsCard size-5 max-md:size-4" />
-          ))}
-          <p className="flex gap-2 text-xl max-md:text-sm font-bold items-center">
-            5
-          </p>
+            <div className="flex gap-2 items-center text-secondary ">
+            {Array.from({ length: 5 }, (_, index) => {
+                    const starValue = index + 1;
+                    if (starValue <= reatingstatictotal) {
+                        return <FaStar key={index} />;  // Full star
+                    } else if (starValue - 0.5 <= reatingstatictotal) {
+                        return <FaStarHalfAlt key={index} />;  // Half star
+                    } else {
+                        return <FaRegStar key={index} />;  // Empty star
+                    }
+                })}
+          
         </div>
              </div>
             <div className="flex-col gap-1">

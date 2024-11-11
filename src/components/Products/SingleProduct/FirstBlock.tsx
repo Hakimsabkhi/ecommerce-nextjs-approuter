@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, MouseEvent } from "react";
+import React, { useState, MouseEvent, useEffect } from "react";
 import Image from "next/image";
 import { star } from "@/assets/image";
 import { IoCheckboxOutline } from "react-icons/io5";
@@ -11,6 +11,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { addItem } from "../../../store/cartSlice";
 import { RootState } from "../../../store";
 import { toast } from "react-toastify";
+import { FaRegStar, FaStar } from "react-icons/fa6";
+import { FaStarHalfAlt } from "react-icons/fa";
 
 const noimage =
   "https://res.cloudinary.com/dx499gc6x/image/upload/v1723623372/na_mma1mw.webp";
@@ -34,6 +36,16 @@ interface Product {
   material?: string;
   status?: string;
 }
+interface Review {
+  _id: string;
+  name: string;
+  email: string;
+  text: string;
+  reply: string;
+  rating: number;
+  createdAt: string;
+  updatedAt: string;
+}
 
 interface Brand {
   _id: string;
@@ -44,6 +56,21 @@ interface Brand {
 interface FirstBlockProps {
   product: Product | null;
 }
+const fetchReviews = async (productId: string) => {
+  if (!productId) {
+    throw new Error("Product ID is required");
+  }
+
+  const response = await fetch(
+    `/api/review/getAllReviewByProduct?id=${productId}`
+  );
+  if (!response.ok) {
+    throw new Error(`Error: ${response.statusText}`);
+  }
+
+  const data = await response.json();
+  return data; // Ensure you return the fetched data
+};
 const FirstBlock: React.FC<FirstBlockProps> = ({ product }) => {
   const [count, setCount] = useState<number>(0);
   const [mainImage, setMainImage] = useState<string>(
@@ -59,7 +86,38 @@ const FirstBlock: React.FC<FirstBlockProps> = ({ product }) => {
     x: 0,
     y: 0,
   });
-
+  const [reviews, setReviews] = useState<Review[]>([]);
+  useEffect(() => {
+    const loadReviews = async () => {
+      if(product?._id){
+        const data = await fetchReviews(product._id);
+        setReviews(data);
+       }
+      } 
+  
+  
+    loadReviews();
+  }, [product?._id]);
+  
+  const countRatings = (reviews: Review[]): Record<number, number> => {
+    const counts: Record<number, number> = {};
+  
+    reviews.forEach((review) => {
+      counts[review.rating] = (counts[review.rating] || 0) + 1;
+    });
+  
+    return counts;
+  };
+  
+  const ratingCounts = countRatings(reviews);
+  const ratingCounts1 = ratingCounts[1] || 0;
+  const ratingCounts2 = ratingCounts[2] || 0;
+  const ratingCounts3 = ratingCounts[3] || 0;
+  const ratingCounts4 = ratingCounts[4] || 0;
+  const ratingCounts5 = ratingCounts[5] || 0;
+  
+  const numberOfReviews = reviews.length;
+  const reatingstatictotal=((ratingCounts1*1)+(ratingCounts2*2)+(ratingCounts3*3)+(ratingCounts4*4)+(ratingCounts5*5))/numberOfReviews;
   const handleMouseEnter = () => setIsZoomed(true);
   const handleMouseLeave = () => setIsZoomed(false);
 
@@ -178,34 +236,19 @@ const FirstBlock: React.FC<FirstBlockProps> = ({ product }) => {
               </div>
 
               <div className="flex gap-3 items-center pb-5">
-                <div className="flex gap-1">
-                  <Image
-                    className="size-4 max-md:size-4"
-                    src={star}
-                    alt="star"
-                  />
-                  <Image
-                    className="size-4 max-md:size-4"
-                    src={star}
-                    alt="star"
-                  />
-                  <Image
-                    className="size-4 max-md:size-4"
-                    src={star}
-                    alt="star"
-                  />
-                  <Image
-                    className="size-4 max-md:size-4"
-                    src={star}
-                    alt="star"
-                  />
-                  <Image
-                    className="size-4 max-md:size-4"
-                    src={star}
-                    alt="star"
-                  />
+                <div className="flex gap-1 text-secondary">
+                {Array.from({ length: 5 }, (_, index) => {
+                    const starValue = index + 1;
+                    if (starValue <= reatingstatictotal) {
+                        return <FaStar key={index} />;  // Full star
+                    } else if (starValue - 0.5 <= reatingstatictotal) {
+                        return <FaStarHalfAlt key={index} />;  // Half star
+                    } else {
+                        return <FaRegStar key={index} />;  // Empty star
+                    }
+                })}
                 </div>
-                <p>(2 customer reviews)</p>
+                <p>({numberOfReviews} customer reviews)</p>
               </div>
               <p className="text-sm">{product.info}</p>
               <hr className="bg-gray-500 mt-5 mb-5"></hr>
