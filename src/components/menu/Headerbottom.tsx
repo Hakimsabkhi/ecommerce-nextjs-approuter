@@ -113,7 +113,7 @@ const Headerbottom: React.FC = () => {
           <Link
             href={`/${category.slug}`}
             key={category._id}
-            className="flex items-center gap-3 pl-4 duration-300 hover:bg-orange-200  border-b-2 hover:filter hover:invert hover:brightness-100 "
+            className="flex items-center gap-3 pl-4 duration-300 hover:bg-[#eacca1]  border-b-2 hover:filter hover:invert hover:brightness-100 "
             aria-label={category.name}
             onClick={handleLinkClick}
             style={{
