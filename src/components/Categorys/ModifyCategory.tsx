@@ -128,7 +128,7 @@ const ModifyCategory = () => {
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-[80%] block p-2.5"
           />
         </div>
-        <div className="flex items-center w-[30%] max-lg:w-full justify-between">
+        <div className="flex items-center w-[50%] max-lg:w-full justify-between">
           <p className="max-lg:text-base font-bold">Upload Image</p>
           <input
             type="file"
@@ -166,20 +166,20 @@ const ModifyCategory = () => {
             />
           </div>
         )}
-        <div className="flex items-center w-[30%] max-lg:w-full justify-between">
+        <div className="flex items-center w-[50%] max-lg:w-full justify-between">
           <p className="max-lg:text-base font-bold">Upload Icon</p>
           <input
             type="file"
-            accept="image/*"
+            accept="image/svg+xml"
             className="hidden"
             id="upload-icon"
             onChange={handleIconChange}
           />
           <label
             htmlFor="upload-icon"
-            className="bg-[#EFEFEF] max-xl:text-xs text-black rounded-md w-[50%] h-10 border-2 flex items-center justify-center cursor-pointer"
+            className="bg-[#EFEFEF] max-xl:text-xs text-black rounded-md w-[60%] h-10 border-2 flex items-center justify-center cursor-pointer"
           >
-            Select an Icon
+            Select an Icon Type SVG
           </label>
         </div>
         {categoryData.logoUrl && !selectedIcon && (
@@ -204,7 +204,7 @@ const ModifyCategory = () => {
             />
           </div>
         )}
-        <div className="flex items-center w-[30%] max-lg:w-full justify-between">
+        <div className="flex items-center w-[50%] max-lg:w-full justify-between">
           <p className="max-lg:text-base font-bold">Upload Banner</p>
           <input
             type="file"

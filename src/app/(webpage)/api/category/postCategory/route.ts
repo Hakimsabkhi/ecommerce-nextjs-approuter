@@ -76,7 +76,7 @@ export async function POST(req: NextRequest) {
       const logoResult = await new Promise<any>((resolve, reject) => {
         const uploadStream = cloudinary.uploader.upload_stream(
           { folder: 'categories/logos' ,
-            format: 'webp' 
+            format: 'svg' 
           },
           (error, result) => {
             if (error) {

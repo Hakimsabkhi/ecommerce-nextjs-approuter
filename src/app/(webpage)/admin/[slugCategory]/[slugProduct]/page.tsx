@@ -2,7 +2,7 @@ import React from "react";
 import { notFound } from "next/navigation";
 import FirstBlock from "@/components/Products/SingleProduct/FirstBlock";
 import SecondBlock from "@/components/Products/SingleProduct/SecondBlock";
-import ThirdBlock from "@/components/Products/SingleProduct/ThirdBlock";
+
 
 interface ProductData {
   _id: string;
@@ -83,7 +83,7 @@ export default async function Page({ params }: { params: {slugCategory: string ,
 
       <FirstBlock product={product} />
       <SecondBlock product={product} />
-      {product.brand!=null && <ThirdBlock product={product} /> }
+
       
     </div>
   );

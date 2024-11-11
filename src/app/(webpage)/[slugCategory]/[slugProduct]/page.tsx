@@ -81,9 +81,8 @@ export default async function Page({ params }: { params: {slugCategory: string ,
     <div>
       <FirstBlock product={product} />
       <SecondBlock product={product} />
-      
       <ForthBlock product={product} />
-      <FifthBlock />
+      <FifthBlock/>
     </div>
   );
 };

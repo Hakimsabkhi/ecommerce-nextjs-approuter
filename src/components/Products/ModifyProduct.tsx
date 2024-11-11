@@ -70,7 +70,7 @@ const ModifyProduct: React.FC<ModifyProductProps> = ({ productData }) => {
     dimensions: productData?.dimensions || '',
     images: productData?.images || [],
   });
-
+  const [removedImageIds, setRemovedImageIds] = useState<string[]>([]);
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -169,29 +169,41 @@ const ModifyProduct: React.FC<ModifyProductProps> = ({ productData }) => {
       setImages(prevImages => prevImages.filter((_, i) => i !== index));
     } else {
       const removedImage = existingImages[index];
+      setRemovedImageIds(prev => [...prev, removedImage]);
       setExistingImages(prevImages => prevImages.filter((_, i) => i !== index));
-
-      fetch(`/api/products/deleteimageproduct/${formData._id}`, {
-        method: 'DELETE',
-        body: JSON.stringify({ imageUrl: removedImage }),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }).then(response => {
-        if (response.ok) {
-          toast.success('Image removed successfully!');
-        } else {
-          toast.error('Failed to remove image.');
-        }
-      }).catch(() => {
-        toast.error('Error occurred while removing image.');
-      });
+      
+ 
     }
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+    if (removedImageIds.length > 0) {
+      try {
+        // Loop through removedImageIds and delete each image
+        for (const removeimage of removedImageIds) {
+          const response = await fetch(`/api/products/deleteimageproduct/${formData._id}`, {
+            method: 'DELETE',
+            body: JSON.stringify({ imageUrl: removeimage }),
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+    
+          if (response.ok) {
+            console.log('Image removed successfully!');
+          } else {
+           console.error('Failed to remove image.');
+          }
+        }
+      } catch (error) {
+        toast.error('Error occurred while deleting images.');
+        return; // If image deletion fails, don't proceed with the product update
+      }
+    }
+    
+  
+    
     const updateFormData = new FormData();
     updateFormData.append('name', formData.name);
     updateFormData.append('description', formData.description);

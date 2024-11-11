@@ -124,7 +124,7 @@ export async function PUT(
           (resolve, reject) => {
             const uploadStream = cloudinary.uploader.upload_stream(
               { folder: "categories/logos",
-                format: 'webp' 
+                format: 'svg' 
                },
               (error, result) => {
                 if (error)

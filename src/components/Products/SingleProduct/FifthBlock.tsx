@@ -1,9 +1,6 @@
 "use client"
 import React, { useEffect, useState } from 'react';
-import Image from 'next/image';
-import { FaEye, FaCartPlus, FaRegHeart, FaHeart } from 'react-icons/fa';
-import { notFound, useParams } from 'next/navigation'; // Use 'next/navigation' for Next.js App Router
-import{star } from '@/assets/image';
+import { useParams } from 'next/navigation'; // Use 'next/navigation' for Next.js App Route
 import ProductCard from '../ProductPage/ProductCard';
 const noimage ='https://res.cloudinary.com/dx499gc6x/image/upload/v1723623372/na_mma1mw.webp';
 interface ProductData {
@@ -36,45 +33,50 @@ interface Brand {
 }
 
 const FifthBlock: React.FC = () => {
-  const params = useParams<{ product?: string }>(); // Adjust params based on your route setup
-  const categoryId = params.product; // Safe access
+  const params = useParams<{ slugCategory?: string }>(); // Adjust params based on your route setup
+  const categoryId = params.slugCategory; // Safe access
   const [products, setProducts] = useState<ProductData[]>([]);
-  const [clickedStates, setClickedStates] = useState<boolean[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchCategory = async () => {
       if (categoryId) {
         try {
           const response = await fetch(`/api/search/${categoryId}`);
+          if (!response.ok) {
+            throw new Error('Failed to fetch products');
+          }
           const data = await response.json();
           setProducts(data);
-          setClickedStates(new Array(data.length).fill(false)); // Initialize clickedStates based on product length
         } catch (error) {
-          console.error("Error fetching products:", error);
-        } finally {
-          setLoading(false);
-        }
+          setError(error instanceof Error ? error.message : 'An unexpected error occurred');
+        }  
       }
     };
     fetchCategory();
   }, [categoryId]);
-
-  const handleClick = (index: number) => {
-    setClickedStates(prevStates =>
-      prevStates.map((state, i) => (i === index ? !state : state))
-    );
+  const getRandomProducts = (products: ProductData[], n: number) => {
+    const shuffled = [...products].sort(() => Math.random() - 0.5); // Shuffle the array
+    return shuffled.slice(0, n); // Return the first 'n' items
   };
 
-  const firstFourProducts = products.slice(0, 4);
+  // Get 4 random products
+  const randomProducts = getRandomProducts(products, 4);
     return (
-        <main className='max-lg:hidden desktop bg-white py-10 flex justify-center '>
-            <div className="grid grid-cols-5 w-full h-[481px] max-md:grid-cols-2 group  max-xl:grid-cols-3  gap-8  max-md:gap-3">
-                {firstFourProducts.map((item, index) => (
-                    <ProductCard key={item._id} item={item} />
-                ))}
-            </div>
-        </main>
+      <main className=' desktop bg-white py-10 flex justify-center flex-col  gap-8 p-4 '>
+      <hr></hr>
+        <p className="text-xl ">Produit Similaire</p>
+      
+      <div className="grid grid-cols-4 w-full max-sm:grid-cols-1 max-xl:grid-cols-2 group max-2xl:grid-cols-3 gap-8 max-md:gap-3">
+        { error ? (
+          <div className="col-span-full text-center text-red-600">{error}</div> // Display error message
+        ) : (
+          randomProducts.map((item) => (
+            <ProductCard key={item._id} item={item} />
+          ))
+        )}
+      </div>
+    </main>
     );
 }
 
