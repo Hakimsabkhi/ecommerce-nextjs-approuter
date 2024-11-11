@@ -53,9 +53,9 @@ const Sellers: React.FC = async () => {
   const products = await fetchProduct();
 
   return (
-    <div className=" max-lg:w-[95%] desktop  mx-auto flex flex-col gap-10 py-8">
-      <div className="flex w-full flex-col sm:flex-row items-center justify-between">
-        <h3 className="font-bold text-4xl text-[#525566] font-poppins">
+    <div className=" max-lg:w-[95%] desktop mx-auto flex flex-col gap-10 py-8">
+      <div className="flex w-full flex-col">
+        <h3 className="font-bold text-4xl text-center text-HomePageTitles ">
           Weekly bestsellers
         </h3>
       </div>

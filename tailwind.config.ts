@@ -19,7 +19,8 @@ module.exports = {
         background: 'var(--color-background)',
         text: 'var(--color-text)',
         starsCard: 'var(--color-starsCard)',
-        productNameCard: 'var(--color-nameCard)',
+        productNameCard: 'var(--color-productNameCard)',
+        HomePageTitles: 'var(--color-HomePageTitles)',
       }   
     },  
   },

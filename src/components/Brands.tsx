@@ -35,7 +35,7 @@ const Brands = async () => {
     return (
         <div className='desktop max-md:w-[95%] flex flex-col gap-10 max-md:gap-4 py-8'>
             <div className='flex-col flex gap-2 max-md:gap-1 text-center w-full'>
-                <h3 className='font-bold text-4xl text-gray-800'>
+                <h3 className='font-bold text-4xl text-HomePageTitles'>
                     Shopping by brands
                 </h3>
                 <p className='text-base text-[#525566]'>Discover lots of products from popular brands</p>
