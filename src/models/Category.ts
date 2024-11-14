@@ -8,6 +8,7 @@ export interface ICategory extends Document {
   slug:string,
   user: IUser | string; // Reference to a User document or User ID
   vadmin: string;
+  numberproduct:number;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -27,6 +28,7 @@ const CategorySchema: Schema = new Schema({
   slug: { type: String, unique: true },
   user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   vadmin:{ type: String,default:'not-approve'},
+  numberproduct:{type:Number, default: 0 }
 },{ timestamps: true });
 
 
