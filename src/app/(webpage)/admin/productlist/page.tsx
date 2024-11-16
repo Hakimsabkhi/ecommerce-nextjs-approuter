@@ -6,6 +6,7 @@ import LoadingSpinner from "@/components/LoadingSpinner";
 import DeletePopup from "@/components/Popup/DeletePopup";
 import Pagination from "@/components/Pagination";
 import Image from "next/image";
+import { items } from "@/assets/data";
 
 type User = {
   _id: string;
@@ -333,12 +334,14 @@ const AddedProducts: React.FC = () => {
                       Not approve{" "}
                     </option>
                   </select>
-                  <select
-                    className={`w-50 text-black rounded-md p-2 ${
-                      item.status === "in-stock"
-                        ? "bg-gray-800 text-white"
-                        : "bg-red-700 text-white"
-                    }`}
+                 {item.stock>0 ?(<select
+                  className={`w-50 text-black rounded-md p-2 ${
+                    item.status === "in-stock"
+                      ? "bg-gray-800 text-white"
+                      : item.status === "out-of-stock"
+                      ? "bg-red-700 text-white"
+                      : "bg-gray-800 text-white" // If none of the conditions match, apply no background color
+                  }`}
                     value={item.status}
                     onChange={(e) =>
                       updateProductStatus(item._id, e.target.value)
@@ -350,7 +353,11 @@ const AddedProducts: React.FC = () => {
                     <option value="out-of-stock" className="text-white">
                       Out of stock
                     </option>
-                  </select>
+                  </select>):(
+                    <div className="w-32 bg-gray-500 text-white rounded-md p-2 ">
+                    <p >Out of stock</p>
+                    </div>
+                  )}
                   <select
                     className={`w-50 text-black rounded-md p-2 ${
                       item.statuspage === "none"
