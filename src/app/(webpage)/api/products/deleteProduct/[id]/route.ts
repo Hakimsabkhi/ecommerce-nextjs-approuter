@@ -76,13 +76,12 @@ const deleteImagesFromCloudinary = async (urls: string[]) => {
  // If the product has associated images, delete them from Cloudinary
  if (product.images && product.images.length > 0) {
   await deleteImagesFromCloudinary(product.images);
-}
-const existingcategory = await Category.findById(product.category);
-if (!existingcategory){
-  return NextResponse.json({ message: 'Error product ' }, { status: 402 });
-}
+}const existingcategory = await Category.findById(product.category);
+if (existingcategory){
   existingcategory.numberproduct -= 1;
-  existingcategory.save();
+  existingcategory.save(); 
+}
+ 
       // Delete the product from the database
     await Product.findByIdAndDelete(id); 
   

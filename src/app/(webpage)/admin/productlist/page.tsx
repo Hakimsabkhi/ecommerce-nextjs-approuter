@@ -287,6 +287,7 @@ const AddedProducts: React.FC = () => {
           <tr className="bg-gray-800">
             <th className="px-4 py-2">REF</th>
             <th className="px-4 py-2">Name</th>
+            <th className="px-4 py-2 flex justify-center">Quantity</th>
             <th className="px-4 py-2">ImageURL</th>
             <th className="px-4 py-2">Created By</th>
             <th className="px-4 text-center py-2">Action</th>
@@ -297,6 +298,7 @@ const AddedProducts: React.FC = () => {
             <tr key={item._id} className="bg-white text-black">
               <td className="border px-4 py-2">{item.ref}</td>
               <td className="border px-4 py-2">{item.name}</td>
+              <td className="border px-4 py-2 flex justify-center">{item.stock}</td>
               <td className="border px-4 py-2 ">
                 <div className="items-center justify-center flex">
                   <Image
@@ -380,7 +382,7 @@ const AddedProducts: React.FC = () => {
                   </button>
                   <Link
                     href={`/${item.vadmin === "approve" ? "" : "admin/"}${
-                      item.category.slug
+                      item.category?.slug
                     }/${item.slug}`}
                   >
                     <button className="bg-gray-800 text-white w-36 h-10 hover:bg-gray-600 rounded-md uppercase">

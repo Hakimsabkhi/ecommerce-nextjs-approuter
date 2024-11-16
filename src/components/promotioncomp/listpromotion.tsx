@@ -181,7 +181,7 @@ const ListPromotion: React.FC = () => {
                 
                   <Link
                     href={`/${item.vadmin === "approve" ? "" : "admin/"}${
-                      item.category.slug
+                      item.category?.slug
                     }/${item.slug}`}
                   >
                     <button className="bg-gray-800 text-white w-36 h-10 hover:bg-gray-600 rounded-md uppercase">
