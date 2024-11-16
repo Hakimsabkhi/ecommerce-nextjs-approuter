@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import connectToDatabase from "@/lib/db";
 import Products from "@/models/Product";
+import Category from '@/models/Category';
 import Brand from "@/models/Brand";
 import cloudinary from "@/lib/cloudinary";
 import stream from "stream";
@@ -67,7 +68,13 @@ export async function POST(req: NextRequest) {
       }
       brand = validBrand._id.toString(); // Ensure it stores as a string
     }
+    const existingcategory = await Category.findById(category);
+    if (!existingcategory){
+      return NextResponse.json({ message: 'Error product ' }, { status: 402 });
+    }
+    existingcategory.numberproduct += 1; // Increment the review count
 
+    existingcategory.save();
     // Check if a product with the same ref already exists
     const existingProduct = await Products.findOne({ ref });
     if (existingProduct) {

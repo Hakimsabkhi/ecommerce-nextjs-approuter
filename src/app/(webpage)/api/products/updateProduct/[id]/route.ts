@@ -6,6 +6,7 @@ import stream from "stream";
 import User from "@/models/User";
 import Brand from "@/models/Brand";
 import { getToken } from "next-auth/jwt";
+import Category from "@/models/Category";
 
 const extractPublicId = (url: string): string => {
   const matches = url.match(/\/([^\/]+)\.(jpg|jpeg|png|gif|webp)$/);
@@ -132,7 +133,21 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
     } else {
       existingProduct.brand = null; // If brand is not provided or empty, set it to null
     }
-
+    if(category){
+      const existingcategory = await Category.findById(category);
+      if (existingcategory){
+        existingcategory.numberproduct += 1; // Increment the review count
+        existingcategory.save();
+      }
+     
+      const existingoldcategory = await Category.findById(existingProduct.category)
+      if (existingoldcategory){
+        existingoldcategory.numberproduct -= 1; // Increment the review count
+  
+        existingoldcategory.save();
+      }
+     
+    }
     // Update product fields
     existingProduct.name = name || existingProduct.name;
     existingProduct.description = description || existingProduct.description;

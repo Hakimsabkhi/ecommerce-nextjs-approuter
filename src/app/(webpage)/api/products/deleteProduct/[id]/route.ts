@@ -5,6 +5,7 @@ import cloudinary from "@/lib/cloudinary";
 import User from "@/models/User";
 import { getToken } from "next-auth/jwt";
 import Review from "@/models/Review";
+import Category from '@/models/Category';
 
 
 const extractPublicId = (url: string): string => {
@@ -75,8 +76,12 @@ const deleteImagesFromCloudinary = async (urls: string[]) => {
  // If the product has associated images, delete them from Cloudinary
  if (product.images && product.images.length > 0) {
   await deleteImagesFromCloudinary(product.images);
+}const existingcategory = await Category.findById(product.category);
+if (existingcategory){
+  existingcategory.numberproduct -= 1;
+  existingcategory.save(); 
 }
-
+ 
       // Delete the product from the database
     await Product.findByIdAndDelete(id); 
   

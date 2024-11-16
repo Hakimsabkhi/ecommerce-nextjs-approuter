@@ -111,7 +111,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
   return (
     <div className="flex gap-2 h-fit flex-col duration-500 lg:group-hover:scale-[0.85] lg:hover:!scale-100 max-md:h-fit relative
                    ">
-      <Link href={`/${item.category.slug}/${item.slug}`}>
+      <Link href={`/${item.category?.slug}/${item.slug}`}>
         <Image
           className=" w-full h-auto mx-auto top-5"
           src={item.imageUrl || ""}
@@ -121,7 +121,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
         />
       </Link>
       <div className="flex-col flex bottom-0 gap-2 pl-2 pr-2 w-full">
-        <Link href={`/${item.category.slug}/${item.slug}`}>
+        <Link href={`/${item.category?.slug}/${item.slug}`}>
           <div className=" flex justify-between h-24 max-md:h-20">
             <div className="flex-col gap-1" >
               <p className="text-productNameCard cursor-pointer text-2xl max-md:text-lg font-bold">
@@ -199,7 +199,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
             </button>
           )}
 
-          <a href={`/${item.category.slug}/${item.slug}`} className="w-[25%] max-lg:w-[30%]">
+          <a href={`/${item.category?.slug}/${item.slug}`} className="w-[25%] max-lg:w-[30%]">
             <button className="AddtoCart bg-white max-md:rounded-[3px] w-full group/box text-primary border border-primary">
               <p className="absolute flex items-center justify-center w-full h-full transition-all duration-300 transform lg:group-hover/box:translate-y-[-100%] ease max-md:text-xs">
                 View

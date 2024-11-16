@@ -7,6 +7,7 @@ interface Category {
     name: string;
     imageUrl: string;
     slug:string;
+    numberproduct:number;
   }
   
   // Function to fetch categories data
@@ -51,7 +52,7 @@ const Categories: React.FC=  async () => {
                                 {category.name}
                             </p>
                             <p className='cursor-pointer absolute top-[80%] xl:group-hover:top-44 lg:group-hover:top-20 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-lg max-xl:text-xs opacity-0 lg:group-hover:opacity-100 pt-2 duration-500'>
-                                16 products
+                              {category.numberproduct}
                             </p>
                             <Image
                                 className='w-full rounded-full'
