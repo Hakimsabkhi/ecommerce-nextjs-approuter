@@ -241,9 +241,9 @@ const ListOrders: React.FC = () => {
                       View
                     </button>
                   </Link>
-                  <Link href={`/admin/invoice/${item.ref}`}>
-                    <button className="bg-gray-800 text-white w-28 h-10 hover:bg-gray-600 rounded-md uppercase">
-                      Invoice
+                  <Link href={`/admin/Bondelivraison/${item.ref}`}>
+                    <button className="bg-gray-800 text-white w-36 h-10 hover:bg-gray-600 rounded-md uppercase">
+                    Bon de Livraison
                     </button>
                   </Link>
                   <button

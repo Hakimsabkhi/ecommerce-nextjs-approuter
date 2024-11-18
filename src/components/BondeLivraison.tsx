@@ -46,7 +46,7 @@ interface User{
 }
 
 
-const Invoice=()=>{
+const BondeLivraison=()=>{
   const params = useParams() as { id: string }; // Explicitly type the params object
   const [order, setOrder] = useState<Order | null>(null); 
     const [loading, setLoading] = useState(true);
@@ -150,7 +150,7 @@ const Invoice=()=>{
       }
 
       // Save the PDF
-      pdf.save('invoice.pdf');
+      pdf.save(`BondeLivraison${order?.ref.replace('ORDER-', '')}.pdf`);
     });
   } else {
     console.error('Invoice content is not found');
@@ -177,7 +177,7 @@ if (loading) {
   
 
         <div className="text-end">
-          <h2 className="text-2xl md:text-3xl font-semibold text-gray-800 dark:text-neutral-200">Invoice #</h2>
+          <h2 className="text-2xl md:text-3xl font-semibold text-gray-800 dark:text-neutral-200">Bon de Livraison #</h2>
           <span className="mt-1 block text-gray-500 dark:text-neutral-500">{order?.ref.replace('ORDER-', '')}</span>
 
           <p className="mt-4 not-italic text-gray-800 dark:text-neutral-200">
@@ -208,7 +208,7 @@ if (loading) {
       
           <div className="grid grid-cols-2 sm:grid-cols-1 gap-3 sm:gap-2">
             <dl className="grid sm:grid-cols-5 gap-x-3">
-              <dt className="col-span-3 font-semibold text-gray-800 dark:text-neutral-200">Invoice date:</dt>
+              <dt className="col-span-3 font-semibold text-gray-800 dark:text-neutral-200">Date:</dt>
               <dd className="col-span-2 text-gray-500 dark:text-neutral-500">{new Date().toLocaleDateString('en-US', {
   year: 'numeric',
   month: 'numeric',
@@ -330,7 +330,7 @@ if (loading) {
       
       <button onClick={  generatePDF} type='button' className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none focus:outline-none focus:bg-gray-50 dark:bg-transparent dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800" >
       <svg className="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
-        Invoice PDF
+      Bon de Livraison PDF
       </button>
       <button onClick={ handlePrint} type='button'  className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-primary text-white hover:bg-[#15335E] focus:outline-none focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none" >
         <svg className="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect width="12" height="8" x="6" y="14"/></svg>
@@ -345,4 +345,4 @@ if (loading) {
   );
 };
 
-export default Invoice;
+export default BondeLivraison;

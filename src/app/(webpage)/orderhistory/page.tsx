@@ -111,10 +111,10 @@ const Page = () => {
                 <p>{order.total} TND</p>
               </div>
               <Link
-                href={`/orderhistory/invoice/${order.ref}`}
+                href={`/orderhistory/bondelivraison/${order.ref}`}
                 className="bg-[#F7F7F7] border-2 h-10 w-[15%] max-md:w-full rounded-lg flex items-center justify-center"
               >
-                View Invoice
+                View
               </Link>
             </div>
           </div>

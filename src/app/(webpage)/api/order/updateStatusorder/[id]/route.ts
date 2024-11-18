@@ -3,7 +3,7 @@ import dbConnect from "@/lib/db";
 import Order from "@/models/order";
 import User from "@/models/User";
 import { getToken } from "next-auth/jwt";
-
+import Product from "@/models/Product";
 
 export async function PUT(
     req: NextRequest,
@@ -45,9 +45,87 @@ export async function PUT(
           { status: 404 }
         );
       }
- 
-  
-      
+     
+     if(existingOrder.orderStatus!="Cancelled" && existingOrder.orderStatus!="Refunded" && status=="Cancelled"){
+      for (let i = 0; i < existingOrder.orderItems.length; i++) {
+        // Your loop body here
+        console.log(existingOrder.orderItems[i].product); // Example: access each item in orderItems
+        const oldproduct = await Product.findOne({_id:existingOrder.orderItems[i].product})
+        if(oldproduct)
+        {
+        
+            oldproduct.stock+=existingOrder.orderItems[i].quantity;
+           
+            oldproduct.save();
+          
+        }
+      }
+     }
+     if(existingOrder.orderStatus!="Cancelled" && existingOrder.orderStatus!="Refunded" && status=="Refunded"){
+      for (let i = 0; i < existingOrder.orderItems.length; i++) {
+        // Your loop body here
+        console.log(existingOrder.orderItems[i].product); // Example: access each item in orderItems
+        const oldproduct = await Product.findOne({_id:existingOrder.orderItems[i].product})
+        if(oldproduct)
+        {
+          
+            oldproduct.stock+=existingOrder.orderItems[i].quantity;
+           
+            oldproduct.save();
+          
+        }
+      }
+     }
+     if(existingOrder.orderStatus!="Processing" && existingOrder.orderStatus!="Pack" && existingOrder.orderStatus!="Deliver" && status=="Processing"){
+      for (let i = 0; i < existingOrder.orderItems.length; i++) {
+        // Your loop body here
+        console.log(existingOrder.orderItems[i].product); // Example: access each item in orderItems
+        const oldproduct = await Product.findOne({_id:existingOrder.orderItems[i].product})
+        if(oldproduct)
+        {
+          if(oldproduct.stock>=existingOrder.orderItems[i].quantity)
+          {
+            oldproduct.stock-=existingOrder.orderItems[i].quantity;
+           
+            oldproduct.save();
+          }
+        }
+      }
+     }
+     if(existingOrder.orderStatus!="Processing" && existingOrder.orderStatus!="Pack" && existingOrder.orderStatus!="Deliver" && status=="Pack"){
+      for (let i = 0; i < existingOrder.orderItems.length; i++) {
+        // Your loop body here
+        console.log(existingOrder.orderItems[i].product); // Example: access each item in orderItems
+        const oldproduct = await Product.findOne({_id:existingOrder.orderItems[i].product})
+        if(oldproduct)
+        {
+          if(oldproduct.stock>=existingOrder.orderItems[i].quantity)
+          {
+            oldproduct.stock-=existingOrder.orderItems[i].quantity;
+           
+            oldproduct.save();
+          }
+        }
+      }
+     }
+     if(existingOrder.orderStatus!="Processing" && existingOrder.orderStatus!="Pack" && existingOrder.orderStatus!="Deliver" && status=="Deliver"){
+      for (let i = 0; i < existingOrder.orderItems.length; i++) {
+        // Your loop body here
+        console.log(existingOrder.orderItems[i].product); // Example: access each item in orderItems
+        const oldproduct = await Product.findOne({_id:existingOrder.orderItems[i].product})
+        if(oldproduct)
+        {
+          if(oldproduct.stock>=existingOrder.orderItems[i].quantity)
+          {
+            oldproduct.stock-=existingOrder.orderItems[i].quantity;
+           
+            oldproduct.save();
+          }
+        }
+      }
+     }
+          // Ensure 'status' is defined in the scope where you are using it
+
       // Update category with new values
       // Ensure proper type conversions and default values
       if (status !== undefined && status !== null) {
