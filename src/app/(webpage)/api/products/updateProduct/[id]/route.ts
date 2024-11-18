@@ -134,19 +134,21 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
       existingProduct.brand = null; // If brand is not provided or empty, set it to null
     }
     if(category){
+      const existingoldcategory = await Category.findById(existingProduct.category)
       const existingcategory = await Category.findById(category);
+    if(existingProduct.category!=category){
       if (existingcategory){
         existingcategory.numberproduct += 1; // Increment the review count
         existingcategory.save();
       }
      
-      const existingoldcategory = await Category.findById(existingProduct.category)
+     
       if (existingoldcategory){
         existingoldcategory.numberproduct -= 1; // Increment the review count
   
         existingoldcategory.save();
       }
-     
+    }
     }
     // Update product fields
     existingProduct.name = name || existingProduct.name;
