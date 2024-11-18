@@ -10,6 +10,7 @@ interface ProductData {
     name: string;
     description: string;
     ref: string;
+    tva:number;
     price: number;
     imageUrl?: string;
     category: {_id:string}; // Assuming category is an object
