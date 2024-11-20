@@ -36,6 +36,7 @@ export async function POST(req: NextRequest) {
     product: item._id,
     refproduct:item.ref,
     name: item.name,
+    tva:item.tva,
     quantity: item.quantity,
     image: item.imageUrl,
     price: item.price,

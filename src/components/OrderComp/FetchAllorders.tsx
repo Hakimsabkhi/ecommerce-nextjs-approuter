@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import DeletePopup from "../Popup/DeletePopup";
 import LoadingSpinner from "../LoadingSpinner";
 import Pagination from "../Pagination";
+import { useRouter } from "next/navigation";
 
 type User = {
   _id: string;
@@ -33,6 +34,7 @@ interface Order {
 }
 
 const ListOrders: React.FC = () => {
+  const router=useRouter();
   const [orders, setOrders] = useState<Order[]>([]); // All orders
   const [filteredOrders, setFilteredOrders] = useState<Order[]>([]); // Filtered orders
   const [error, setError] = useState<string | null>(null);
@@ -61,6 +63,27 @@ const ListOrders: React.FC = () => {
     setIsPopupOpen(false);
     setLoadingOrderId(null); 
   };
+  const handleinvoice=async(order:string)=>{
+    try {
+     
+      const response = await fetch(`/api/invoice/postinvoice`, {
+        method: "POST",
+       
+        body: JSON.stringify(order),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      console.log(data)
+      router.push(`/admin/invoice/${data.ref._id}`)
+
+    } catch (error) {
+      toast.error("Failed to create invoice");
+    } 
+  }
   const DeleteOrder = async (id: string) => {
         
     try {
@@ -242,10 +265,13 @@ const ListOrders: React.FC = () => {
                     </button>
                   </Link>
                   <Link href={`/admin/Bondelivraison/${item.ref}`}>
-                    <button className="bg-gray-800 text-white w-36 h-10 hover:bg-gray-600 rounded-md uppercase">
-                    Bon de Livraison
+                    <button className="bg-gray-800 text-white w-40 h-10 hover:bg-gray-600 rounded-md uppercase">
+                      Bon de Livraison
                     </button>
                   </Link>
+                  <button type="button" onClick={()=>handleinvoice(item._id)}className="bg-gray-800 text-white w-32 h-10 hover:bg-gray-600 rounded-md uppercase">
+                      Invoice
+                    </button>
                   <button
                   onClick={()=>handleDeleteClick(item)}
                     className="bg-gray-800 text-white w-28 h-10 hover:bg-gray-600 rounded-md"
