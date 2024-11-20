@@ -22,6 +22,7 @@ interface OrderItem {
   refproduct:string;
   product: string;
   name: string;
+  tva: number;
   quantity: number;
   image: string;
   discount: number;
@@ -156,6 +157,25 @@ const BondeLivraison=()=>{
     console.error('Invoice content is not found');
   }
   };
+  let ItemsPrice = 0;
+  let total = 0;
+  let totaltva = 0;
+  // Loop through all items in the invoice and calculate their total price
+  order?.orderItems.forEach((item) => {
+    const discountedPrice = item.price * (1 - item.discount / 100);
+    const totalpricetva = discountedPrice * item.quantity;
+    totaltva += totalpricetva;
+    const priceAfterTax = discountedPrice / (1 + item.tva / 100);
+    const totalItemPrice = priceAfterTax * item.quantity; // Multiply by quantity
+    total += totalItemPrice;
+    const totalPrice = item.price * item.quantity; // Multiply by quantity
+    ItemsPrice += totalPrice; // Add to the total of all items
+  });
+
+  // Add delivery cost to the total
+  const Totalbrut = ItemsPrice;
+  const Totalremise = ItemsPrice - total;
+  const totaltvas = totaltva - total;
     
 if(!order){
     <div>no data</div>
@@ -164,7 +184,7 @@ if (loading) {
   return <LoadingSpinner />;
 }
   return (
-<div className="max-w-[85rem] px-4 sm:px-6 lg:px-8 mx-auto my-4 sm:my-10">
+<div className="max-w-[200rem] px-4 sm:px-6 lg:px-8 mx-auto my-4 sm:my-10">
   <div className="sm:w-11/12 lg:w-3/4 mx-auto">
 
     <div   id="invoice-content" className="flex flex-col p-4 sm:p-10 bg-white  rounded-xl dark:bg-neutral-800">
@@ -193,9 +213,9 @@ if (loading) {
 
 
       <div className="mt-8 grid sm:grid-cols-2 gap-3">
-        <div>
-          <h3 className="text-lg font-semibold text-gray-800 dark:text-neutral-200">Bill to:</h3>
-          <h3 className="text-lg font-semibold text-gray-800 dark:text-neutral-200">{order?.user.username}</h3>
+        <div className=' border border-gray-200 p-2 rounded-md'>
+          <h3 className="text-lg font-semibold text-gray-800 dark:text-neutral-200">Bon de Livraison à:</h3>
+          <h3 className="text-lg font-semibold text-gray-800 dark:text-neutral-200 uppercase">{order?.user.username}</h3>
           <p className="mt-2 not-italic text-gray-500 dark:text-neutral-500">
             {order?.address.address}<br/>
            {order?.address.city}, OR {order?.address.zipcode},<br/>
@@ -209,11 +229,11 @@ if (loading) {
           <div className="grid grid-cols-2 sm:grid-cols-1 gap-3 sm:gap-2">
             <dl className="grid sm:grid-cols-5 gap-x-3">
               <dt className="col-span-3 font-semibold text-gray-800 dark:text-neutral-200">Date:</dt>
-              <dd className="col-span-2 text-gray-500 dark:text-neutral-500">{new Date().toLocaleDateString('en-US', {
-  year: 'numeric',
-  month: 'numeric',
-  day: 'numeric'
-})}</dd>
+              <dd className="col-span-2 text-gray-500 dark:text-neutral-500">{order?.createdAt ? new Date(order.createdAt).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'numeric',
+    day: 'numeric'
+  }) : 'No date available'}</dd>
             </dl>
            
           </div>
@@ -226,47 +246,129 @@ if (loading) {
 
       <div className="mt-6">
         <div className="border border-gray-200 p-4 rounded-lg space-y-4 dark:border-neutral-700">
-          <div className="hidden sm:grid sm:grid-cols-5">
-            <div className="sm:col-span-2 text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">Item</div>
-            <div className="text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">Qty</div>
-            <div className="text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">Rate</div>
-            <div className="text-end text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">Amount</div>
-          </div>
+        <div className="hidden sm:grid sm:grid-cols-10">
+              <div className="sm:col-span-2 text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">
+                  Ref
+                </div>
+                <div className="sm:col-span-2 text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">
+                  Désignation
+                </div>
+                <div className="text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">
+                  Qty
+                </div>
+                <div className="text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">
+                  PU Brut
+                </div>
+                <div className="text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">
+                  Rem
+                </div>
+                <div className="text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">
+                  PU HT
+                </div>
+                <div className="text-end text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">
+                  Prix Tot.HT
+                </div>
+                <div className="text-end text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">
+                  Tva
+                </div>
+              </div>
 
           {order?.orderItems.map((item, index) => (
   <div key={index} >
     <div className="hidden sm:block border-b border-gray-200 dark:border-neutral-700"></div>
-
-    <div className="grid grid-cols-3 sm:grid-cols-5 gap-2 ">
-      <div className="col-span-full sm:col-span-2">
-        <h5 className="sm:hidden text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">Item</h5>
-        <p className="font-medium text-gray-800 dark:text-neutral-200">{item.name}</p>
-      </div>
-      <div>
-        <h5 className="sm:hidden text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">Qty</h5>
-        <p className="text-gray-800 dark:text-neutral-200">{item.quantity}</p>
-      </div>
-      <div>
-        <h5 className="sm:hidden text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">Rate</h5>
-        <p className="text-gray-800 dark:text-neutral-200">{item.discount != null && item.discount > 0 ? (
-  <p>
-    {(item.price - (item.price * item.discount) / 100).toFixed(2)} TND 
-  </p>
-) : (
-  <p>{item.price.toFixed(2)} TND</p>
-)}</p>
-      </div>
-      <div>
-        <h5 className="sm:hidden text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">Amount</h5>
-        <p className="sm:text-end text-gray-800 dark:text-neutral-200"> {item.discount != null && item.discount > 0 ? (
-    // If discount exists, calculate the discounted price multiplied by the quantity
-    ((item.price - (item.price * item.discount) / 100) * item.quantity).toFixed(2)
-  ) : (
-    // If no discount, simply multiply the price by the quantity
-    (item.price * item.quantity).toFixed(2)
-  )} TND</p>
-      </div>
-    </div>
+    <div className="grid grid-cols-10 sm:grid-cols-10 gap-2 ">
+                  <div className="col-span-full sm:col-span-2">
+                      <h5 className="sm:hidden text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">
+                      ref
+                      </h5>
+                      <p className="font-medium text-gray-800 dark:text-neutral-200">
+                        {item.refproduct}
+                      </p>
+                    </div>
+                    <div className="col-span-full sm:col-span-2">
+                      <h5 className="sm:hidden text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">
+                      Désignation
+                      </h5>
+                      <p className="font-medium text-gray-800 dark:text-neutral-200">
+                        {item.name}
+                      </p>
+                    </div>
+                    <div>
+                      <h5 className="sm:hidden text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">
+                        Qty
+                      </h5>
+                      <p className="text-gray-800 dark:text-neutral-200">
+                        {item.quantity}
+                      </p>
+                    </div>
+                    <div>
+                      <h5 className="sm:hidden text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">
+                        PU Brut
+                      </h5>
+                      <p className="text-gray-800 dark:text-neutral-200">
+                        {(item.price / (1 + item.tva / 100)).toFixed(3)} TND
+                      </p>
+                    </div>
+                    <div>
+                      <h5 className="sm:hidden text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">
+                        Rem
+                      </h5>
+                      <p className="text-gray-800 dark:text-neutral-200">
+                        {item.discount}%
+                      </p>
+                    </div>
+                    <div>
+                      <h5 className="sm:hidden text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">
+                        PU HT
+                      </h5>
+                      <p className="text-gray-800 dark:text-neutral-200">
+                        {item.discount != null && item.discount > 0 ? (
+                          <p>
+                            {(
+                              (item.price -
+                                (item.price * item.discount) / 100) /
+                              (1 + item.tva / 100)
+                            ).toFixed(3)}{" "}
+                            TND
+                          </p>
+                        ) : (
+                          <p>
+                            {(item.price / (1 + item.tva / 100)).toFixed(3)} TND
+                          </p>
+                        )}
+                      </p>
+                    </div>
+                    <div>
+                      <h5 className="sm:hidden text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">
+                        Prix Tot.HT{" "}
+                      </h5>
+                      <p className="sm:text-end text-gray-800 dark:text-neutral-200">
+                        {" "}
+                        {item.discount != null && item.discount > 0
+                          ? // If discount exists, calculate the discounted price multiplied by the quantity
+                            (
+                              ((item.price -
+                                (item.price * item.discount) / 100) *
+                                item.quantity) /
+                              (1 + item.tva / 100)
+                            ).toFixed(3)
+                          : // If no discount, simply multiply the price by the quantity
+                            (
+                              (item.price * item.quantity) /
+                              (1 + item.tva / 100)
+                            ).toFixed(3)}{" "}
+                        TND
+                      </p>
+                    </div>
+                    <div>
+                      <h5 className="sm:hidden text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">
+                        Tva
+                      </h5>
+                      <p className="sm:text-end text-gray-800 dark:text-neutral-200">
+                        {item.tva}%
+                      </p>
+                    </div>
+                  </div>
   </div>
 ))}
 
@@ -278,17 +380,71 @@ if (loading) {
         </div>
       </div>
 
-      <div className="mt-8 flex sm:justify-end">
-        <div className="w-full max-w-2xl sm:text-end space-y-2">
-   
-          <div className="grid grid-cols-2 sm:grid-cols-1 gap-3 sm:gap-2">
-         <dl className="grid sm:grid-cols-5 gap-x-3">
-              <dt className="col-span-3 font-semibold text-gray-800 dark:text-neutral-200">Fee Shopping:</dt>
-              <dd className="col-span-2 text-gray-500 dark:text-neutral-500">{order?.deliveryCost ? Number(order.deliveryCost).toFixed(2) : '0.00'}
-
-              TND</dd>
-            </dl>
-{/*
+      <div className="flex justify-end">
+            <div className="mt-8 flex sm:justify-end  border border-gray-200  p-2 rounded-md">
+              <div className="w-full max-w-2xl sm:text-end space-y-2">
+                <div className="grid grid-cols-2 sm:grid-cols-1 gap-3 sm:gap-2">
+                  <div className="grid sm:grid-cols-5 gap-x-3">
+                    <div className="col-span-3 font-semibold text-gray-800 dark:text-neutral-200 justify-start flex">
+                      Total Brut:
+                    </div>
+                    <div className="col-span-2 text-gray-500 dark:text-neutral-500">
+                      {Totalbrut} TND
+                    </div>
+                  </div>
+                  <div className="grid sm:grid-cols-5 gap-x-3">
+                    <div className="col-span-3 font-semibold text-gray-800 dark:text-neutral-200 justify-start flex">
+                      Total Remise:
+                    </div>
+                    <div className="col-span-2 text-gray-500 dark:text-neutral-500 ">
+                      {Totalremise.toFixed(3)} TND
+                    </div>
+                  </div>
+                  <div className="grid sm:grid-cols-5 gap-x-3">
+                    <div className="col-span-3 font-semibold text-gray-800 dark:text-neutral-200 justify-start flex">
+                      Total HT:
+                    </div>
+                    <div className="col-span-2 text-gray-500 dark:text-neutral-500">
+                      {total.toFixed(3)} TND
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div className="mt-8 flex sm:justify-end pl-2">
+              <div className="w-full max-w-2xl sm:text-end space-y-2 border border-gray-200 p-2 rounded-md">
+                <div className="grid grid-cols-2 sm:grid-cols-1 gap-3 sm:gap-2">
+                  <dl className="grid sm:grid-cols-5 gap-x-3">
+                    <dt className="col-span-3 font-semibold text-gray-800 dark:text-neutral-200 justify-start flex">
+                      TVA:
+                    </dt>
+                    <dd className="col-span-2 text-gray-500 dark:text-neutral-500">
+                      {" "}
+                      {totaltvas.toFixed(3)} TND
+                    </dd>
+                  </dl>
+                  <dl className="grid sm:grid-cols-5 gap-x-3">
+                    <dt className="col-span-3 font-semibold text-gray-800 dark:text-neutral-200 justify-start flex">
+                    Frais de livraison:
+                    </dt>
+                    <dd className="col-span-2 text-gray-500 dark:text-neutral-500">
+                      {order?.deliveryCost
+                        ? Number(order.deliveryCost).toFixed(3)
+                        : "0.000"}{" "}
+                      TND
+                    </dd>
+                  </dl>
+                  <dl className="grid sm:grid-cols-5 gap-x-3">
+                    <dt className="col-span-3 font-semibold text-gray-800 dark:text-neutral-200 justify-start flex">
+                      Timbre Fiscale:
+                    </dt>
+                    <dd className="col-span-2 text-gray-500 dark:text-neutral-500">
+                      1.000
+                      TND
+                    </dd>
+                  </dl>
+                  {/*
             <dl className="grid sm:grid-cols-5 gap-x-3">
               <dt className="col-span-3 font-semibold text-gray-800 dark:text-neutral-200">Total:</dt>
               <dd className="col-span-2 text-gray-500 dark:text-neutral-500">$2750.00</dd>
@@ -299,19 +455,25 @@ if (loading) {
               <dd className="col-span-2 text-gray-500 dark:text-neutral-500">$39.00</dd>
             </dl> */}
 
-            <dl className="grid sm:grid-cols-5 gap-x-3">
-              <dt className="col-span-3 font-semibold text-gray-800 dark:text-neutral-200">Amount paid:</dt>
-              <dd className="col-span-2 text-gray-500 dark:text-neutral-500">{order?.total.toFixed(2)} TND</dd>
-            </dl>
+                  <dl className="grid sm:grid-cols-5 gap-x-3">
+                    <dt className="col-span-3 font-semibold text-gray-800 dark:text-neutral-200 uppercase justify-start flex">
+                      net:
+                    </dt>
+                    <dd className="col-span-2 text-gray-500 dark:text-neutral-500">
+                    {( (order?.total || 0) + 1 ).toFixed(3)} TND
+                    </dd>
+                  </dl>
 
-           {/*  <dl className="grid sm:grid-cols-5 gap-x-3">
+                  {/*  <dl className="grid sm:grid-cols-5 gap-x-3">
               <dt className="col-span-3 font-semibold text-gray-800 dark:text-neutral-200">Due balance:</dt>
               <dd className="col-span-2 text-gray-500 dark:text-neutral-500">$0.00</dd>
             </dl> */}
+                </div>
+              </div>
+              
+            </div>
+            
           </div>
-    
-        </div>
-      </div>
 
 
       

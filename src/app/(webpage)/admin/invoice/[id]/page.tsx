@@ -236,7 +236,7 @@ const BondeLivraison = () => {
               <h3 className="text-lg font-semibold text-gray-800 dark:text-neutral-200">
               Facturer à :
               </h3>
-              <h3 className="text-lg font-semibold text-gray-800 dark:text-neutral-200">
+              <h3 className="text-lg font-semibold text-gray-800 dark:text-neutral-200 uppercase">
                 {invoice?.user.username}
               </h3>
               <p className="mt-2 not-italic text-gray-500 dark:text-neutral-500">
@@ -255,11 +255,11 @@ const BondeLivraison = () => {
                     Date:
                   </dt>
                   <dd className="col-span-2 text-gray-500 dark:text-neutral-500">
-                    {new Date().toLocaleDateString("en-US", {
-                      year: "numeric",
-                      month: "numeric",
-                      day: "numeric",
-                    })}
+                    {invoice?.createdAt ? new Date(invoice.createdAt).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'numeric',
+    day: 'numeric'
+  }) : 'No date available'}
                   </dd>
                 </dl>
               </div>
