@@ -22,7 +22,7 @@ const noimage =
     description: string;
     info: string;
     ref: string;
-    tva: number; // Required in Product
+    tva?: number; // Required in Product
     price: number;
     imageUrl?: string;
     images?: string[];
