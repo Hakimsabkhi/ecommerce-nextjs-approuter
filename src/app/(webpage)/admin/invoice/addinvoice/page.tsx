@@ -85,27 +85,44 @@ export default function Dashboard() {
   // Add item to the invoice
   const handleAddItem = (e: React.FormEvent) => {
     e.preventDefault();
+  
     if (itemName.trim() && price > 0 && itemQuantity >= 1) {
-      setItemList([
-        ...itemList,
-        {
-          refproduct: ref,
-          product: itemProduct,
-          name: itemName,
-          tva: itemTva || 0,
-          quantity: itemQuantity,
-          image: itemImage,
-          discount: itemDiscount,
-          price: price,
-        },
-      ]);
-
+      // Check if the item already exists based on the refproduct (or _id)
+      const existingItemIndex = itemList.findIndex(item => item.refproduct === ref);
+  
+      if (existingItemIndex !== -1) {
+        // If the item exists, update the quantity
+        const updatedItemList = [...itemList];
+        updatedItemList[existingItemIndex].quantity += itemQuantity;
+  
+        setItemList(updatedItemList);
+      } else {
+        // If the item doesn't exist, add a new one
+        setItemList([
+          ...itemList,
+          {
+            refproduct: ref,
+            product: itemProduct,
+            name: itemName,
+            tva: itemTva || 0,
+            quantity: itemQuantity,
+            image: itemImage,
+            discount: itemDiscount,
+            price: price,
+          },
+        ]);
+      }
+  
       // Reset fields
       setItemName("");
       setPrice(0);
+      setItemDiscount(0);
+      setRef("");
+      setItemTva(0);
       setItemQuantity(0);
     }
   };
+  
 
   // Calculate total amount
   const getTotalAmount = () => {
@@ -250,7 +267,7 @@ export default function Dashboard() {
                           className="px-4 py-2 cursor-pointer hover:bg-gray-100"
                           onClick={() => handleProductSelect(product)}
                         >
-                         <div className="flex gap-5 justify-between"><h1>{product.ref}</h1><h1>{product.name}</h1><h1>{(product.price - product.price * ((product.discount||0) / 100)).toFixed(3) } TND </h1></div><hr/>
+                         <div className="flex gap-5 justify-between items-center m-2 text-xl"><h1>{product.ref}</h1><h1>{product.name}</h1><h1>{product.price.toFixed(3)} TND</h1><h1>{product.discount||0}%</h1><h1>{(product.price - product.price * ((product.discount||0) / 100)).toFixed(3) } TND </h1></div><hr/>
                         </div>
                       ))}
                     </div>

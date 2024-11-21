@@ -10,19 +10,19 @@ interface ProductData {
   _id: string;
   name: string;
   description: string;
-  info:string;
+  info: string;
   ref: string;
-  tva:number
+  tva: number; // Ensure this is included in ProductData as well
   price: number;
   imageUrl?: string;
-  images?: string [];
+  images?: string[];
   brand?: Brand; // Make brand optional
   stock: number;
-  category:category;
-  dimensions?:string;
+  category: category; // Corrected 'category' interface name
+  dimensions?: string;
   discount?: number;
-  warranty?:number;
-  weight?:number;
+  warranty?: number;
+  weight?: number;
   color?: string;
   material?: string;
   status?: string;
