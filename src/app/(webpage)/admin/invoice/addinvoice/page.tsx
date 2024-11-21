@@ -119,11 +119,20 @@ export default function Dashboard() {
   };
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(e.target.value);
-    const filtered = products.filter((product) =>
-      product.name.toLowerCase().includes(e.target.value.toLowerCase())
+    const query = e.target.value.toLowerCase();
+  setSearchQuery(query);
+
+  // Filter products based on name, ref, price, and tva
+  const filtered = products.filter((product) => {
+    return (
+      product.name.toLowerCase().includes(query) || // Search by name
+      product.ref.toLowerCase().includes(query) || // Search by ref
+      product.price.toString().includes(query) || // Search by price
+      product.tva.toString().includes(query) // Search by tva
     );
-    setFilteredProducts(filtered);
+  });
+
+  setFilteredProducts(filtered);
   };
 
   const handleProductSelect = (product: Product) => {
@@ -241,7 +250,7 @@ export default function Dashboard() {
                           className="px-4 py-2 cursor-pointer hover:bg-gray-100"
                           onClick={() => handleProductSelect(product)}
                         >
-                          {product.name}
+                         <div className="flex gap-5"><h1>{product.ref}</h1><h1 className="border border-l-gray-300">{product.name}</h1><h1>{(product.price - product.price * ((product.discount||0) / 100)).toFixed(3) } TND </h1></div><hr/>
                         </div>
                       ))}
                     </div>
