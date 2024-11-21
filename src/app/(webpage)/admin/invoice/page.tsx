@@ -160,7 +160,7 @@ const Listinvoice: React.FC = () => {
             <th className="px-4 py-2">REF</th>
             <th className="px-4 py-2">Customer Name</th>
             <th className="px-4 py-2">Total</th>
-            <th className="px-4 py-2">Delivery Method</th>
+            
             <th className="px-4 py-2">Payment Method</th>
             <th className="px-4 py-2">Date</th>
             <th className="px-4 text-center py-2">Action</th>
@@ -168,12 +168,12 @@ const Listinvoice: React.FC = () => {
         </thead>
         <tbody>
           {currentinvoice.map((item) => (
-            <tr key={item._id} className="bg-white text-black">
+            <tr key={item._id} className="bg-white text-black whitespace-nowrap">
               <td className="binvoice px-4 py-2">{item.ref}</td>
-              <td className="binvoice px-4 py-2">{item.user.username}</td>
-              <td className="binvoice px-4 py-2 text-end">{item.total} TND</td>
-              <td className="binvoice px-4 py-2">{item.paymentMethod}</td>
-              <td className="binvoice px-4 py-2 uppercase">{item.deliveryMethod}</td>
+              <td className="binvoice px-4 py-2 uppercase">{item.user.username}</td>
+              <td className="binvoice px-4 py-2 text-start">{item.total+1} TND</td>
+              
+              <td className="binvoice px-4 py-2 uppercase">{item.paymentMethod}</td>
               <td className="binvoice px-4 py-2 ">{new Date(item.createdAt).toLocaleDateString('en-GB')} - {new Date(item.createdAt).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}</td>
               <td className="binvoice px-4 py-2">
                 <div className="flex items-center justify-center gap-2">

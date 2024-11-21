@@ -102,7 +102,7 @@ const NavAdmin = () => {
                     activeLink === 'invoice' ? 'bg-gray-700' : ''
                   }`}
                 >
-                  invoice
+                  Invoice
                 </p>
               </Link>
               <Link href="/admin/company">

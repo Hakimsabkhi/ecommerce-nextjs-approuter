@@ -233,12 +233,12 @@ const ListOrders: React.FC = () => {
         </thead>
         <tbody>
           {currentOrders.map((item) => (
-            <tr key={item._id} className="bg-white text-black">
-              <td className="border px-4 py-2">{item.ref}</td>
-              <td className="border px-4 py-2">{item.user.username}</td>
-              <td className="border px-4 py-2 text-end">{item.total} TND</td>
-              <td className="border px-4 py-2">{item.paymentMethod}</td>
+            <tr key={item._id} className="bg-white text-black whitespace-nowrap">
+              <td className="border px-4 py-2 uppercase ">{item.ref}</td>
+              <td className="border px-4 py-2 uppercase">{item.user.username}</td>
+              <td className="border px-4 py-2 text-start">{item.total+1} TND</td>
               <td className="border px-4 py-2 uppercase">{item.deliveryMethod}</td>
+              <td className="border px-4 py-2 uppercase">{item.paymentMethod}</td>
               <td className="border px-4 py-2 ">{new Date(item.createdAt).toLocaleDateString('en-GB')} - {new Date(item.createdAt).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}</td>
               <td className="border px-4 py-2">
                 <div className="flex items-center justify-center gap-2">
