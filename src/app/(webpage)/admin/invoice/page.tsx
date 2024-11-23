@@ -171,7 +171,7 @@ const Listinvoice: React.FC = () => {
             <tr key={item._id} className="bg-white text-black whitespace-nowrap">
               <td className="binvoice px-4 py-2">{item.ref}</td>
               <td className="binvoice px-4 py-2 uppercase">{item.user.username}</td>
-              <td className="binvoice px-4 py-2 text-start">{item.total+1} TND</td>
+              <td className="binvoice px-4 py-2 text-start">{item.total} TND</td>
               
               <td className="binvoice px-4 py-2 uppercase">{item.paymentMethod}</td>
               <td className="binvoice px-4 py-2 ">{new Date(item.createdAt).toLocaleDateString('en-GB')} - {new Date(item.createdAt).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}</td>

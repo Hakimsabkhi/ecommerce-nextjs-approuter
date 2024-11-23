@@ -1,10 +1,10 @@
  "use client"
 import React, { Key, useEffect, useState } from 'react';
-import {chair19,chair18} from "@/assets/image";
+
 import Image from "next/image";
 import { RxCross1 } from "react-icons/rx";
 import { useParams, useRouter } from 'next/navigation';
-import Link from 'next/link';
+
 import LoadingSpinner from '../LoadingSpinner';
 // Define interfaces
 interface Address {

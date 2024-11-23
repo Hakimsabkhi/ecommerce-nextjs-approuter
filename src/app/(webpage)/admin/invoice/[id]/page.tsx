@@ -476,7 +476,7 @@ const BondeLivraison = () => {
                       net:
                     </dt>
                     <dd className="col-span-2 text-gray-500 dark:text-neutral-500">
-                    {( (invoice?.total || 0) + 1 ).toFixed(3)} TND
+                    {( (invoice?.total || 0) ).toFixed(3)} TND
                     </dd>
                   </dl>
 

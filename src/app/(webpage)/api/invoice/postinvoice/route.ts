@@ -47,7 +47,7 @@ if(!infoder){
       paymentMethod:infoder.paymentMethod,
       deliveryMethod:infoder.deliveryMethod,
       deliveryCost:infoder.deliveryCost,
-      total:infoder.total,
+      total:infoder.total+1,
       ref:invoiceRef, // Example ref generation
       orderStatus: 'Processing',
     });

@@ -14,12 +14,12 @@ export async function GET(req: NextRequest,
     if (!token) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
-    const user = await User.findOne({ email:token.email});
-    if (!user ) {
+    const users = await User.findOne({ email:token.email});
+    if (!users ) {
       return NextResponse.json({ error: 'Forbidden: Access is denied' }, { status: 404 });
     }
     // Fetch all categories but only return the name and imageUrl fields
-    const address = await Address.find({users:id}).sort({ createdAt: -1 })// Only select the 'name' and 'imageUrl' fields
+    const address = await Address.find({user:id}).sort({ createdAt: -1 })// Only select the 'name' and 'imageUrl' fields
 
     // Return the fetched category names and image URLs
     return NextResponse.json(address, { status: 200 });

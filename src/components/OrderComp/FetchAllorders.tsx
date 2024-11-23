@@ -196,6 +196,11 @@ const ListOrders: React.FC = () => {
       <div className="flex items-center justify-between">
         <p className="text-3xl font-bold">ALL Orders</p>
       </div>
+      <div className="flex justify-end">
+        <Link href={"orderlist/addorder"} className="bg-gray-800 text-white w-1/3 p-2 hover:bg-gray-400 rounded-md flex items-center justify-center">
+      <button type="button" className="uppercase ">create order</button>
+      </Link>
+      </div>
       <input
         type="text"
         placeholder="Search orders"
@@ -236,7 +241,7 @@ const ListOrders: React.FC = () => {
             <tr key={item._id} className="bg-white text-black whitespace-nowrap">
               <td className="border px-4 py-2 uppercase ">{item.ref}</td>
               <td className="border px-4 py-2 uppercase">{item.user.username}</td>
-              <td className="border px-4 py-2 text-start">{item.total+1} TND</td>
+              <td className="border px-4 py-2 text-start">{item.total} TND</td>
               <td className="border px-4 py-2 uppercase">{item.deliveryMethod}</td>
               <td className="border px-4 py-2 uppercase">{item.paymentMethod}</td>
               <td className="border px-4 py-2 ">{new Date(item.createdAt).toLocaleDateString('en-GB')} - {new Date(item.createdAt).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}</td>
