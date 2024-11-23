@@ -43,6 +43,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
     let brand = formData.get("brand") as string | null;
     const stock = formData.get("stock");
     const price = formData.get("price");
+    const tva = formData.get("tva");
     const discount = formData.get("discount");
     const info = formData.get("info") as string | null;
     const color = formData.get("color") as string | null;
@@ -134,19 +135,21 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
       existingProduct.brand = null; // If brand is not provided or empty, set it to null
     }
     if(category){
+      const existingoldcategory = await Category.findById(existingProduct.category)
       const existingcategory = await Category.findById(category);
+    if(existingProduct.category!=category){
       if (existingcategory){
         existingcategory.numberproduct += 1; // Increment the review count
         existingcategory.save();
       }
      
-      const existingoldcategory = await Category.findById(existingProduct.category)
+     
       if (existingoldcategory){
         existingoldcategory.numberproduct -= 1; // Increment the review count
   
         existingoldcategory.save();
       }
-     
+    }
     }
     // Update product fields
     existingProduct.name = name || existingProduct.name;
@@ -155,6 +158,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
     existingProduct.category = category || existingProduct.category;
     existingProduct.stock = stock ? parseInt(stock as string, 10) : existingProduct.stock;
     existingProduct.price = price ? parseFloat(price as string) : existingProduct.price;
+    existingProduct.tva = tva ? parseFloat(tva as string) : existingProduct.tva;
     existingProduct.discount = discount ? Number(discount) : existingProduct.discount;
     existingProduct.info = info || existingProduct.info;
     existingProduct.color = color || existingProduct.color;

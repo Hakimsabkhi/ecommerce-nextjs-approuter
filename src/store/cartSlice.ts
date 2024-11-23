@@ -6,6 +6,7 @@ export interface CartItem {
   name: string;
   description: string;
   ref: string;
+  tva?:number;
   price: number;
   imageUrl?: string;
   stock: number;

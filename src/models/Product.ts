@@ -10,6 +10,7 @@ export interface IProduct extends Document {
   description?: string;
   ref: string;
   price: number;
+  tva:number;
   imageUrl?: string;
   images?: string[];
   material?: string;
@@ -50,6 +51,7 @@ const ProductSchema = new mongoose.Schema({
   brand: { type: mongoose.Schema.Types.ObjectId, ref: 'Brand', default: null },  // Brand can be null or an ObjectId
   stock: { type: Number, required: true, min: 0 },  // Ensure stock is a non-negative number
   price: { type: Number, required: true, min: 0 },  // Ensure price is a non-negative number
+  tva:{ type: Number, default: 0, min: 0, max: 100 },
   discount: { type: Number, default: 0, min: 0, max: 100 },  // Discount should be a percentage between 0 and 100
   weight: { type: String },
   status: { type: String, default: 'in stock' },  // Enum for status

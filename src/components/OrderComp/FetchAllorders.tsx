@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import DeletePopup from "../Popup/DeletePopup";
 import LoadingSpinner from "../LoadingSpinner";
 import Pagination from "../Pagination";
+import { useRouter } from "next/navigation";
 
 type User = {
   _id: string;
@@ -33,6 +34,7 @@ interface Order {
 }
 
 const ListOrders: React.FC = () => {
+  const router=useRouter();
   const [orders, setOrders] = useState<Order[]>([]); // All orders
   const [filteredOrders, setFilteredOrders] = useState<Order[]>([]); // Filtered orders
   const [error, setError] = useState<string | null>(null);
@@ -61,6 +63,27 @@ const ListOrders: React.FC = () => {
     setIsPopupOpen(false);
     setLoadingOrderId(null); 
   };
+  const handleinvoice=async(order:string)=>{
+    try {
+     
+      const response = await fetch(`/api/invoice/postinvoice`, {
+        method: "POST",
+       
+        body: JSON.stringify(order),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      console.log(data)
+      router.push(`/admin/invoice/${data.ref._id}`)
+
+    } catch (error) {
+      toast.error("Failed to create invoice");
+    } 
+  }
   const DeleteOrder = async (id: string) => {
         
     try {
@@ -173,6 +196,11 @@ const ListOrders: React.FC = () => {
       <div className="flex items-center justify-between">
         <p className="text-3xl font-bold">ALL Orders</p>
       </div>
+      <div className="flex justify-end">
+        <Link href={"orderlist/addorder"} className="bg-gray-800 text-white w-1/3 p-2 hover:bg-gray-400 rounded-md flex items-center justify-center">
+      <button type="button" className="uppercase ">create order</button>
+      </Link>
+      </div>
       <input
         type="text"
         placeholder="Search orders"
@@ -210,12 +238,12 @@ const ListOrders: React.FC = () => {
         </thead>
         <tbody>
           {currentOrders.map((item) => (
-            <tr key={item._id} className="bg-white text-black">
-              <td className="border px-4 py-2">{item.ref}</td>
-              <td className="border px-4 py-2">{item.user.username}</td>
-              <td className="border px-4 py-2 text-end">{item.total} TND</td>
-              <td className="border px-4 py-2">{item.paymentMethod}</td>
+            <tr key={item._id} className="bg-white text-black whitespace-nowrap">
+              <td className="border px-4 py-2 uppercase ">{item.ref}</td>
+              <td className="border px-4 py-2 uppercase">{item.user.username}</td>
+              <td className="border px-4 py-2 text-start">{item.total} TND</td>
               <td className="border px-4 py-2 uppercase">{item.deliveryMethod}</td>
+              <td className="border px-4 py-2 uppercase">{item.paymentMethod}</td>
               <td className="border px-4 py-2 ">{new Date(item.createdAt).toLocaleDateString('en-GB')} - {new Date(item.createdAt).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}</td>
               <td className="border px-4 py-2">
                 <div className="flex items-center justify-center gap-2">
@@ -241,11 +269,14 @@ const ListOrders: React.FC = () => {
                       View
                     </button>
                   </Link>
-                  <Link href={`/admin/invoice/${item.ref}`}>
-                    <button className="bg-gray-800 text-white w-28 h-10 hover:bg-gray-600 rounded-md uppercase">
-                      Invoice
+                  <Link href={`/admin/Bondelivraison/${item.ref}`}>
+                    <button className="bg-gray-800 text-white w-40 h-10 hover:bg-gray-600 rounded-md uppercase">
+                      Bon de Livraison
                     </button>
                   </Link>
+                  <button type="button" onClick={()=>handleinvoice(item._id)}className="bg-gray-800 text-white w-32 h-10 hover:bg-gray-600 rounded-md uppercase">
+                      Invoice
+                    </button>
                   <button
                   onClick={()=>handleDeleteClick(item)}
                     className="bg-gray-800 text-white w-28 h-10 hover:bg-gray-600 rounded-md"

@@ -5,7 +5,7 @@ import Order from "@/models/order"; // Adjust path to where your Order model is 
 import  connectDB  from "@/lib/db"; // MongoDB connection utility
 import User from "@/models/User";
 import { getToken } from "next-auth/jwt";
-
+import Product from "@/models/Product";
 // POST - Create a new order
 export async function POST(req: NextRequest) {
   try {
@@ -36,12 +36,29 @@ export async function POST(req: NextRequest) {
     product: item._id,
     refproduct:item.ref,
     name: item.name,
+    tva:item.tva,
     quantity: item.quantity,
     image: item.imageUrl,
     price: item.price,
     discount: item.discount,
   }));
 
+for (let i = 0; i < orderItems.length; i++) {
+    // Your loop body here
+    console.log(orderItems[i].product); // Example: access each item in orderItems
+    const oldproduct = await Product.findOne({_id:orderItems[i].product})
+    if(oldproduct)
+    {
+      if(oldproduct.stock>=orderItems[i].quantity)
+      {
+        oldproduct.stock-=orderItems[i].quantity;
+       
+        oldproduct.save();
+      }
+
+    }
+  }
+ 
     // Create a new order
     const newOrder = new Order({
       user,

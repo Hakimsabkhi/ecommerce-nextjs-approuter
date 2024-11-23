@@ -16,26 +16,26 @@ import { FaStarHalfAlt } from "react-icons/fa";
 
 const noimage =
   "https://res.cloudinary.com/dx499gc6x/image/upload/v1723623372/na_mma1mw.webp";
-
-interface Product {
-  _id: string;
-  name: string;
-  description: string;
-  info: string;
-  ref: string;
-  price: number;
-  imageUrl?: string;
-  images?: string[];
-  brand?: Brand; // Make brand optional
-  stock: number;
-  dimensions?: string;
-  discount?: number;
-  warranty?: number;
-  weight?: number;
-  color?: string;
-  material?: string;
-  status?: string;
-}
+  interface Product {
+    _id: string;
+    name: string;
+    description: string;
+    info: string;
+    ref: string;
+    tva?: number; // Required in Product
+    price: number;
+    imageUrl?: string;
+    images?: string[];
+    brand?: Brand; // Make brand optional
+    stock: number;
+    dimensions?: string;
+    discount?: number;
+    warranty?: number;
+    weight?: number;
+    color?: string;
+    material?: string;
+    status?: string;
+  }
 interface Review {
   _id: string;
   name: string;

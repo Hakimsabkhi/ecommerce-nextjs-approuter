@@ -1,14 +1,14 @@
 import mongoose, { Document, Model, Schema } from 'mongoose';
 import { IUser } from './User';
 import { IAddress } from './Address';
-import crypto from 'crypto';  // You can use this for generating random strings
 
-export interface IOrder extends Document {
+export interface IInvoice extends Document {
   _id: string;
   ref:string;
+  nborder:string;
   user: IUser | string;
   address: IAddress| string;
-  orderItems: Array<{
+  Items: Array<{
     product: Schema.Types.ObjectId;
     refproduct:string;
     name: string;
@@ -29,11 +29,12 @@ export interface IOrder extends Document {
 
 
 
-const OrderSchema : Schema = new Schema({
+const InvoiceSchema : Schema = new Schema({
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     ref:{type: String},
+    nborder:{type: String},
     address: { type: mongoose.Schema.Types.ObjectId, ref: 'Address' },
-    orderItems: [
+    Items: [
         {
           
           product: {
@@ -49,11 +50,11 @@ const OrderSchema : Schema = new Schema({
             type: String,
             required: true,
           },
-          quantity: {
-            type: Number,  // Changed to Number
-            required: true,
+          tva:{
+            type:Number,
+            required:true,
           },
-          tva: {
+          quantity: {
             type: Number,  // Changed to Number
             required: true,
           },
@@ -85,10 +86,7 @@ const OrderSchema : Schema = new Schema({
         type: Number,
         required: true,
       },
-      orderStatus: {
-        type: String,
-        default: 'Processing',
-      },
+     
       createdAt: {
         type: Date,
         default: Date.now,
@@ -99,17 +97,7 @@ const OrderSchema : Schema = new Schema({
       },
 
 });
-OrderSchema.pre('save', function (next) {
-    const order = this as IOrder;
-  
-    // Generate a random 8-character ref if not provided
-    if (!order.ref) {
-      const randomRef = crypto.randomBytes(4).toString('hex');  // 8-character hex string
-      order.ref = `ORDER-${randomRef}`;
-    }
-  
-    next();
-  });
-const Order: Model<IOrder> = mongoose.models.Order || mongoose.model<IOrder>('Order', OrderSchema);
 
-export default Order;
+const Invoice: Model<IInvoice> = mongoose.models.Invoice || mongoose.model<IInvoice>('Invoice', InvoiceSchema);
+
+export default Invoice;

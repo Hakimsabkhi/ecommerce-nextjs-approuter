@@ -6,22 +6,23 @@ import SecondBlock from "@/components/Products/SingleProduct/SecondBlock";
 import ForthBlock from "@/components/Products/SingleProduct/ForthBlock";
 import FifthBlock from "@/components/Products/SingleProduct/FifthBlock";
 
-interface ProductData {
+interface Product {
   _id: string;
   name: string;
   description: string;
-  info:string;
+  info: string;
   ref: string;
+  tva?: number; // Ensure this is included in ProductData as well
   price: number;
   imageUrl?: string;
-  images?: string [];
+  images?: string[];
   brand?: Brand; // Make brand optional
   stock: number;
-  category:category;
-  dimensions?:string;
+  category: category; // Corrected 'category' interface name
+  dimensions?: string;
   discount?: number;
-  warranty?:number;
-  weight?:number;
+  warranty?: number;
+  weight?: number;
   color?: string;
   material?: string;
   status?: string;
@@ -44,11 +45,11 @@ interface User {
 }
 
 interface PageProps {
-  product: ProductData ;
+  product: Product ;
 }
 
 // Fetch product data on the server
- async function getProduct(id: string): Promise<ProductData> {
+ async function getProduct(id: string): Promise<Product> {
   const res = await fetch(
     `${process.env.NEXTAUTH_URL}api/products/fgetProductById/${id}`
     , {
@@ -60,7 +61,7 @@ interface PageProps {
     console.log("Product not found");
     notFound();
   }
-  const data: ProductData = await res.json();
+  const data: Product = await res.json();
   return data;
 }
 

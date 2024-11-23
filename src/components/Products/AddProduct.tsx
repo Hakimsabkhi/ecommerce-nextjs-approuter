@@ -34,6 +34,7 @@ const AddProduct = () => {
     brand: "",
     stock: "",
     price: "",
+    tva: "",
     discount: "",
     color: "",
     material: "",
@@ -136,6 +137,7 @@ const AddProduct = () => {
     formData.append("brand", productData.brand);
     formData.append("stock", productData.stock);
     formData.append("price", productData.price);
+    formData.append("tva", productData.tva);
     formData.append("discount", productData.discount);
     formData.append("color", productData.color);
     formData.append("material", productData.material);
@@ -272,6 +274,20 @@ const AddProduct = () => {
           />
         </div>
         <div className="flex items-center w-[30%] max-lg:w-full max-lg:justify-between gap-4">
+          <p className="text-xl font-bold">Tva *</p>
+          <input
+            type="number"
+            name="tva"
+             min="0"
+            max="50"
+            placeholder="%"
+            value={productData.tva}
+            onChange={handleChange}
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-[60%] block p-2.5"
+            required
+          />
+        </div>
+        <div className="flex items-center w-[30%] max-lg:w-full max-lg:justify-between gap-4">
           <p className="text-xl font-bold">Price *</p>
           <input
             type="number"
@@ -289,6 +305,7 @@ const AddProduct = () => {
             name="discount"
             min="0"
             max="100"
+            placeholder="%"
             value={productData.discount}
             onChange={handleChange}
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-[60%] block p-2.5"

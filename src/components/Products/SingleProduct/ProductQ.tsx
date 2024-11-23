@@ -8,6 +8,7 @@ interface Product {
   description: string;
   info: string;
   ref: string;
+  tva?:number
   price: number;
   imageUrl?: string;
   images?: string[];

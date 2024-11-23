@@ -17,6 +17,7 @@ interface ProductData {
   brand: { _id: string };
   stock: number;
   price: number;
+  tva:number;
   discount?: string;
   imageUrl?: string;
   info?: string;
@@ -60,6 +61,7 @@ const ModifyProduct: React.FC<ModifyProductProps> = ({ productData }) => {
     brand: productData?.brand || { _id: '' },
     stock: productData?.stock || 0,
     price: productData?.price || 0,
+    tva: productData?.tva || 0,
     discount: productData?.discount || '',
     imageUrl: productData?.imageUrl || '',
     info: productData?.info || '',
@@ -212,6 +214,7 @@ const ModifyProduct: React.FC<ModifyProductProps> = ({ productData }) => {
     updateFormData.append('brand', formData.brand._id);
     updateFormData.append('stock', formData.stock.toString());
     updateFormData.append('price', formData.price.toString());
+    updateFormData.append('tva', formData.tva.toString());
     updateFormData.append('discount', formData.discount || '');
     updateFormData.append('info', formData.info || '');
     updateFormData.append('color', formData.color || '');
@@ -333,6 +336,19 @@ const ModifyProduct: React.FC<ModifyProductProps> = ({ productData }) => {
             type="text" 
             name="ref"
             value={formData.ref}
+            onChange={handleChange}
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-[60%] block p-2.5" 
+            required 
+          />
+        </div>
+        <div className='flex items-center w-[30%] max-lg:w-full max-lg:justify-between gap-4'>
+          <p className="text-xl font-bold">Tva *</p>
+          <input 
+            type="number" 
+            name="tva"
+            min="0"
+            max="50"
+            value={formData.tva}
             onChange={handleChange}
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-[60%] block p-2.5" 
             required 

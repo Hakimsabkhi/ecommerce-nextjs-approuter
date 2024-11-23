@@ -33,6 +33,7 @@ export async function POST(req: NextRequest) {
     let brand = formData.get('brand') as string | null;  // Brand can be null or a string
     const stock = formData.get('stock') as string;
     const discount = formData.get('discount') as string;
+    const tva = formData.get('tva') as string;
     const price = formData.get('price') as string;
     const info = formData.get('info') as string;
     const material = formData.get('material') as string;
@@ -53,7 +54,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Validate required fields
-    if (!name || !ref || !info || !category || !stock || !price) {
+    if (!name || !ref || !info || !category || !stock || !price ||!tva) {
       return NextResponse.json({ message: 'Required fields: name, info, ref, category, stock, price' }, { status: 400 });
     }
 
@@ -140,6 +141,7 @@ export async function POST(req: NextRequest) {
       category,
       brand, // Brand is either a valid brand ID as a string or null
       stock,
+      tva,
       price,
       discount,
       imageUrl,

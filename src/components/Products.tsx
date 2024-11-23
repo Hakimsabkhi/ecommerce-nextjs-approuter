@@ -14,6 +14,7 @@ interface ProductData {
   name: string;
   description: string;
   ref: string;
+  tva:number;
   price: number;
   imageUrl?: string;
   brand: Brand;
