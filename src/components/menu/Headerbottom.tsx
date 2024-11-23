@@ -1,9 +1,9 @@
 "use client";
-import React, { useEffect, useState } from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
-import { FaBars } from 'react-icons/fa';
 
+import React, { useEffect, useRef, useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { FaBars } from "react-icons/fa";
 
 interface Category {
   _id: string;
@@ -14,131 +14,122 @@ interface Category {
 
 const Headerbottom: React.FC = () => {
   const [categories, setCategories] = useState<Category[]>([]);
-  const [open, setOpen] = useState(false);
-  const [animating, setAnimating] = useState<boolean>(false);
-  const [delayedStyles, setDelayedStyles] = useState<any[]>([]);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const menuWrapperRef = useRef<HTMLDivElement>(null);
+  const toggleButtonRef = useRef<HTMLDivElement>(null);
 
+  // Fetch categories
   useEffect(() => {
-    async function fetchCategoryData() {
+    const fetchCategoryData = async () => {
       try {
-        const res = await fetch(`/api/category/getAllCategory`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-
-        if (!res.ok) {
-          throw new Error('Failed to fetch data');
-        }
-
+        const res = await fetch(`/api/category/getAllCategory`);
+        if (!res.ok) throw new Error("Failed to fetch data");
         const data = await res.json();
         setCategories(data);
       } catch (error) {
         console.error(error);
       }
-    }
+    };
     fetchCategoryData();
   }, []);
 
-  const toggleListVisibility = () => {
-    setOpen(prev => !prev);
-    if (!open) {
-      setAnimating(true);
-      setDelayedStyles([]); // Reset the delayed styles for each animation
-    }
+  const toggleMenu = (event: React.MouseEvent) => {
+    event.stopPropagation(); // Stop propagation to prevent outside click logic
+    setIsMenuOpen((prev) => !prev);
   };
 
-  const handleLinkClick = () => {
-    setOpen(false);
-    setAnimating(false); // Stop animation if the link is clicked
+  const closeMenu = () => {
+    setIsMenuOpen(false);
   };
 
-  const handleMouseLeave = () => {
-    setOpen(false);
-  };
-
+  // Close menu on outside click
   useEffect(() => {
-    if (animating && open) {
-      // Create delayed animation effects for each category item
-      const timeouts: any[] = [];
-      categories.forEach((_, index) => {
-        timeouts.push(
-          setTimeout(() => {
-            setDelayedStyles((prevStyles) => [
-              ...prevStyles,
-              { opacity: 1, transform: 'translateY(0)' },
-            ]);
-          }, index * 100) // Delay each item by 100ms
-        );
-      });
+    const handleClickOutside = (event: MouseEvent) => {
+      // Check if the click is outside both the menu and the toggle button
+      if (
+        isMenuOpen &&
+        !menuWrapperRef.current?.contains(event.target as Node) &&
+        !toggleButtonRef.current?.contains(event.target as Node)
+      ) {
+        closeMenu();
+      }
+    };
 
-      // Clear timeouts when the component unmounts or is closed
-      return () => {
-        timeouts.forEach(clearTimeout);
-      };
-    }
-  }, [animating, open, categories]);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isMenuOpen]);
+
+  // Close menu on scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      if (isMenuOpen) {
+        closeMenu();
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [isMenuOpen]);
 
   return (
     <header>
-      <nav className="w-full h-[72px] flex justify-center items-center gap-6 bg-primary  ">
-       <div  className="flex justify-center items-center w-[20%] h-[90%] max-2xl:w-[30%] max-xl:w-[40%] max-lg:w-[60%] max-md:text-[82%] max-sm:w-[100%] max-sm:text-[60%]">
-        <button
-          type="button"
-          onClick={toggleListVisibility}
-          className="bg-orange-600 text-white font-bold flex justify-center items-center gap-6 max-sm:gap-1 w-[80%] h-full "
-        >
-          <FaBars />
-
-          ALL OUR CATEGORIES
-        </button>
-        </div>
-        <div className="flex justify-start gap-8 w-[90%] max-xl:w-[95%] font-bold items-center text-white text-base max-2xl:text-xs">
-          <Link href={"/"}>HOME</Link>
-          <Link href={"/promotion"}>PROMOTION</Link>
-        </div>
-      </nav>
-
-      <div
-        className={`absolute flex flex-col  w-[400px] max-md:w-[350px] max-h-64 max-sm:w-[90%] 
-          max-sm:left-0 overflow-y-auto border-[#15335D] border-4 rounded-lg bg-white z-30 left-8 
-          transition-all duration-300 ease-in-out 
-          ${open ? 'max-h-96 max-sm:max-h-[100%] opacity-100 visible' : 'max-h-0 opacity-0 invisible'
-          
-        }`}
-        onMouseLeave={handleMouseLeave}
-      >
-        {open && categories.map((category: Category, index: number) => (
-          <Link
-            href={`/${category.slug}`}
-            key={category._id}
-            className="flex items-center gap-3 pl-4 duration-300 hover:bg-[#eacca1]  border-b-2 hover:filter hover:invert hover:brightness-100 "
-            aria-label={category.name}
-            onClick={handleLinkClick}
-            style={{
-              opacity: delayedStyles[index]?.opacity || 0, // Apply the animated opacity
-              transform: delayedStyles[index]?.transform || 'translateY(10px)', // Apply the translateY for animation
-              transition: 'opacity 0.5s, transform 0.5s ease-out', // Animation timing
-            }}
+      <div className="w-full h-[80px] bg-primary flex justify-center items-center gap-4 border-y border-gray-600">
+        <div className="w-[90%] h-full flex justify-between max-md:justify-center items-center">
+          {/* Toggle Button */}
+          <div
+            className="relative w-[300px] border-4 border-[#15335D] h-[70%] bg-white text-primary font-bold flex justify-center items-center cursor-pointer"
+            onClick={toggleMenu} // Toggle menu on click
+            ref={toggleButtonRef} // Reference to the toggle button
           >
-            <div className='flex gap-6 justify-center items-center h-16 '>
-            {category.logoUrl && (
-              <Image
-                src={category.logoUrl}
-                alt={category.name}
-                width={40}
-                height={40}
-                className="rounded-full object-cover "
-               
-              
-              />
-            )}
-            <span className='font-bold text-xl'>{category.name}</span>
+            <div className="flex gap-6 items-center">
+              <FaBars />
+              <p>ALL OUR CATEGORIES</p>
             </div>
-          </Link>
-      
-        ))}
+
+            {/* Category Dropdown Menu */}
+            {isMenuOpen && (
+              <div
+                className="absolute shadow-xl z-30 flex gap-2 flex-col top-12 left-1/2 -translate-x-1/2 max-md:-translate-x-1/2 max-md:top-12"
+                ref={menuWrapperRef} // Reference to the dropdown menu
+                onClick={(e) => e.stopPropagation()} // Prevent menu close on inside click
+              >
+                <div className="flex flex-col w-[300px] border-[#15335D] border-4 bg-white z-30">
+                  {categories.map((category) => (
+                    <Link
+                      href={`/${category.slug}`}
+                      key={category._id}
+                      className="flex items-center gap-3 duration-300 hover:bg-primary hover:text-white border-b-2"
+                      onClick={closeMenu} // Close menu on link click
+                    >
+                      <div className="pl-4 flex gap-6 items-center py-2">
+                        {category.logoUrl && (
+                          <Image
+                            src={category.logoUrl}
+                            alt={category.name}
+                            width={20}
+                            height={20}
+                            className="rounded-full object-cover"
+                          />
+                        )}
+                        <span className="font-bold text-base">{category.name}</span>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+
+          <div className="flex w-[60%] justify-end gap-8 font-semibold items-center text-white text-xl tracking-wider max-xl:text-base max-lg:text-xs max-md:hidden">
+            <Link className="hover:text-secondary" href="/promotion">PROMOTION</Link>
+            <Link className="hover:text-secondary" href="/">BEST PRODUCTS</Link>
+            <Link className="hover:text-secondary" href="/">NEW PRODUCTS</Link>
+          </div>
+        </div>
       </div>
     </header>
   );
