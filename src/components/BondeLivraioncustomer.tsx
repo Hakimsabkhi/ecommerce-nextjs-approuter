@@ -5,7 +5,6 @@ import LoadingSpinner from './LoadingSpinner';
 import { useParams } from 'next/navigation';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
-import { useRouter } from 'next/navigation';
 
 
 
@@ -48,11 +47,11 @@ interface User{
 }
 
 
-const BondeLivraison=()=>{
+const BondeLivraioncustomer=()=>{
   const params = useParams() as { id: string }; // Explicitly type the params object
   const [order, setOrder] = useState<Order | null>(null); 
     const [loading, setLoading] = useState(true);
-    const router=useRouter();
+    
 
     useEffect(() => {
       // Fetch category data by ID
@@ -473,7 +472,7 @@ if (loading) {
     </div>
 <div className='flex gap-2 justify-between'>
     <div className="mt-6 flex justify-s gap-x-3">
-    <button onClick={()=>router.push("/admin/orderlist")} type='button' className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none focus:outline-none focus:bg-gray-50 dark:bg-transparent dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800" >
+    <button onClick={()=>history.back()} type='button' className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none focus:outline-none focus:bg-gray-50 dark:bg-transparent dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800" >
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M14.5 9.50002L9.5 14.5M9.49998 9.5L14.5 14.5" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"/>
 <path d="M7 3.33782C8.47087 2.48697 10.1786 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 10.1786 2.48697 8.47087 3.33782 7" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"/>
@@ -500,4 +499,4 @@ if (loading) {
   );
 };
 
-export default BondeLivraison;
+export default BondeLivraioncustomer;

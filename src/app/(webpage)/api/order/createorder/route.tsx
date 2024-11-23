@@ -18,32 +18,22 @@ export async function POST(req: NextRequest) {
     if (!token) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
-    const user = await User.findOne({ email:token.email});
+    const users = await User.findOne({ email:token.email});
     // Parse the request body
-    if (!user){
+    if (!users){
         return NextResponse.json({ success: false, message: "Missing required connect" }, { status: 505 });
     }
 
-    const { totalDiscount, items, totalWithShipping,paymentMethod,address,selectedMethod,deliveryCost} = body;
+    const { customer , itemList, totalCost,paymentMethod,address,deliveryMethod,deliveryCost} = body;
    
     // Validate required fields
-    if (!user || !address || !items || !paymentMethod||!selectedMethod||!totalWithShipping) {
+    if (!customer || !address || !itemList || !paymentMethod||!deliveryMethod||!totalCost) {
       return NextResponse.json({ success: false, message: "Missing required fields" }, { status: 400 });
     }
 
+   const orderItems = itemList;
 
-   const orderItems = items.map((item: any) => ({
-    product: item._id,
-    refproduct:item.ref,
-    name: item.name,
-    tva:item.tva,
-    quantity: item.quantity,
-    image: item.imageUrl,
-    price: item.price,
-    discount: item.discount,
-  }));
-
-for (let i = 0; i < orderItems.length; i++) {
+for (let i = 0; i < itemList.length; i++) {
     // Your loop body here
     console.log(orderItems[i].product); // Example: access each item in orderItems
     const oldproduct = await Product.findOne({_id:orderItems[i].product})
@@ -61,19 +51,19 @@ for (let i = 0; i < orderItems.length; i++) {
  
     // Create a new order
     const newOrder = new Order({
-      user,
+      user:customer,
       address,
       orderItems,
       paymentMethod:paymentMethod,
-      deliveryMethod:selectedMethod,
+      deliveryMethod,
       deliveryCost,
-      total:totalWithShipping+1,
+      total:totalCost,
       ref: `ORDER-${Math.random().toString(36).substring(2, 10).toUpperCase()}`, // Example ref generation
       orderStatus: 'Processing',
     });
 
     // Save the order to the database
-     const savedOrder = await newOrder.save();
+     const savedOrder = await newOrder.save(); 
   
     // Return success response
     return NextResponse.json({

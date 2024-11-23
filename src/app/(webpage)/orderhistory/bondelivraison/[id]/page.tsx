@@ -1,10 +1,10 @@
-import BondeLivraison from '@/components/BondeLivraison'
+import BondeLivraioncustomer from '@/components/BondeLivraioncustomer'
 import React from 'react'
 
  const Bondelivraison: React.FC = ()  => {
   return (
     <div>
-        <BondeLivraison/>
+        <BondeLivraioncustomer/>
     </div>
   )
 }
