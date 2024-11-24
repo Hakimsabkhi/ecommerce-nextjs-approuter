@@ -2,9 +2,8 @@
 import React, { useEffect, useState, useMemo } from "react";
 import Link from "next/link";
 import Image from "next/image";
-
 import { toast } from "react-toastify";
-import LoadingSpinner from "@/components/LoadingSpinner";
+import { FaSpinner } from "react-icons/fa";
 import DeletePopup from "@/components/Popup/DeletePopup";
 import Pagination from "@/components/Pagination";
 
@@ -139,16 +138,12 @@ const AddedCategories: React.FC = () => {
     return Math.ceil(filteredCategory.length / categoriesPerPage);
   }, [filteredCategory.length, categoriesPerPage]);
 
-  if (loading) {
-    return <LoadingSpinner />;
-  }
-
   if (error) {
     return <div>Error: {error}</div>;
   }
 
   return (
-    <div className="mx-auto w-[90%] py-8 flex flex-col gap-8">
+    <div className="mx-auto w-[90%] h-screen py-8 flex flex-col gap-8">
       <div className="flex items-center justify-between">
         <p className="text-3xl font-bold">ALL categories</p>
 
@@ -165,16 +160,38 @@ const AddedCategories: React.FC = () => {
         onChange={(e) => setSearchTerm(e.target.value)}
         className="mt-4 p-2 border border-gray-300 rounded"
       />
-      <table className="table-auto w-full mt-4 uppercase">
+      <table className="w-full rounded overflow-hidden table-fixed">
         <thead>
           <tr className="bg-gray-800">
-            <th className="px-4 py-2">Icon</th>
-            <th className="px-4 py-2">ImageURL</th>
-            <th className="px-4 py-2">Name</th>
-            <th className="px-4 py-2">Created By</th>
-            <th className="px-4 py-2 text-center">Action</th>
+            <th className="py-3 px-4 text-left border-r-white w-[20px]">Icon</th>
+            <th className="py-3 px-4 text-left border-r-white w-[120px]">ImageURL</th>
+            <th className="py-3 px-4 text-left border-r-white w-[80px]">Name</th>
+            <th className="py-3 px-4 text-left border-r-white w-[80px]">Created By</th>
+            <th className="py-3 px-4 text-left border-r-white w-[200px]">Action</th>
           </tr>
         </thead>
+
+        {loading ? (
+            <tbody>
+              <tr>
+                <td colSpan={5}>
+                  <div className="flex justify-center items-center h-full w-full py-6">
+                    <FaSpinner className="animate-spin text-[30px]" />
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          ) : filteredCategory.length === 0 ? (
+            <tbody>
+              <tr>
+                <td colSpan={5}>
+                  <div className="text-center py-6 text-gray-600 w-full">
+                    <p>Aucune commande trouvée.</p>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          ) : (
         <tbody>
           {currentCategories.map((category) => (
             <tr key={category._id} className="bg-white text-black">
@@ -244,7 +261,7 @@ const AddedCategories: React.FC = () => {
               </td>
             </tr>
           ))}
-        </tbody>
+        </tbody> )}
       </table>
       <div className="flex justify-center mt-4">
         <Pagination
