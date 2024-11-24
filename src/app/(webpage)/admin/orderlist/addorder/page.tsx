@@ -74,6 +74,7 @@ export default function Dashboard() {
   const [itemImage, setItemImage] = useState<string>("");
   const [itemDiscount, setItemDiscount] = useState<number>(0);
     const[Deliverymethod,setDeliverymethod]=useState<string>("");
+    const [costs, setCost] = useState<number>(0);
   const [customers, setCustomers] = useState<User[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const [addresses, setAddresses] = useState<Address[]>([]);
@@ -150,13 +151,18 @@ export default function Dashboard() {
       setItemQuantity(0);
     }
   };
-  const calculateTotal = (items:Items[]) => {
-    return items.reduce((total, item) => {
+  
+  // Calculate total amount
+  const calculateTotal = (items: Items[], deliveryCost: number): number => {
+    const totalItemsCost = items.reduce((total, item) => {
       const discountedPrice = item.price - (item.price * (item.discount / 100)); // Apply discount
-     
       return total + discountedPrice * item.quantity;
     }, 0);
+  
+    return totalItemsCost + deliveryCost;
   };
+  
+  
   const handleDeleteItem = (ref: string) => {
     // Filter out the item based on refproduct (or _id)
     const updatedItemList = itemList.filter(item => item.refproduct !== ref);
@@ -218,15 +224,53 @@ const handleAddNewAddress = async (e: React.FormEvent) => {
 
 
 
-  // Calculate total amount
-  const getTotalAmount = () => {
-    return itemList.reduce((total, item) => total + item.price, 0);
-  };
+
 
   // Handle form submission
-  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // Handle creating the order here
+ /*    console.log(itemList)
+    console.log(calculateTotal(itemList,costs))
+    console.log(Deliverymethod)
+    console.log(costs)
+    console.log(customer);
+   console.log(address);
+   console.log(paymentMethod); */
+   const orderData = {
+    itemList: itemList,
+    totalCost: calculateTotal(itemList, costs),
+    deliveryMethod: Deliverymethod,
+    customer: customer,
+    address: address,
+    deliveryCost:costs,
+    paymentMethod: paymentMethod,
+  };
+  console.log(orderData); 
+  try {
+    // Send POST request to API
+    const response = await fetch('/api/order/createorder', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(orderData),
+    });
+
+    if (response.ok) {
+      // Handle success
+      const data = await response.json();
+      
+      router.push(`/admin/Bondelivraison/${data.ref}`)
+
+    } else {
+      // Handle error
+      console.error('Failed to create order', response.statusText);
+    }
+  } catch (error) {
+    // Handle network error
+    console.error('Error submitting order:', error);
+  }
   };
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -256,6 +300,19 @@ const handleAddNewAddress = async (e: React.FormEvent) => {
     setPrice(product.price || 0);
     setItemQuantity(1); // Default quantity
     setSearchQuery(""); // Clear search query after selecting a product
+  };
+   // Handle delivery method change
+   const handleDeliveryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedMethodId = e.target.value;
+    setDeliverymethod(selectedMethodId);
+
+    // Find the selected method and update the cost
+    const selectedMethod = deliveryMethods.find(
+      (method) => method.id === selectedMethodId
+    );
+    if (selectedMethod) {
+      setCost(selectedMethod.cost);
+    }
   };
   const deliveryMethods = [
     {id: "store", label: "Boutique", cost: 0 },
@@ -360,14 +417,14 @@ const handleAddNewAddress = async (e: React.FormEvent) => {
                   className="border-[1px] p-2 rounded-sm mb-3 w-full"
                   required
                   value={Deliverymethod}
-                  onChange={(e) => setDeliverymethod(e.target.value)}
+                  onChange={handleDeliveryChange}
                 >
                   <option value="" disabled>
                     Select Mode de livraison
                   </option>
                   {deliveryMethods.map((method) => (
-                    <option key={method.id} value={method.id}>
-                      {method.label}
+                    <option key={method.id} value={method.id} >
+                     {method.label}-{method.cost === 0 ? "free" : `${method.cost} DT`}
                     </option>
                   ))}
                 </select>
@@ -524,7 +581,7 @@ const handleAddNewAddress = async (e: React.FormEvent) => {
             </div>
 
             {/* Items Table */}
-            <OrderTable items={itemList}handleDeleteItem={handleDeleteItem} calculateTotal={calculateTotal} />
+            <OrderTable items={itemList}handleDeleteItem={handleDeleteItem} calculateTotal={calculateTotal} costs={costs} />
 
             {/* Save Button */}
             <button
