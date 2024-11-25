@@ -17,13 +17,14 @@ interface orderItem {
 interface OrderTableProps {
   items: orderItem[]; // Assuming orderItem is defined elsewhere
   handleDeleteItem: (ref: string) => void; // Define the type of the function
-  calculateTotal:(items:orderItem[],costs:number)=>void;
+  calculateTotal:(items:orderItem[],costs:number,isOn:boolean)=>void;
   costs:number;
+  isOn:boolean;
 }
 
-const OrderTable: React.FC<OrderTableProps> = ({ items,handleDeleteItem,calculateTotal ,costs}) => {
+const OrderTable: React.FC<OrderTableProps> = ({ items,handleDeleteItem,calculateTotal ,costs,isOn}) => {
   // Calculate total amount, including discount and TVA
-const total=calculateTotal(items,costs);  
+const total=calculateTotal(items,costs,isOn);  
 
 
   return (

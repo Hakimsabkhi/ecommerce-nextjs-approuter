@@ -269,6 +269,11 @@ const ListOrders: React.FC = () => {
                       View
                     </button>
                   </Link>
+                  <Link href={`/admin/orderlist/editorder/${item.ref}`}>
+                    <button className="bg-gray-800 text-white w-28 h-10 hover:bg-gray-600 rounded-md uppercase">
+                      Edite
+                    </button>
+                  </Link>
                   <Link href={`/admin/Bondelivraison/${item.ref}`}>
                     <button className="bg-gray-800 text-white w-40 h-10 hover:bg-gray-600 rounded-md uppercase">
                       Bon de Livraison

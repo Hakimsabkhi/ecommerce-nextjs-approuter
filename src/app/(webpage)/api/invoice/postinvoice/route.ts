@@ -37,7 +37,7 @@ if(!infoder){
   return NextResponse.json({success:false,message:"no infomation order"},{status:401})
 }
   const invoice = await Invoice.findOne({nborder:order})
-  if(!invoice){
+  if(!invoice && infoder.statustimbre==true){
     const invoiceRef = await generateInvoiceRef();
    const newinvoice = new Invoice({
       user:infoder.user,
@@ -47,7 +47,7 @@ if(!infoder){
       paymentMethod:infoder.paymentMethod,
       deliveryMethod:infoder.deliveryMethod,
       deliveryCost:infoder.deliveryCost,
-      total:infoder.total+1,
+      total:infoder.total,
       ref:invoiceRef, // Example ref generation
       orderStatus: 'Processing',
     });
@@ -61,6 +61,30 @@ if(!infoder){
      // ref: savedOrder.ref, // Return the order reference
   
     }, { status: 200});
+  }else if(!invoice && infoder.statustimbre==false){
+    const invoiceRef = await generateInvoiceRef();
+    const newinvoice = new Invoice({
+       user:infoder.user,
+       nborder:infoder._id,
+       address:infoder.address,
+       Items:infoder.orderItems,
+       paymentMethod:infoder.paymentMethod,
+       deliveryMethod:infoder.deliveryMethod,
+       deliveryCost:infoder.deliveryCost,
+       total:infoder.total+1,
+       ref:invoiceRef, // Example ref generation
+       orderStatus: 'Processing',
+     });
+ 
+     // Save the order to the database
+      const invoice = await newinvoice.save();
+ 
+      return NextResponse.json({
+       success: true,
+       ref:invoice
+      // ref: savedOrder.ref, // Return the order reference
+   
+     }, { status: 200});
   }
 
 
