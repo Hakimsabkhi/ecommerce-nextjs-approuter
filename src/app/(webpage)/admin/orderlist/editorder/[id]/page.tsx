@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import OrderTable from "@/components/OrderComp/OrderTable";
 import OrderAddress from "@/components/OrderComp/OrderAddress";
 
@@ -43,6 +43,7 @@ interface order {
   Items: Items[];
   paymentMethod: string;
   deliveryCost: number;
+deliveryMethod:string
   statustimbre:boolean;
   total: number;
   createdAt: string;
@@ -64,6 +65,7 @@ interface Address {
 }
 
 export default function Dashboard() {
+    const params = useParams() as { id: string };
   const [itemList, setItemList] = useState<Items[]>([]);
   const [customer, setCustomer] = useState<string>("");
   const [ref, setRef] = useState<string>("");
@@ -159,6 +161,8 @@ export default function Dashboard() {
   
   // Calculate total amount
   const calculateTotal = (items: Items[], deliveryCost: number, isOn: boolean): number => {
+    console.log(items);
+    
     // Calculate total items cost after applying the discount
     const totalItemsCost = items.reduce((total, item) => {
       const discountedPrice = item.price - (item.price * (item.discount / 100)); // Apply discount
@@ -252,7 +256,7 @@ const handleAddNewAddress = async (e: React.FormEvent) => {
     console.log(customer);
    console.log(address);
    console.log(paymentMethod); */
-   const orderData = {
+const orderData = {
     itemList: itemList,
     totalCost: calculateTotal(itemList, costs,isOn),
     deliveryMethod: Deliverymethod,
@@ -265,8 +269,8 @@ const handleAddNewAddress = async (e: React.FormEvent) => {
   console.log(orderData); 
   try {
     // Send POST request to API
-    const response = await fetch('/api/order/createorder', {
-      method: 'POST',
+    const response = await fetch(`/api/order/updateorderbyid/${params.id}`, {
+      method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
@@ -351,20 +355,29 @@ const handleAddNewAddress = async (e: React.FormEvent) => {
   // Fetch customers and products on component mount
   useEffect(() => {
     const fetchData = async () => {
-      const [usersResponse, productsResponse] = await Promise.all([
+      const [usersResponse, productsResponse,ordersResponse] = await Promise.all([
         fetch("/api/users/userdashboard"),
         fetch("/api/products/getAllProduct"),
+        fetch(`/api/order/getorderbyref/${params.id}`),
       ]);
 
       const usersData = await usersResponse.json();
       const productsData = await productsResponse.json();
-
+      const ordersdata = await ordersResponse.json();
+      console.log(ordersdata)
+      setItemList(ordersdata.orderItems);
+      handleCustomerSelect(ordersdata.user._id,ordersdata.user.username);
+      setAddress(ordersdata.address._id);
+      setPaymentMethod(ordersdata.paymentMethod);
+      setDeliverymethod(ordersdata.deliveryMethod); // Example: Default delivery method
+      setCost(ordersdata.deliveryCost);
+      setIsOn(ordersdata.statustimbre);
       setCustomers(usersData);
       setProducts(productsData);
       setFilteredProducts(productsData); // Initialize filtered products
     };
     fetchData();
-  }, []);
+  }, [params.id]);
 
   return (
     <div className="w-full">
@@ -623,7 +636,7 @@ const handleAddNewAddress = async (e: React.FormEvent) => {
               className="bg-gray-800 hover:bg-gray-600 text-white w-full py-4 rounded mt-6"
               type="submit"
             >
-              SAVE & PREVIEW ORDER
+              UPDATE & PREVIEW ORDER
             </button>
           </form>
 

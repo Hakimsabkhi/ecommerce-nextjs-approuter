@@ -23,6 +23,7 @@ export interface IOrder extends Document {
   deliveryCost:number;
   total: number;
   orderStatus: string;
+  statustimbre:boolean;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -88,6 +89,10 @@ const OrderSchema : Schema = new Schema({
       orderStatus: {
         type: String,
         default: 'Processing',
+      },
+      statustimbre:{
+        type:Boolean,
+        default:true,
       },
       createdAt: {
         type: Date,

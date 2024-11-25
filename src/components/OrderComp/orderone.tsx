@@ -151,9 +151,9 @@ if (loading) {
                         <p className='text-xl font-bold'>Cancel </p></button> 
                     </div>
                     <div className="flex items-center justify-between p-8 w-[80%] max-md:w-full max-md:border-t-2 text-xl font-bold font-poppins  ">
-                        <div className='grid grid-cols-2'>
-                        <p>Payment Method </p><span className='text-gray-400'>{order?.paymentMethod}</span>
-                        {order?.deliveryMethod && (<><p> Delivery Method </p><span className='text-gray-400'> {order?.deliveryMethod} </span></>)}
+                        <div className='grid grid-rows-2 capitalize'>
+                       <div className='grid grid-cols-2 gap-3'> <p>Payment Method </p><span className='text-gray-400 '>{order?.paymentMethod}</span></div>
+                        {order?.deliveryMethod && (<div className='grid grid-cols-2 gap-2'><p> Delivery Method </p><span className='text-gray-400'> {order?.deliveryMethod} </span></div>)}
                         </div>
                         <div className='grid grid-cols-2'>
                         { order?.deliveryCost!=0 &&    (<><p> Fee Shopping </p><span className='text-blue-400 flex justify-end'> {order?.deliveryCost} TND</span></> )}

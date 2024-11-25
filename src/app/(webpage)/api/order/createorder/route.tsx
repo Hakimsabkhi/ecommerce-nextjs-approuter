@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ success: false, message: "Missing required connect" }, { status: 505 });
     }
 
-    const { customer , itemList, totalCost,paymentMethod,address,deliveryMethod,deliveryCost} = body;
+    const { customer , itemList, totalCost,paymentMethod,address,deliveryMethod,deliveryCost,statustimbre} = body;
    
     // Validate required fields
     if (!customer || !address || !itemList || !paymentMethod||!deliveryMethod||!totalCost) {
@@ -58,6 +58,7 @@ for (let i = 0; i < itemList.length; i++) {
       deliveryMethod,
       deliveryCost,
       total:totalCost,
+      statustimbre,
       ref: `ORDER-${Math.random().toString(36).substring(2, 10).toUpperCase()}`, // Example ref generation
       orderStatus: 'Processing',
     });

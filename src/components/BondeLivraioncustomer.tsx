@@ -39,6 +39,7 @@ interface Order {
   deliveryCost:number;
   total: number;
   orderStatus: string;
+  statustimbre:boolean;
   createdAt:string
 }
 interface User{
@@ -435,7 +436,15 @@ if (loading) {
                       TND
                     </dd>
                   </dl>
-                  
+                  <dl className="grid sm:grid-cols-5 gap-x-3">
+                    <dt className="col-span-3 font-semibold text-gray-800 dark:text-neutral-200 justify-start flex">
+                   Timbre Fiscale:
+                    </dt>
+                    <dd className="col-span-2 text-gray-500 dark:text-neutral-500">
+                    {order?.statustimbre === true ? "1.000 TND" : "0.000 TND"}
+
+                    </dd>
+                  </dl>
                   {/*
             <dl className="grid sm:grid-cols-5 gap-x-3">
               <dt className="col-span-3 font-semibold text-gray-800 dark:text-neutral-200">Total:</dt>

@@ -177,7 +177,11 @@ const Listinvoice: React.FC = () => {
               <td className="binvoice px-4 py-2 ">{new Date(item.createdAt).toLocaleDateString('en-GB')} - {new Date(item.createdAt).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}</td>
               <td className="binvoice px-4 py-2">
                 <div className="flex items-center justify-center gap-2">
-                
+                <Link href={`/admin/invoice/editinvoice/${item._id}`}>
+                  <button type="button" className="bg-gray-800 text-white w-32 h-10 hover:bg-gray-600 rounded-md uppercase">
+                      Edit
+                    </button>
+                    </Link>
                  <Link href={`/admin/invoice/${item._id}`}>
                   <button type="button" className="bg-gray-800 text-white w-32 h-10 hover:bg-gray-600 rounded-md uppercase">
                       Invoice
