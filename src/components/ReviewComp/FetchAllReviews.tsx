@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import LoadingSpinner from "../LoadingSpinner";
+import { FaSpinner } from "react-icons/fa";
 import Pagination from "../Pagination";
 
 
@@ -66,13 +66,7 @@ const ListerReview: React.FC<AddedProductsProps> = ({ products }) => {
 
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
-  if (loading) {
-    return (
-      /* loading start */
-     <LoadingSpinner/>
-      /*  loading end  */
-    );
-  }
+  
 
   if (error) {
     return <div>Error: {error}</div>;
@@ -103,6 +97,27 @@ const ListerReview: React.FC<AddedProductsProps> = ({ products }) => {
             </th>
           </tr>
         </thead>
+        {loading ? (
+            <tbody>
+              <tr>
+                <td colSpan={5}>
+                  <div className="flex justify-center items-center h-full w-full py-6">
+                    <FaSpinner className="animate-spin text-[30px]" />
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          ) : filteredProducts.length === 0 ? (
+            <tbody>
+              <tr>
+                <td colSpan={5}>
+                  <div className="text-center py-6 text-gray-600 w-full">
+                    <p>Aucun review trouvée.</p>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          ) : (
         <tbody>
           {currentProducts.map((item) => (
             <tr key={item._id} className="bg-white text-balck">
@@ -127,7 +142,7 @@ const ListerReview: React.FC<AddedProductsProps> = ({ products }) => {
               </td>
             </tr>
           ))}
-        </tbody>
+        </tbody> )}
       </table>
       <div className="flex justify-center mt-4">
        

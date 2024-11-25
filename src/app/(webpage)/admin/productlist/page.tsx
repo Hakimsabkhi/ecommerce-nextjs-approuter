@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
+import { FaSpinner } from "react-icons/fa";
 import { toast } from "react-toastify";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import DeletePopup from "@/components/Popup/DeletePopup";
@@ -241,9 +242,7 @@ const AddedProducts: React.FC = () => {
   );
   const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
 
-  if (loading) {
-    return <LoadingSpinner />;
-  }
+  
   if (error) {
     return <div>Error: {error}</div>;
   }
@@ -288,18 +287,39 @@ const AddedProducts: React.FC = () => {
           <tr className="bg-gray-800">
             <th className="px-4 py-2">REF</th>
             <th className="px-4 py-2">Name</th>
-            <th className="px-4 py-2 flex justify-center">Quantity</th>
+            <th className="px-4 py-2 ">Quantity</th>
             <th className="px-4 py-2">ImageURL</th>
             <th className="px-4 py-2">Created By</th>
             <th className="px-4 text-center py-2">Action</th>
           </tr>
         </thead>
+        {loading ? (
+            <tbody>
+              <tr>
+                <td colSpan={6}>
+                  <div className="flex justify-center items-center h-full w-full py-6">
+                    <FaSpinner className="animate-spin text-[30px]" />
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          ) : filteredProducts.length === 0 ? (
+            <tbody>
+              <tr>
+                <td colSpan={6}>
+                  <div className="text-center py-6 text-gray-600 w-full">
+                    <p>Aucune categorie trouvée.</p>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          ) : (
         <tbody>
           {currentProducts.map((item) => (
             <tr key={item._id} className="bg-white text-black">
               <td className="border px-4 py-2">{item.ref}</td>
               <td className="border px-4 py-2">{item.name}</td>
-              <td className="border px-4 py-2 flex justify-center">{item.stock}</td>
+              <td className="border px-4 py-2 text-center">{item.stock}</td>
               <td className="border px-4 py-2 ">
                 <div className="items-center justify-center flex">
                   <Image
@@ -409,8 +429,8 @@ const AddedProducts: React.FC = () => {
               </td>
             </tr>
           ))}
-        </tbody>
-      </table>
+        </tbody>)}
+      </table> 
       <div className="flex justify-center mt-4">
         <Pagination
           currentPage={currentPage}

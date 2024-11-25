@@ -186,7 +186,7 @@ const AddedCategories: React.FC = () => {
               <tr>
                 <td colSpan={5}>
                   <div className="text-center py-6 text-gray-600 w-full">
-                    <p>Aucune commande trouvée.</p>
+                    <p>Aucune categorie trouvée.</p>
                   </div>
                 </td>
               </tr>
