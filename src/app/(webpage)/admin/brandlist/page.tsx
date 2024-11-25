@@ -2,9 +2,9 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { FaSpinner } from "react-icons/fa";
 import { toast } from 'react-toastify';
 import DeletePopup from "@/components/Popup/DeletePopup";
-import LoadingSpinner from '@/components/LoadingSpinner';
 import Pagination from '@/components/Pagination';
 
 type Brand = {
@@ -105,8 +105,7 @@ const AddedBrands: React.FC = () => {
   const currentBrands = filteredBrands.slice(indexOfFirstBrand, indexOfLastBrand);
   const totalPages = Math.ceil(filteredBrands.length / brandsPerPage);
 
-  if (loading) return <LoadingSpinner />;
-  if (error) return <div>Error: {error}</div>;
+
 
   return (
     <div className='mx-auto w-[90%] py-8 flex flex-col gap-8'>
@@ -127,17 +126,38 @@ const AddedBrands: React.FC = () => {
         className='mt-4 p-2 border border-gray-300 rounded'
       />
 
-      <table className="table-auto w-full mt-4">
+      <table className="w-full rounded overflow-hidden table-fixed ">
         <thead>
           <tr className='bg-gray-800'>
-            <th className="px-4 py-2">Icon</th>
-            <th className="px-4 py-2">ImageURL</th>
-            <th className="px-4 py-2">Name</th>
-            <th className="px-4 py-2">Place</th>
-            <th className="px-4 py-2">Created By</th>
-            <th className="px-4 py-2 text-center">Action</th>
+            <th className="px-4 text-left border-r-white py-3 w-[20px]">Icon</th>
+            <th className="px-4 text-left border-r-white py-3 w-[120px]">ImageURL</th>
+            <th className="px-4 text-left border-r-white py-3 w-[80px]">Name</th>
+            <th className="px-4 text-left border-r-white py-3 w-[80px]">Place</th>
+            <th className="px-4 text-left border-r-white py-3 w-[80px]">Created By</th>
+            <th className="px-4 text-left border-r-white py-3 w-[200px]">Action</th>
           </tr>
         </thead>
+        {loading ? (
+            <tbody>
+              <tr>
+                <td colSpan={6}>
+                  <div className="flex justify-center items-center h-full w-full py-6">
+                    <FaSpinner className="animate-spin text-[30px] items-center" />
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          ) : filteredBrands.length === 0 ? (
+            <tbody>
+              <tr>
+                <td colSpan={6}>
+                  <div className="text-center py-6 text-gray-600 w-full">
+                    <p>Aucune marque trouvée.</p>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          ) : (
         <tbody>
           {currentBrands.map((item, index) => (
             <tr key={index} className='bg-white text-black'>
@@ -175,7 +195,7 @@ const AddedBrands: React.FC = () => {
               </td>
             </tr>
           ))}
-        </tbody>
+        </tbody>)}
       </table>
 
       <div className='flex justify-center mt-4'>

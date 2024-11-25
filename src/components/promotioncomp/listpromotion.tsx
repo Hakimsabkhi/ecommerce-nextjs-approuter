@@ -1,8 +1,9 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
+import { FaSpinner } from "react-icons/fa";
 import { toast } from "react-toastify";
-import LoadingSpinner from "@/components/LoadingSpinner";
+
 import DeletePopup from "@/components/Popup/DeletePopup";
 import Pagination from "@/components/Pagination";
 import Image from "next/image";
@@ -106,9 +107,7 @@ const ListPromotion: React.FC = () => {
   );
   const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
 
-  if (loading) {
-    return <LoadingSpinner />;
-  }
+  
   if (error) {
     return <div>Error: {error}</div>;
   }
@@ -158,6 +157,27 @@ const ListPromotion: React.FC = () => {
             <th className="px-4 text-center py-2">Action</th>
           </tr>
         </thead>
+        {loading ? (
+            <tbody>
+              <tr>
+                <td colSpan={5}>
+                  <div className="flex justify-center items-center h-full w-full py-6">
+                    <FaSpinner className="animate-spin text-[30px]" />
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          ) : filteredProducts.length === 0 ? (
+            <tbody>
+              <tr>
+                <td colSpan={5}>
+                  <div className="text-center py-6 text-gray-600 w-full">
+                    <p>Aucune categorie trouvée.</p>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          ) : (
         <tbody>
           {currentProducts.map((item) => (
             <tr key={item._id} className="bg-white text-black">
@@ -194,7 +214,7 @@ const ListPromotion: React.FC = () => {
               </td>
             </tr>
           ))}
-        </tbody>
+        </tbody>)}
       </table>
       <div className="flex justify-center mt-4">
         <Pagination

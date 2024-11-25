@@ -1,5 +1,5 @@
 "use client";
-
+import { FaSpinner } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import DeletePopup from "@/components/Popup/DeletePopup";
@@ -21,6 +21,8 @@ const AdminDashboard = () => {
   const [selectedRole, setSelectedRole] = useState<string>("");
   const [loadingUserId, setLoadingUserId] = useState<string | null>(null);
   const [selectedUser, setSelectedUser] = useState({ id: "", email: "" });
+  const [loading, setLoading] = useState(true);
+
 
   useEffect(() => {
     fetchUsers();
@@ -136,11 +138,12 @@ const AdminDashboard = () => {
         <table className="w-full text-sm text-left rtl:text-right">
           <thead className="text-xl uppercase">
             <tr className="bg-gray-800">
-              <th scope="col" className="px-6 py-3">Email</th>
-              <th scope="col" className="px-6 py-3 text-center">Role</th>
-              <th scope="col" className="px-6 py-3 text-center">Actions</th>
+              <th scope="col" className="px-6 py-3 w-1/3">Email</th>
+              <th scope="col" className="px-6 py-3 w-1/3 text-center">Role</th>
+              <th scope="col" className="px-6 py-3 w-1/3 text-center">Actions</th>
             </tr>
           </thead>
+          
           <tbody>
             {filteredUsers.map((user) => (
               <tr key={user._id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
