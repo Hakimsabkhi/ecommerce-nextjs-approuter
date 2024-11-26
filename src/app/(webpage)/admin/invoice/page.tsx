@@ -4,7 +4,7 @@ import Link from "next/link";
 import { toast } from "react-toastify";
 
 import { useRouter } from "next/navigation";
-import LoadingSpinner from "@/components/LoadingSpinner";
+import { FaSpinner } from "react-icons/fa";
 import Pagination from "@/components/Pagination";
 import DeletePopup from "@/components/Popup/DeletePopup";
 
@@ -134,9 +134,7 @@ const Listinvoice: React.FC = () => {
   const totalPages = Math.ceil(filteredinvoice.length / invoicePerPage);
 
 
-  if (loading) {
-    return <LoadingSpinner />;
-  }
+ 
   if (error) {
     return <div>Error: {error}</div>;
   }
@@ -166,6 +164,27 @@ const Listinvoice: React.FC = () => {
             <th className="px-4 text-center py-2">Action</th>
           </tr>
         </thead>
+        {loading ? (
+            <tbody>
+              <tr>
+                <td colSpan={5}>
+                  <div className="flex justify-center items-center h-full w-full py-6">
+                    <FaSpinner className="animate-spin text-[30px]" />
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          ) : filteredinvoice.length === 0 ? (
+            <tbody>
+              <tr>
+                <td colSpan={5}>
+                  <div className="text-center py-6 text-gray-600 w-full">
+                    <p>Aucune categorie trouvée.</p>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          ) : (
         <tbody>
           {currentinvoice.map((item) => (
             <tr key={item._id} className="bg-white text-black whitespace-nowrap">
@@ -200,7 +219,7 @@ const Listinvoice: React.FC = () => {
               </td>
             </tr>
           ))}
-        </tbody>
+        </tbody>)}
       </table>
       <div className="flex justify-center mt-4">
         

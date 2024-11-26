@@ -395,6 +395,9 @@ const AddedProducts: React.FC = () => {
                     <option value="best-collection">Best Collection</option>
                     <option value="promotion">Promotion</option>
                   </select>
+
+
+                    
                   <Link href={`/admin/productlist/${item._id}`}>
                     <button className="bg-gray-800 text-white w-28 h-10 hover:bg-gray-600 rounded-md uppercase">
                       Modify
