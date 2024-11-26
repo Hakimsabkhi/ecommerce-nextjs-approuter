@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { FaSpinner } from "react-icons/fa";
+import { FaSpinner, FaTrashAlt, FaRegEye } from "react-icons/fa";
 import { toast } from "react-toastify";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import DeletePopup from "@/components/Popup/DeletePopup";
@@ -282,15 +282,15 @@ const AddedProducts: React.FC = () => {
           </select>
         </div>
       </div>
-      <table className="table-auto w-full mt-4">
+      <table className="w-full rounded overflow-hidden table-fixed ">
         <thead>
           <tr className="bg-gray-800">
-            <th className="px-4 py-2">REF</th>
-            <th className="px-4 py-2">Name</th>
-            <th className="px-4 py-2 ">Quantity</th>
-            <th className="px-4 py-2">ImageURL</th>
-            <th className="px-4 py-2">Created By</th>
-            <th className="px-4 text-center py-2">Action</th>
+            <th className="px-4 py-2 w-[15px]">REF</th>
+            <th className="px-4 py-2 w-[50px]">Name</th>
+            <th className="px-4 py-2 w-[25px]">Quantity</th>
+            <th className="px-4 py-2 w-[25px]">Image</th>
+            <th className="px-4 py-2 w-[50px]">Created By</th>
+            <th className="px-4 text-center py-2 w-[250px]">Action</th>
           </tr>
         </thead>
         {loading ? (
@@ -318,7 +318,7 @@ const AddedProducts: React.FC = () => {
           {currentProducts.map((item) => (
             <tr key={item._id} className="bg-white text-black">
               <td className="border px-4 py-2">{item.ref}</td>
-              <td className="border px-4 py-2">{item.name}</td>
+              <td className="border px-4 py-2">{item.name.slice(0,10)}...</td>
               <td className="border px-4 py-2 text-center">{item.stock}</td>
               <td className="border px-4 py-2 ">
                 <div className="items-center justify-center flex">
@@ -405,18 +405,18 @@ const AddedProducts: React.FC = () => {
                   </Link>
                   <button
                     onClick={() => handleDeleteClick(item)}
-                    className="bg-gray-800 text-white w-28 h-10 hover:bg-gray-600 rounded-md"
+                    className="bg-gray-800 text-white pl-3 w-10 h-10 hover:bg-gray-600 rounded-md"
                     disabled={loadingProductId === item._id}
                   >
-                    {loadingProductId === item._id ? "Processing..." : "DELETE"}
+                    {loadingProductId === item._id ? "Processing..." : <FaTrashAlt />}
                   </button>
                   <Link
                     href={`/${item.vadmin === "approve" ? "" : "admin/"}${
                       item.category?.slug
                     }/${item.slug}`}
                   >
-                    <button className="bg-gray-800 text-white w-36 h-10 hover:bg-gray-600 rounded-md uppercase">
-                      See Product
+                    <button className="bg-gray-800 text-white mt-1.5 pl-3 w-10 h-10 hover:bg-gray-600 rounded-md justify-center">
+                    <FaRegEye />
                     </button>
                   </Link>
 
