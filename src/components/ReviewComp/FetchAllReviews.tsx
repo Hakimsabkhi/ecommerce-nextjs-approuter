@@ -85,7 +85,7 @@ const ListerReview: React.FC<AddedProductsProps> = ({ products }) => {
         onChange={(e) => setSearchTerm(e.target.value)}
         className="mt-4 p-2 border border-gray-300 rounded"
       />
-      <table className="table-auto w-full mt-4">
+      <table className="w-full rounded overflow-hidden table-fixed ">
         <thead>
           <tr className="bg-gray-800 ">
             <th className="px-4 py-2 text-center">REF</th>
