@@ -24,6 +24,7 @@ export interface IOrder extends Document {
   total: number;
   orderStatus: string;
   statustimbre:boolean;
+  statusinvoice:boolean;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -93,6 +94,10 @@ const OrderSchema : Schema = new Schema({
       statustimbre:{
         type:Boolean,
         default:true,
+      },
+      statusinvoice:{
+        type:Boolean,
+        default:false,
       },
       createdAt: {
         type: Date,
