@@ -2,7 +2,7 @@
 import Image from "next/image";
 import React, { Key, useEffect, useRef, useState } from "react";
 
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import LoadingSpinner from "@/components/LoadingSpinner";
@@ -47,6 +47,7 @@ interface User {
 }
 
 const BondeLivraison = () => {
+  const router=useRouter();
   const params = useParams() as { id: string }; // Explicitly type the params object
   const [invoice, setInvoice] = useState<invoice | null>(null);
   const [loading, setLoading] = useState(true);
@@ -512,7 +513,7 @@ const BondeLivraison = () => {
         <div className="flex gap-2 justify-between">
           <div className="mt-6 flex justify-s gap-x-3">
             <button
-              onClick={() => history.back()}
+              onClick={() => router.push("/admin/invoice")}
               type="button"
               className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none focus:outline-none focus:bg-gray-50 dark:bg-transparent dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800"
             >
