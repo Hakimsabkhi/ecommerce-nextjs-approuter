@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { toast } from "react-toastify";
 import DeletePopup from "../Popup/DeletePopup";
-import LoadingSpinner from "../LoadingSpinner";
+import { FaSpinner } from "react-icons/fa";
 import Pagination from "../Pagination";
 import { useRouter } from "next/navigation";
 
@@ -184,9 +184,7 @@ const ListOrders: React.FC = () => {
 
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
-  if (loading) {
-    return <LoadingSpinner />;
-  }
+  
   if (error) {
     return <div>Error: {error}</div>;
   }
@@ -236,6 +234,27 @@ const ListOrders: React.FC = () => {
             <th className="px-4 text-center py-2">Action</th>
           </tr>
         </thead>
+        {loading ? (
+            <tbody>
+              <tr>
+                <td colSpan={7}>
+                  <div className="flex justify-center items-center h-full w-full py-6">
+                    <FaSpinner className="animate-spin text-[30px]" />
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          ) : filteredOrders.length === 0 ? (
+            <tbody>
+              <tr>
+                <td colSpan={7}>
+                  <div className="text-center py-6 text-gray-600 w-full">
+                    <p>Aucune categorie trouvée.</p>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          ) : (
         <tbody>
           {currentOrders.map((item) => (
             <tr key={item._id} className="bg-white text-black whitespace-nowrap">
@@ -295,7 +314,7 @@ const ListOrders: React.FC = () => {
               </td>
             </tr>
           ))}
-        </tbody>
+        </tbody>)}
       </table>
       <div className="flex justify-center mt-4">
         

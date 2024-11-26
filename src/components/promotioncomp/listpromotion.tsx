@@ -150,11 +150,11 @@ const ListPromotion: React.FC = () => {
       <table className="table-auto w-full mt-4">
         <thead>
           <tr className="bg-gray-800">
-            <th className="px-4 py-2">REF</th>
-            <th className="px-4 py-2">Name</th>
-            <th className="px-4 py-2">ImageURL</th>
-            <th className="px-4 py-2">Created By</th>
-            <th className="px-4 text-center py-2">Action</th>
+            <th className="px-4 py-2 w-1/5">REF</th>
+            <th className="px-4 py-2 w-1/5">Name</th>
+            <th className="px-4 py-2 w-1/5">ImageURL</th>
+            <th className="px-4 py-2 w-1/5">Created By</th>
+            <th className="px-4 text-center py-2 w-1/5">Action</th>
           </tr>
         </thead>
         {loading ? (
