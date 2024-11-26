@@ -48,7 +48,7 @@ const ListOrders: React.FC = () => {
   const [selectedOrder, setSelectedOrder] = useState({ id: "", name: "" });
   const [loadingOrderId, setLoadingOrderId] = useState<string | null>(null);
   const [status, setStatus] = useState(''); // Initial value
-  const [timeframe, setTimeframe] = useState<"year" | "month" | "day">("year");
+  const [timeframe, setTimeframe] = useState<"year" | "month" | "day">("month");
   const [selectedDate, setSelectedDate] = useState<string>("");
 
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {

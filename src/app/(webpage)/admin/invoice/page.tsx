@@ -46,7 +46,7 @@ const Listinvoice: React.FC = () => {
   const [selectedinvoice, setSelectedinvoice] = useState({ id: "", name: "" });
   const [loadinginvoiceId, setLoadinginvoiceId] = useState<string | null>(null);
   // Timeframe state (par an, par mois, par jour)
-  const [timeframe, setTimeframe] = useState<"year" | "month" | "day">("year");
+  const [timeframe, setTimeframe] = useState<"year" | "month" | "day">("month");
   const [selectedDate, setSelectedDate] = useState<string>("");
 
   const handleDeleteClick = (invoice: invoice) => {

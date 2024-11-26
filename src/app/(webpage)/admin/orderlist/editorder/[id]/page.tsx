@@ -619,12 +619,14 @@ const orderData = {
                     />
                   </div>
                 </div>
+                <div className="flex justify-end mt-2 ">
                 <button
                   onClick={handleAddItem}
-                  className="bg-gray-400 hover:bg-gray-600 text-white px-4 h-12 rounded mt-2"
+                  className="bg-gray-400 w-1/2 hover:bg-gray-600 text-white px-4 h-12 rounded mt-2"
                 >
                   Add Item
                 </button>
+                </div>
               </div>
             </div>
 
