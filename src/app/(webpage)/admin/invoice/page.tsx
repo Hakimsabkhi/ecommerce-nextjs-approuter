@@ -177,7 +177,7 @@ const Listinvoice: React.FC = () => {
       <div className="flex justify-end ">
         <button
           onClick={() => setTimeframe("year")}
-          className={`p-2 ${
+          className={`p-2 rounded-l ${
             timeframe === "year"
               ? "bg-gray-800 text-white"
               : "bg-gray-300 text-white"
@@ -197,7 +197,7 @@ const Listinvoice: React.FC = () => {
         </button>
         <button
           onClick={() => setTimeframe("day")}
-          className={`p-2 ${
+          className={`p-2 rounded-r ${
             timeframe === "day"
               ? "bg-gray-800 text-white"
               : "bg-gray-300 text-white"
@@ -206,19 +206,19 @@ const Listinvoice: React.FC = () => {
           Par Jour
         </button>
         <input
-          type={timeframe === "year" ? "number" : "date"}
-          className="border rounded p-2 ml-4 w-44"
-          value={
-            timeframe === "year" ? selectedDate.split("-")[0] : selectedDate
-          }
-          onChange={(e) => {
-            if (timeframe === "year") {
-              setSelectedDate(`${e.target.value}-01-01`);
-            } else {
-              setSelectedDate(e.target.value);
-            }
-          }}
-        />
+    type={timeframe === "year" ? "number" : timeframe === "month" ? "month" : "date"}
+    className="border rounded p-2 ml-4 w-44"
+    value={timeframe === "year" ? selectedDate.split("-")[0] : timeframe === "month" ? selectedDate.slice(0, 7) : selectedDate}
+    onChange={(e) => {
+      if (timeframe === "year") {
+        setSelectedDate(`${e.target.value}-01-01`);
+      } else if (timeframe === "month") {
+        setSelectedDate(e.target.value);
+      } else {
+        setSelectedDate(e.target.value);
+      }
+    }}
+  />
       </div>
       <table className="table-auto w-full mt-4">
         <thead>
@@ -259,25 +259,25 @@ const Listinvoice: React.FC = () => {
                 key={item._id}
                 className="bg-white text-black whitespace-nowrap"
               >
-                <td className="binvoice px-4 py-2">{item.ref}</td>
-                <td className="binvoice px-4 py-2 uppercase">
+                <td className="border px-4 py-2">{item.ref}</td>
+                <td className="border px-4 py-2 uppercase">
                   {item.user.username}
                 </td>
-                <td className="binvoice px-4 py-2 text-start">
+                <td className="border px-4 py-2 text-start">
                   {item.total} TND
                 </td>
 
-                <td className="binvoice px-4 py-2 uppercase">
+                <td className="border px-4 py-2 uppercase">
                   {item.paymentMethod}
                 </td>
-                <td className="binvoice px-4 py-2 ">
+                <td className="border px-4 py-2 ">
                   {new Date(item.createdAt).toLocaleDateString("en-GB")} -{" "}
                   {new Date(item.createdAt).toLocaleTimeString("en-GB", {
                     hour: "2-digit",
                     minute: "2-digit",
                   })}
                 </td>
-                <td className="binvoice px-4 py-2">
+                <td className="border px-4 py-2">
                   <div className="flex items-center justify-center gap-2">
                     <Link href={`/admin/invoice/editinvoice/${item._id}`}>
                       <button
