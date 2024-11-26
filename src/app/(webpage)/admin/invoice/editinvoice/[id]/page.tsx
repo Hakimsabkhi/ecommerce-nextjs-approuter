@@ -1,8 +1,10 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import InvoiceTable from "@/components/invoice/InvoiceTable";
+import InvoiceAddress from "@/components/invoice/InvoiceAddress";
+
 
 // Item interface
 interface Items {
@@ -32,8 +34,8 @@ interface Product {
   quantity: number;
 }
 
-// Invoice and Address interfaces
-interface Invoice {
+// invoice and Address interfaces
+interface invoice {
   _id: string;
   user: User;
   ref: string;
@@ -41,6 +43,8 @@ interface Invoice {
   Items: Items[];
   paymentMethod: string;
   deliveryCost: number;
+deliveryMethod:string
+  statustimbre:boolean;
   total: number;
   createdAt: string;
 }
@@ -61,25 +65,57 @@ interface Address {
 }
 
 export default function Dashboard() {
+    const params = useParams() as { id: string };
   const [itemList, setItemList] = useState<Items[]>([]);
   const [customer, setCustomer] = useState<string>("");
   const [ref, setRef] = useState<string>("");
-  const [price, setPrice] = useState<number>(1);
-  const [itemQuantity, setItemQuantity] = useState<number>(1);
+  const [price, setPrice] = useState<number>(0);
+  const [itemQuantity, setItemQuantity] = useState<number>(0);
   const [itemName, setItemName] = useState<string>("");
   const [itemProduct, setItemProduct] = useState<string>("");
   const [itemTva, setItemTva] = useState<number>();
   const [itemImage, setItemImage] = useState<string>("");
   const [itemDiscount, setItemDiscount] = useState<number>(0);
-
+    const[Deliverymethod,setDeliverymethod]=useState<string>("");
+    const [costs, setCost] = useState<number>(0);
   const [customers, setCustomers] = useState<User[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const [addresses, setAddresses] = useState<Address[]>([]);
   const [address, setAddress] = useState<string>("");
-
+  const [showNewAddressModal, setShowNewAddressModal] = useState(false);
+  const [newAddress, setNewAddress] = useState({
+    governorate: "",
+    city: "",
+    zipcode: "",
+    address: "",
+  });
+  
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filteredCustomers, setFilteredCustomers] = useState<User[]>([]);
+  const [OpenCustomer,setOpenCustomer]=useState<boolean>(false);
+  const [isOn, setIsOn] = useState(false);
 
+  // Toggle state on click
+  const handleToggle = () => setIsOn(!isOn);
+  const handleSearchCustomers = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const query = e.target.value.toLowerCase();
+    setSearchTerm(query);
+  
+    // Filter the customers based on the query (search by username or other customer properties)
+    const filteredCustomers = customers.filter((cust) =>
+      cust.username.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setOpenCustomer(true);
+    setFilteredCustomers(filteredCustomers); // Update the filtered customer list
+  };
+  const handleCustomerSelect = (customerId: string, username: string) => {
+    setOpenCustomer(false);
+    setCustomer(customerId); // Set the selected customer ID
+    setSearchTerm(username);  // Set the search term to the selected username
+  };
+  const [paymentMethod, setPaymentMethod] = useState<string>("");
   const router = useRouter();
 
   // Add item to the invoice
@@ -123,16 +159,138 @@ export default function Dashboard() {
     }
   };
   
-
   // Calculate total amount
-  const getTotalAmount = () => {
-    return itemList.reduce((total, item) => total + item.price, 0);
+  const calculateTotal = (items: Items[], deliveryCost: number): number => {
+    console.log(items);
+    
+    // Calculate total items cost after applying the discount
+    const totalItemsCost = items.reduce((total, item) => {
+      const discountedPrice = item.price - (item.price * (item.discount / 100)); // Apply discount
+      return total + discountedPrice * item.quantity;
+    }, 0);
+  
+    // Calculate total
+    let total = totalItemsCost + deliveryCost;
+  
+    // If isOn is true, add 1 to the total
+   
+      total += 1;
+    
+  
+    return total;
   };
+  
+  
+  
+  const handleDeleteItem = (ref: string) => {
+    // Filter out the item based on refproduct (or _id)
+    const updatedItemList = itemList.filter(item => item.refproduct !== ref);
+    
+    // Update the itemList state with the new list
+    setItemList(updatedItemList);
+  };
+  
+  const handlecloseAddress=()=>{
+   
+   setShowNewAddressModal(false);
+    setNewAddress({
+      governorate: "",
+      city: "",
+      zipcode: "",
+      address: "",
+    });
+
+  }
+const handleAddNewAddress = async (e: React.FormEvent) => {
+  e.preventDefault();
+
+  const formData = new FormData();
+  
+  // Append fields from newAddress and customer to FormData
+  Object.keys(newAddress).forEach((key) => {
+    // Type guard to make sure `key` is a valid key of `newAddress`
+    if (key in newAddress) {
+      formData.append(key, newAddress[key as keyof typeof newAddress]); // Explicitly cast key type
+    }
+  });
+  formData.append("userId", customer); // Append userId
+
+  try {
+    const res = await fetch(`/api/address/postaddressbyuser`, {
+      method: "POST",
+      body: formData, // Send FormData as the request body
+    });
+
+    if (res.ok) {
+      const {address} = await res.json();
+      const addedAddress =address;
+      console.log(addedAddress)
+      setAddresses((prev) => [...prev, addedAddress]); // Update address list
+      setNewAddress({
+        governorate: "",
+        city: "",
+        zipcode: "",
+        address: "",
+      });
+      setShowNewAddressModal(false); // Close modal
+    } else {
+      console.error("Failed to add address");
+    }
+  } catch (err) {
+    console.error("Error adding address:", err);
+  }
+};
+
+
+
+
 
   // Handle form submission
-  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // Handle creating the invoice here
+ /*    console.log(itemList)
+    console.log(calculateTotal(itemList,costs))
+    console.log(Deliverymethod)
+    console.log(costs)
+    console.log(customer);
+   console.log(address);
+   console.log(paymentMethod); */
+const invoiceData = {
+    itemList: itemList,
+    totalCost: calculateTotal(itemList, costs),
+    deliveryMethod: Deliverymethod,
+    customer: customer,
+    address: address,
+    deliveryCost:costs,
+    statustimbre:isOn,
+    paymentMethod: paymentMethod,
+  };
+  console.log(invoiceData); 
+  try {
+    // Send POST request to API
+    const response = await fetch(`/api/invoice/updateinvoicebyid/${params.id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(invoiceData),
+    });
+
+    if (response.ok) {
+      // Handle success
+      const data = await response.json();
+      
+      router.push(`/admin/invoice/${data.ref}`)
+
+    } else {
+      // Handle error
+      console.error('Failed to create invoice', response.statusText);
+    }
+  } catch (error) {
+    // Handle network error
+    console.error('Error submitting invoice:', error);
+  }
   };
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -163,12 +321,31 @@ export default function Dashboard() {
     setItemQuantity(1); // Default quantity
     setSearchQuery(""); // Clear search query after selecting a product
   };
+   // Handle delivery method change
+   const handleDeliveryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedMethodId = e.target.value;
+    setDeliverymethod(selectedMethodId);
+
+    // Find the selected method and update the cost
+    const selectedMethod = deliveryMethods.find(
+      (method) => method.id === selectedMethodId
+    );
+    if (selectedMethod) {
+      setCost(selectedMethod.cost);
+    }
+  };
+  const deliveryMethods = [
+    {id: "store", label: "Boutique", cost: 0 },
+    { id: "fedex", label: "FedEx", cost: 0 },
+    { id: "dhl", label: "Fast delivery DHL", cost: 15 },
+    { id: "express", label: "Express delivery", cost: 49 },
+  ];
 
   // Fetch address when customer changes
   useEffect(() => {
-    if (!customer) return;
+
     const fetchAddress = async () => {
-      const res = await fetch(`/api/address/getaddresbyid/${customer}`);
+      const res = await fetch(`/api/address/getaddressbyid/${customer}`);
       const data = await res.json();
       setAddresses(data);
     };
@@ -178,20 +355,29 @@ export default function Dashboard() {
   // Fetch customers and products on component mount
   useEffect(() => {
     const fetchData = async () => {
-      const [usersResponse, productsResponse] = await Promise.all([
+      const [usersResponse, productsResponse,invoicesResponse] = await Promise.all([
         fetch("/api/users/userdashboard"),
         fetch("/api/products/getAllProduct"),
+        fetch(`/api/invoice/getinvoicebyid/${params.id}`),
       ]);
 
       const usersData = await usersResponse.json();
       const productsData = await productsResponse.json();
+      const invoicesdata = await invoicesResponse.json();
 
+      setItemList(invoicesdata.Items);
+      handleCustomerSelect(invoicesdata.user._id,invoicesdata.user.username);
+      setAddress(invoicesdata.address._id);
+      setPaymentMethod(invoicesdata.paymentMethod);
+      setDeliverymethod(invoicesdata.deliveryMethod); // Example: Default delivery method
+      setCost(invoicesdata.deliveryCost);
+      setIsOn(invoicesdata.statustimbre);
       setCustomers(usersData);
       setProducts(productsData);
       setFilteredProducts(productsData); // Initialize filtered products
     };
     fetchData();
-  }, []);
+  }, [params.id]);
 
   return (
     <div className="w-full">
@@ -200,27 +386,33 @@ export default function Dashboard() {
           <h2 className="font-bold text-2xl mb-3">Add new invoice</h2>
 
           <form className="w-full flex flex-col" onSubmit={handleFormSubmit}>
-            <div className="flex flex-col-2 gap-2">
-              <div className="w-1/2">
+            <div className="grid grid-cols-2 justify-center  gap-2">
+              <div className="w-full">
                 <label htmlFor="customer">Customer</label>
-                <select
-                  className="border-[1px] p-2 rounded-sm mb-3 w-full"
-                  required
-                  value={customer}
-                  onChange={(e) => setCustomer(e.target.value)}
-                >
-                  <option value="" disabled>
-                    Select a customer
-                  </option>
-                  {customers.map((cust) => (
-                    <option key={cust._id} value={cust._id}>
-                      {cust.username}
-                    </option>
-                  ))}
-                </select>
+                <div className="relative">
+                  <input
+                    id="customer"
+                    type="text"
+                      className=" p-2 border  rounded-sm mb-3 w-full"
+                    placeholder="Search customer by name"
+                    value={searchTerm}
+                    onChange={handleSearchCustomers} // Call this on input change
+                  />
+                  <ul className="absolute top-full mt-1 w-full bg-white  rounded-md shadow-md max-h-60 overflow-auto">
+                    {OpenCustomer && filteredCustomers.map((cust) => (
+                      <li
+                        key={cust._id}
+                        className="p-2 hover:bg-gray-200 cursor-pointer"
+                        onClick={() => handleCustomerSelect(cust._id, cust.username)}
+                      >
+                        {cust.username}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
 
-              <div className="w-1/2">
+              <div className="w-full">
                 <label htmlFor="address">Address</label>
                 <select
                   className="border-[1px] p-2 rounded-sm mb-3 w-full"
@@ -237,9 +429,57 @@ export default function Dashboard() {
                     </option>
                   ))}
                 </select>
-              </div>
-            </div>
+                <button
+    type="button"
+    onClick={() => setShowNewAddressModal(true)}
+    className="text-blue-600 underline"
+  >
+    Add New Address
+  </button>
 
+
+              </div>
+                {/* Delivery Method */}
+              <div className="w-full">
+                <label htmlFor="deliveryMethod">Mode de livraison</label>
+                <select
+                  className="border-[1px] p-2 rounded-sm mb-3 w-full"
+                  required
+                  value={Deliverymethod}
+                  onChange={handleDeliveryChange}
+                >
+                  <option value="" disabled>
+                    Select Mode de livraison
+                  </option>
+                  {deliveryMethods.map((method) => (
+                    <option key={method.id} value={method.id} >
+                     {method.label}-{method.cost === 0 ? "free" : `${method.cost} DT`}
+                    </option>
+                  ))}
+                </select>
+              </div>
+           {/* Payment Method */}
+           <div className="w-full">
+                <label htmlFor="paymentMethod">Mode de Payment</label>
+                <select
+                  className="border-[1px] p-2 rounded-sm mb-3 w-full"
+                  required
+                  value={paymentMethod}
+                  onChange={(e) => setPaymentMethod(e.target.value)}
+                >
+                  <option value="" disabled>
+                    Select Mode de Payment
+                  </option>
+                  <option value="virement">Virement</option>
+                  <option value="carte">Carte Bancaire</option>
+                  <option value="onDelivery">Payment on Delivery</option>
+                  <option value="express">Paiement Express</option>
+                </select>
+              </div>
+          
+              
+            </div>
+          
             {/* Items */}
             <div className="w-full flex flex-col mt-4 mb-3">
               <h3 className="font-bold mb-2">Items List</h3>
@@ -360,26 +600,31 @@ export default function Dashboard() {
                     />
                   </div>
                 </div>
+                <div className="flex justify-end mt-2 ">
                 <button
                   onClick={handleAddItem}
-                  className="bg-gray-400 hover:bg-gray-600 text-white px-4 h-12 rounded mt-2"
+                  className="bg-gray-400 w-1/2 hover:bg-gray-600 text-white px-4 h-12 rounded mt-2"
                 >
                   Add Item
                 </button>
+                </div>
               </div>
             </div>
 
             {/* Items Table */}
-            <InvoiceTable items={itemList} />
+            <InvoiceTable items={itemList}handleDeleteItem={handleDeleteItem} calculateTotal={calculateTotal} costs={costs} />
 
             {/* Save Button */}
             <button
               className="bg-gray-800 hover:bg-gray-600 text-white w-full py-4 rounded mt-6"
               type="submit"
             >
-              SAVE & PREVIEW INVOICE
+              UPDATE & PREVIEW invoice
             </button>
           </form>
+
+          {/* showNewAddressModal*/} 
+      <InvoiceAddress showNewAddressModal={showNewAddressModal} handleAddNewAddress={handleAddNewAddress} handlecloseAddress={handlecloseAddress} setNewAddress={setNewAddress} newAddress={newAddress} />
         </div>
       </main>
     </div>
