@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import DeletePopup from "@/components/Popup/DeletePopup";
 import { toast } from "react-toastify";
+import Link from "next/link";
 
 interface User {
   _id: string;
@@ -110,13 +111,16 @@ const AdminDashboard = () => {
   return (
     <div className="container mx-auto p-8">
       <h1 className="text-4xl font-bold mb-8 text-center">Admin Dashboard</h1>
+      <div className="flex justify-end">
+        <Link href={"/admin/users/role"} className="bg-gray-800 hover:bg-gray-600 rounded-md w-1/5 p-2 text-white flex justify-center items-center mb-4">ROLE</Link>
+        </div>
       <div className="flex justify-between items-center pb-4">
       <input
         type="text"
         placeholder="Search users"
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
-        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-[20%] block p-2.5"
+        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-[30%] block p-2.5"
       />
       
         <select
