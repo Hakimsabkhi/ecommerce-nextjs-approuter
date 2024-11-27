@@ -3,10 +3,11 @@ import React, { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { toast } from "react-toastify";
 import DeletePopup from "../Popup/DeletePopup";
-import { FaSpinner } from "react-icons/fa";
+import { FaSpinner, FaTrashAlt, FaRegEye} from "react-icons/fa";
 import Pagination from "../Pagination";
 import { useRouter } from "next/navigation";
 import { items } from "@/assets/data";
+
 
 type User = {
   _id: string;
@@ -341,22 +342,22 @@ const ListOrders: React.FC = () => {
       </div>
     </div>
     
-      <table className="table-auto w-full">
+      <table className="w-full rounded overflow-hidden table-fixed ">
         <thead>
           <tr className="bg-gray-800">
-            <th className="px-4 py-2">REF</th>
-            <th className="px-4 py-2">Customer Name</th>
-            <th className="px-4 py-2">Total</th>
-            <th className="px-4 py-2">Delivery Method</th>
-            <th className="px-4 py-2">Payment Method</th>
-            <th className="px-4 py-2">Date</th>
-            <th className="px-4 text-center py-2">Action</th>
+            <th className="px-4 py-2 w-[12%]">REF</th>
+            <th className="px-4 py-2 w-[13%]">Customer Name</th>
+            <th className="px-4 py-2 w-[10%]">Total</th>
+            
+            
+            <th className="px-4 py-2 w-[15%]">Date</th>
+            <th className="px-4 text-center py-2 w-[50%]">Action</th>
           </tr>
         </thead>
         {loading ? (
             <tbody>
               <tr>
-                <td colSpan={7}>
+                <td colSpan={5}>
                   <div className="flex justify-center items-center h-full w-full py-6">
                     <FaSpinner className="animate-spin text-[30px]" />
                   </div>
@@ -366,7 +367,7 @@ const ListOrders: React.FC = () => {
           ) : filteredOrders.length === 0 ? (
             <tbody>
               <tr>
-                <td colSpan={7}>
+                <td colSpan={5}>
                   <div className="text-center py-6 text-gray-600 w-full">
                     <p>Aucune commande trouvée.</p>
                   </div>
@@ -377,11 +378,9 @@ const ListOrders: React.FC = () => {
         <tbody>
           {currentOrders.map((item) => (
             <tr key={item._id} className="bg-white text-black whitespace-nowrap">
-              <td className="border px-4 py-2 uppercase ">{item.ref}</td>
+              <td className="border px-4 py-2 uppercase ">{item.ref.slice(0,10)}...</td>
               <td className="border px-4 py-2 uppercase">{item.user.username}</td>
-              <td className="border px-4 py-2 text-start">{item.total.toFixed(3)} TND</td>
-              <td className="border px-4 py-2 uppercase">{item.deliveryMethod}</td>
-              <td className="border px-4 py-2 uppercase">{item.paymentMethod}</td>
+              <td className="border px-4 py-2 text-start">{item.total.toFixed(2)} TND</td>
               <td className="border px-4 py-2 ">{new Date(item.createdAt).toLocaleDateString('en-GB')} - {new Date(item.createdAt).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}</td>
               <td className="border px-4 py-2">
                 <div className="flex items-center justify-center gap-2">
@@ -396,20 +395,20 @@ const ListOrders: React.FC = () => {
                       updateOrderStatus(item._id, e.target.value)
                     }
                   >
-                    <option value="Processing">En cours de traitement</option>
+                    <option value="Processing">En cours</option>
                     <option value="Pack">Expédiée</option>
                     <option value="Deliver">Livrée</option>
                     <option value="Cancelled">Annulée</option>
                     <option value="Refunded">Remboursée</option>
                   </select>
                   <Link href={`/admin/orderlist/${item.ref}`}>
-                    <button className="bg-gray-800 text-white w-28 h-10 hover:bg-gray-600 rounded-md uppercase">
-                      View
+                    <button className="bg-gray-800 text-white mt-1.5 pl-3 w-10 h-10 hover:bg-gray-600 rounded-md justify-center">
+                    <FaRegEye />
                     </button>
                   </Link>
                   <Link href={`/admin/orderlist/editorder/${item.ref}`}>
-                    <button className="bg-gray-800 text-white w-28 h-10 hover:bg-gray-600 rounded-md uppercase">
-                      Edite
+                    <button className="bg-gray-800 text-white px-4 h-10 hover:bg-gray-600 rounded-md uppercase">
+                      Edit
                     </button>
                   </Link>
                   <select
@@ -434,8 +433,8 @@ const ListOrders: React.FC = () => {
                     </option>
                   </select>
                  {item.statusinvoice===false ?( <Link href={`/admin/Bondelivraison/${item.ref}`}>
-                    <button className="bg-gray-800 text-white w-40 h-10 hover:bg-gray-600 rounded-md uppercase">
-                      VOIR INVOICE
+                    <button className="bg-gray-800 text-white px-4 h-10 hover:bg-gray-600 rounded-md uppercase">
+                    INVOICE
                     </button>
                   </Link>):(
                   <button type="button" onClick={()=>handleinvoice(item._id)}className="bg-gray-800 text-white w-32 h-10 hover:bg-gray-600 rounded-md uppercase">
@@ -443,10 +442,10 @@ const ListOrders: React.FC = () => {
                     </button>)}
                   <button
                   onClick={()=>handleDeleteClick(item)}
-                    className="bg-gray-800 text-white w-28 h-10 hover:bg-gray-600 rounded-md"
+                    className="bg-gray-800 text-white pl-3 w-10 h-10 hover:bg-gray-600 rounded-md"
                     disabled={loadingOrderId === item._id}
                   >
-                    {loadingOrderId === item._id ? "Processing..." : "DELETE"}
+                    {loadingOrderId === item._id ? "Processing..." : <FaTrashAlt />}
                   </button>
                   {isPopupOpen &&     < DeletePopup  handleClosePopup={handleClosePopup} Delete={DeleteOrder}  id={selectedOrder.id} // Pass selected user's id
                     name={selectedOrder.name} />}      

@@ -220,22 +220,22 @@ const Listinvoice: React.FC = () => {
     }}
   />
       </div>
-      <table className="table-auto w-full mt-4">
+      <table className="w-full rounded overflow-hidden table-fixed ">
         <thead>
           <tr className="bg-gray-800">
-            <th className="px-4 py-2">REF</th>
-            <th className="px-4 py-2">Customer Name</th>
-            <th className="px-4 py-2">Total</th>
+            <th className="px-4 py-2 w-[15%]">REF</th>
+            <th className="px-4 py-2 w-[15%]">Customer Name</th>
+            <th className="px-4 py-2 w-[10%]">Total</th>
 
-            <th className="px-4 py-2">Payment Method</th>
-            <th className="px-4 py-2">Date</th>
-            <th className="px-4 text-center py-2">Action</th>
+            <th className="px-4 py-2 w-[15%]">Payment Method</th>
+            <th className="px-4 py-2 w-[15%]">Date</th>
+            <th className="px-4 text-center py-2 w-[30%]">Action</th>
           </tr>
         </thead>
         {loading ? (
           <tbody>
             <tr>
-              <td colSpan={5}>
+              <td colSpan={6}>
                 <div className="flex justify-center items-center h-full w-full py-6">
                   <FaSpinner className="animate-spin text-[30px]" />
                 </div>
@@ -245,7 +245,7 @@ const Listinvoice: React.FC = () => {
         ) : filteredinvoice.length === 0 ? (
           <tbody>
             <tr>
-              <td colSpan={5}>
+              <td colSpan={6}>
                 <div className="text-center py-6 text-gray-600 w-full">
                   <p>Aucune categorie trouvée.</p>
                 </div>
