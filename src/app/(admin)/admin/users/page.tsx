@@ -11,10 +11,14 @@ interface User {
   email: string;
   role: string;
 }
-
+interface role {
+  _id: string;
+  name: string;
+}
 const AdminDashboard = () => {
   const { data: session, status } = useSession();
   const [users, setUsers] = useState<User[]>([]);
+  const [roles, setRoles] = useState<role[]>([]);
   const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
   const [dropdownOpen, setDropdownOpen] = useState<string | null>(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -24,9 +28,9 @@ const AdminDashboard = () => {
   const [selectedUser, setSelectedUser] = useState({ id: "", email: "" });
   const [loading, setLoading] = useState(true);
 
-
   useEffect(() => {
     fetchUsers();
+    fetchrole();
   }, []);
 
   useEffect(() => {
@@ -47,6 +51,12 @@ const AdminDashboard = () => {
         (selectedRole === "" || user.role === selectedRole)
     );
     setFilteredUsers(filtered);
+  };
+
+  const fetchrole = async () => {
+    const res = await fetch(`/api/role/getrole`);
+    const data = await res.json();
+    setRoles(data);
   };
 
   const handleDeleteClick = (user: User) => {
@@ -112,17 +122,22 @@ const AdminDashboard = () => {
     <div className="container mx-auto p-8">
       <h1 className="text-4xl font-bold mb-8 text-center">Admin Dashboard</h1>
       <div className="flex justify-end">
-        <Link href={"/admin/users/role"} className="bg-gray-800 hover:bg-gray-600 rounded-md w-1/5 p-2 text-white flex justify-center items-center mb-4">ROLE</Link>
-        </div>
+        <Link
+          href={"/admin/users/role"}
+          className="bg-gray-800 hover:bg-gray-600 rounded-md w-1/5 p-2 text-white flex justify-center items-center mb-4"
+        >
+          ROLE
+        </Link>
+      </div>
       <div className="flex justify-between items-center pb-4">
-      <input
-        type="text"
-        placeholder="Search users"
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-[30%] block p-2.5"
-      />
-      
+        <input
+          type="text"
+          placeholder="Search users"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-[30%] block p-2.5"
+        />
+
         <select
           name="Role"
           value={selectedRole}
@@ -131,27 +146,47 @@ const AdminDashboard = () => {
           required
         >
           <option value="">All</option>
-          <option value="Consulter">Consulter</option>
-          {session?.user?.role === "SuperAdmin" && (
-            <option value="Admin">Admin</option>
+          {roles.map((role, index) =>
+            session?.user?.role === "SuperAdmin" ? (
+              <option key={index} value={role.name}>
+                {role.name}
+              </option>
+            ) : (
+              role.name !== "Admin" && (
+                <option key={index} value={role.name}>
+                  {role.name}
+                </option>
+              )
+            )
           )}
-          <option value="Visiteur">Visiteur</option>
         </select>
       </div>
       <div className="relative shadow-lg rounded-lg">
         <table className="w-full text-sm text-left rtl:text-right">
           <thead className="text-xl uppercase">
             <tr className="bg-gray-800">
-              <th scope="col" className="px-6 py-3 w-1/3">Email</th>
-              <th scope="col" className="px-6 py-3 w-1/3 text-center">Role</th>
-              <th scope="col" className="px-6 py-3 w-1/3 text-center">Actions</th>
+              <th scope="col" className="px-6 py-3 w-1/3">
+                Email
+              </th>
+              <th scope="col" className="px-6 py-3 w-1/3 text-center">
+                Role
+              </th>
+              <th scope="col" className="px-6 py-3 w-1/3 text-center">
+                Actions
+              </th>
             </tr>
           </thead>
-          
+
           <tbody>
             {filteredUsers.map((user) => (
-              <tr key={user._id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                <th scope="row" className="px-6 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+              <tr
+                key={user._id}
+                className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+              >
+                <th
+                  scope="row"
+                  className="px-6 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                >
                   {user.email}
                 </th>
                 <td className="px-6 py-2 text-center">
@@ -159,14 +194,24 @@ const AdminDashboard = () => {
                     <select
                       className="w-[50%] text-center border-2 p-2"
                       value={user.role}
-                      onChange={(e) => handleChangeRole(user._id, e.target.value)}
+                      onChange={(e) =>
+                        handleChangeRole(user._id, e.target.value)
+                      }
                       disabled={loadingUserId === user._id}
                     >
-                      <option value="Consulter">Consulter</option>
-                      {session?.user?.role === "SuperAdmin" && (
-                        <option value="Admin">Admin</option>
+                      {roles.map((role, index) =>
+                        session?.user?.role === "SuperAdmin" ? (
+                          <option key={index} value={role.name}>
+                            {role.name}
+                          </option>
+                        ) : (
+                          role.name !== "Admin" && (
+                            <option key={index} value={role.name}>
+                              {role.name}
+                            </option>
+                          )
+                        )
                       )}
-                      <option value="Visiteur">Visiteur</option>
                     </select>
                   </div>
                 </td>
