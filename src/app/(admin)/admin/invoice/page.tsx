@@ -163,10 +163,11 @@ const Listinvoice: React.FC = () => {
   }
 
   return (
-    <div className="mx-auto w-[85%] py-8 flex flex-col gap-8">
-      <div className="flex items-center justify-between">
+    <div className="mx-auto w-[90%] py-8 flex flex-col gap-8">
+      <div className="flex justify-between">
         <p className="text-3xl font-bold">ALL invoice</p>
       </div>
+      <div className="flex justify-between">
       <input
         type="text"
         placeholder="Search invoice"
@@ -205,37 +206,39 @@ const Listinvoice: React.FC = () => {
         >
           Par Jour
         </button>
-        <input
-    type={timeframe === "year" ? "number" : timeframe === "month" ? "month" : "date"}
-    className="border rounded p-2 ml-4 w-44"
-    value={timeframe === "year" ? selectedDate.split("-")[0] : timeframe === "month" ? selectedDate.slice(0, 7) : selectedDate}
-    onChange={(e) => {
-      if (timeframe === "year") {
-        setSelectedDate(`${e.target.value}-01-01`);
-      } else if (timeframe === "month") {
-        setSelectedDate(e.target.value);
-      } else {
-        setSelectedDate(e.target.value);
-      }
-    }}
-  />
+                  <input
+              type={timeframe === "year" ? "number" : timeframe === "month" ? "month" : "date"}
+              className="border rounded p-2 ml-4 w-44"
+              value={timeframe === "year" ? selectedDate.split("-")[0] : timeframe === "month" ? selectedDate.slice(0, 7) : selectedDate}
+              onChange={(e) => {
+                if (timeframe === "year") {
+                  setSelectedDate(`${e.target.value}-01-01`);
+                } else if (timeframe === "month") {
+                  setSelectedDate(e.target.value);
+                } else {
+                  setSelectedDate(e.target.value);
+                }
+              }}
+            />
+        </div>
       </div>
-      <table className="table-auto w-full mt-4">
+      <div className='h-96 p-1'>
+      <table className="w-full rounded overflow-hidden table-fixed ">
         <thead>
           <tr className="bg-gray-800">
-            <th className="px-4 py-2">REF</th>
-            <th className="px-4 py-2">Customer Name</th>
-            <th className="px-4 py-2">Total</th>
+            <th className="px-4 py-3 w-[15%]">REF</th>
+            <th className="px-4 py-3 w-[15%]">Customer Name</th>
+            <th className="px-4 py-3 w-[10%]">Total</th>
 
-            <th className="px-4 py-2">Payment Method</th>
-            <th className="px-4 py-2">Date</th>
-            <th className="px-4 text-center py-2">Action</th>
+            <th className="px-4 py-3 w-[15%]">Payment Method</th>
+            <th className="px-4 py-3 w-[15%]">Date</th>
+            <th className="px-4 text-center py-3 w-[30%]">Action</th>
           </tr>
         </thead>
         {loading ? (
           <tbody>
             <tr>
-              <td colSpan={5}>
+              <td colSpan={6}>
                 <div className="flex justify-center items-center h-full w-full py-6">
                   <FaSpinner className="animate-spin text-[30px]" />
                 </div>
@@ -245,7 +248,7 @@ const Listinvoice: React.FC = () => {
         ) : filteredinvoice.length === 0 ? (
           <tbody>
             <tr>
-              <td colSpan={5}>
+              <td colSpan={6}>
                 <div className="text-center py-6 text-gray-600 w-full">
                   <p>Aucune categorie trouvée.</p>
                 </div>
@@ -318,7 +321,7 @@ const Listinvoice: React.FC = () => {
             ))}
           </tbody>
         )}
-      </table>
+      </table></div>
       <div className="flex justify-center mt-4">
         <Pagination
           currentPage={currentPage}

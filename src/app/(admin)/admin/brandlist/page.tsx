@@ -126,7 +126,8 @@ const AddedBrands: React.FC = () => {
         className='mt-4 p-2 border border-gray-300 rounded'
       />
 
-      <table className="w-full rounded overflow-hidden table-fixed ">
+      <div className='h-96'>
+      <table className="w-full  rounded overflow-hidden table-fixed ">
         <thead>
           <tr className='bg-gray-800'>
             <th className="px-4 text-left border-r-white py-3 w-[20px]">Icon</th>
@@ -196,9 +197,9 @@ const AddedBrands: React.FC = () => {
             </tr>
           ))}
         </tbody>)}
-      </table>
+      </table> </div>
 
-      <div className='flex justify-center mt-4'>
+      <div className=''>
         <Pagination
           currentPage={currentPage}
           totalPages={totalPages}

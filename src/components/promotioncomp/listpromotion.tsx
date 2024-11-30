@@ -114,23 +114,23 @@ const ListPromotion: React.FC = () => {
 
   return (
     <div className="mx-auto w-[90%] py-8 flex flex-col gap-8">
-      <div className="flex items-center justify-between">
-        <p className="text-3xl font-bold">ALL Products Promotion</p>
-        <Link href="/admin/promotionlist/banner">
-          <button className="bg-gray-800 font-bold hover:bg-gray-600 text-white rounded-lg w-[200px] h-10 uppercase">
-            <p>Banner promotion</p>
-          </button>
-        </Link>
-      </div>
-      <input
-        type="text"
-        placeholder="Search products"
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        className="mt-4 p-2 border border-gray-300 rounded"
-      />
-      <div>
-        <div className="flex justify-end items-center  ">
+        <div className="flex justify-between">
+          <p className="text-3xl font-bold">ALL Products Promotion</p>
+          <Link href="/admin/promotionlist/banner">
+            <button className="bg-gray-800 font-bold hover:bg-gray-600 text-white rounded-lg w-[200px] h-10 uppercase">
+              <p>Banner promotion</p>
+            </button>
+          </Link>
+        </div>
+      
+        <div className="flex justify-between items-center  ">
+          <input
+          type="text"
+          placeholder="Search products"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="mt-4 p-2 border border-gray-300 rounded"
+          />
           <select
             name="category"
             value={selectedCategory}
@@ -146,15 +146,16 @@ const ListPromotion: React.FC = () => {
             ))}
           </select>
         </div>
-      </div>
-      <table className="table-auto w-full mt-4">
+      
+      <div className='h-96'>
+      <table className="w-full rounded overflow-hidden table-fixed ">
         <thead>
           <tr className="bg-gray-800">
-            <th className="px-4 py-2 w-1/5">REF</th>
-            <th className="px-4 py-2 w-1/5">Name</th>
-            <th className="px-4 py-2 w-1/5">ImageURL</th>
-            <th className="px-4 py-2 w-1/5">Created By</th>
-            <th className="px-4 text-center py-2 w-1/5">Action</th>
+            <th className="px-4 py-3 w-1/5">REF</th>
+            <th className="px-4 py-3 w-1/5">Name</th>
+            <th className="px-4 py-3 w-1/5">ImageURL</th>
+            <th className="px-4 py-3 w-1/5">Created By</th>
+            <th className="px-4 text-center py-3 w-1/5">Action</th>
           </tr>
         </thead>
         {loading ? (
@@ -215,7 +216,7 @@ const ListPromotion: React.FC = () => {
             </tr>
           ))}
         </tbody>)}
-      </table>
+      </table></div>
       <div className="flex justify-center mt-4">
         <Pagination
           currentPage={currentPage}
