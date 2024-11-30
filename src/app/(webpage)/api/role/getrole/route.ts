@@ -1,23 +1,15 @@
-export const dynamic = 'force-dynamic'; 
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import connectToDatabase from '@/lib/db';
 import Role from '@/models/Role';
-import User from '@/models/User';
 
-
-
-export async function GET(req: NextRequest) {
+export async function GET() {
+  await connectToDatabase();
   try {
-    await connectToDatabase(); // Ensure the database connection is established
-    await User.find({})
-    // Fetch all role but only return the name and imageUrl fields
-    const role = await Role.find({}).populate('user','_id username '); // Only select the 'name' and 'imageUrl' fields
-
-    // Return the fetched role names and image URLs
-    return NextResponse.json(role, { status: 200 });
-  } catch (error) {
-    console.error('Error fetching Brand:', error);
-    return NextResponse.json({ error: 'Error fetching data' }, { status: 500 });
+    const roles = await Role.find({ name: { $nin: ['Admin', 'SuperAdmin'] }}, { name: 1, access: 1 }).lean();
+    return NextResponse.json({ roles });
+  } catch (err) {
+    return NextResponse.json({ error: 'Failed to fetch roles' }, { status: 500 });
   }
 }
-  
+
+

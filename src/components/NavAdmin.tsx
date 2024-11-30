@@ -125,6 +125,16 @@ const NavAdmin = () => {
                   Revenue
                 </p>
               </Link>
+              <Link href="/admin/users/role">
+                <p
+                  onClick={() => handleClick('role')}
+                  className={`text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium cursor-pointer ${
+                    activeLink === 'role' ? 'bg-gray-700' : ''
+                  }`}
+                >
+                  Revenue
+                </p>
+              </Link>
             </div>
           </div>
         </div>
