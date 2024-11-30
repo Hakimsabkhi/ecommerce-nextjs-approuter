@@ -21,7 +21,8 @@ export async function POST(req: NextRequest) {
     // Handle form data
     const formData = await req.json();
     const newRole = formData.get('newRole') as number | null;
-   console.log("aezez",newRole)
+   console.log("testrole",newRole)
+
 
     return NextResponse.json(/* role */ { status: 200 });
 
