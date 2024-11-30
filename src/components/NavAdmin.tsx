@@ -132,7 +132,7 @@ const NavAdmin = () => {
                     activeLink === 'role' ? 'bg-gray-700' : ''
                   }`}
                 >
-                  Revenue
+                  Role
                 </p>
               </Link>
             </div>

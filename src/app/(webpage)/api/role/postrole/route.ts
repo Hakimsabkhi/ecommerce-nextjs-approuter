@@ -19,12 +19,16 @@ export async function POST(req: NextRequest) {
 
   try {
     // Handle form data
-    const formData = await req.json();
-    const newRole = formData.get('newRole') as number | null;
-   console.log("testrole",newRole)
+    const { newRole } = await req.json();
+    if (!newRole) {
+      return NextResponse.json({ error: 'Role name is required' }, { status: 400 });
+    }
+
+    const role = new Role({ name: newRole, access: {} });
+    await role.save();
 
 
-    return NextResponse.json(/* role */ { status: 200 });
+    return NextResponse.json( role , { status: 200 });
 
   } catch (error) {
     return NextResponse.json({ message: 'Error creating Role' }, { status: 500 });
