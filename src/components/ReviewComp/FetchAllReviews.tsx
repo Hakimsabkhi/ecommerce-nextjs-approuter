@@ -75,24 +75,26 @@ const ListerReview: React.FC<AddedProductsProps> = ({ products }) => {
   return (
     <div className="mx-auto w-[90%] py-8 flex flex-col gap-8">
       <div className="flex items-center justify-between">
-        <p className="text-3xl font-bold uppercase"> Product Reviews</p>
-    
+        <p className="text-3xl font-bold "> Product Reviews</p>
       </div>
-      <input
-        type="text"
-        placeholder="Search products"
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        className="mt-4 p-2 border border-gray-300 rounded"
-      />
-      <table className="w-full rounded overflow-hidden table-fixed ">
+      <div className="w-full">
+        <input
+          type="text"
+          placeholder="Search products"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="mt-4 p-2 border border-gray-300 rounded"
+        />
+      </div>
+      <div className='h-96 pt-1'>
+      <table className="w-full rounded overflow-hidden table-fixed">
         <thead>
           <tr className="bg-gray-800 ">
-            <th className="px-4 py-2 text-center">REF</th>
-            <th className="px-4 py-2 text-center">Name</th>
-            <th className="px-4 py-2 text-center">Number Review</th>
-            <th className="px-4 py-2 text-center ">ImageURL</th>
-            <th className="px-4 py-2  text-center">
+            <th className="px-4 py-3">REF</th>
+            <th className="px-4 py-3">Name</th>
+            <th className="px-4 py-3">Number Review</th>
+            <th className="px-4 py-3 ">ImageURL</th>
+            <th className="px-4 py-3">
               Action
             </th>
           </tr>
@@ -143,7 +145,7 @@ const ListerReview: React.FC<AddedProductsProps> = ({ products }) => {
             </tr>
           ))}
         </tbody> )}
-      </table>
+      </table></div>
       <div className="flex justify-center mt-4">
        
       <Pagination

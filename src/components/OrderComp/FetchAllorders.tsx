@@ -3,11 +3,10 @@ import React, { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { toast } from "react-toastify";
 import DeletePopup from "../Popup/DeletePopup";
-import { FaSpinner, FaTrashAlt, FaRegEye} from "react-icons/fa";
+import { FaSpinner, FaTrashAlt, FaRegEye } from "react-icons/fa";
 import Pagination from "../Pagination";
 import { useRouter } from "next/navigation";
 import { items } from "@/assets/data";
-
 
 type User = {
   _id: string;
@@ -29,15 +28,15 @@ interface Order {
   ref: string;
   address: Address;
   paymentMethod: string;
-  deliveryMethod:string;
-  createdAt:string;
+  deliveryMethod: string;
+  createdAt: string;
   total: number;
   orderStatus: string;
-  statusinvoice:boolean;
+  statusinvoice: boolean;
 }
 
 const ListOrders: React.FC = () => {
-  const router=useRouter();
+  const router = useRouter();
   const [orders, setOrders] = useState<Order[]>([]); // All orders
   const [filteredOrders, setFilteredOrders] = useState<Order[]>([]); // Filtered orders
   const [error, setError] = useState<string | null>(null);
@@ -48,7 +47,7 @@ const ListOrders: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [selectedOrder, setSelectedOrder] = useState({ id: "", name: "" });
   const [loadingOrderId, setLoadingOrderId] = useState<string | null>(null);
-  const [status, setStatus] = useState(''); // Initial value
+  const [status, setStatus] = useState(""); // Initial value
   const [timeframe, setTimeframe] = useState<"year" | "month" | "day">("month");
   const [selectedDate, setSelectedDate] = useState<string>("");
 
@@ -56,24 +55,22 @@ const ListOrders: React.FC = () => {
     setStatus(e.target.value);
     console.log(e.target.value); // Do something with the selected value (e.g., filter data)
   };
-  const handleDeleteClick = (order:Order) => {
+  const handleDeleteClick = (order: Order) => {
+    setLoadingOrderId(order._id);
 
-    setLoadingOrderId(order._id); 
-    
     setSelectedOrder({ id: order._id, name: order.ref });
     setIsPopupOpen(true);
   };
 
   const handleClosePopup = () => {
     setIsPopupOpen(false);
-    setLoadingOrderId(null); 
+    setLoadingOrderId(null);
   };
-  const handleinvoice=async(order:string)=>{
+  const handleinvoice = async (order: string) => {
     try {
-     
       const response = await fetch(`/api/invoice/postinvoice`, {
         method: "POST",
-       
+
         body: JSON.stringify(order),
       });
 
@@ -82,39 +79,32 @@ const ListOrders: React.FC = () => {
       }
 
       const data = await response.json();
-      console.log(data)
-      router.push(`/admin/invoice/${data.ref._id}`)
-
+      console.log(data);
+      router.push(`/admin/invoice/${data.ref._id}`);
     } catch (error) {
       toast.error("Failed to create invoice");
-    } 
-  }
+    }
+  };
   const DeleteOrder = async (id: string) => {
-        
     try {
-        const response = await fetch(`/api/order/deleteorderbyid/${id}`, {
-            method: 'DELETE',
-            
-        });
+      const response = await fetch(`/api/order/deleteorderbyid/${id}`, {
+        method: "DELETE",
+      });
 
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        handleClosePopup();
-        toast.success("order delete successfully!" );
-       
-       
-        await getOrders();
-
-    } catch (err: any) {
-        
-        toast.error(`[order_DELETE] ${err.message}` );
-    }finally{
-        setLoadingOrderId(null); 
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
-};
+      handleClosePopup();
+      toast.success("order delete successfully!");
+
+      await getOrders();
+    } catch (err: any) {
+      toast.error(`[order_DELETE] ${err.message}`);
+    } finally {
+      setLoadingOrderId(null);
+    }
+  };
   const getOrders = useCallback(async () => {
-  
     try {
       const response = await fetch("/api/order/getallorder", {
         method: "GET",
@@ -133,10 +123,7 @@ const ListOrders: React.FC = () => {
       setLoading(false);
     }
   }, []);
-  const updatestatusinvoice = async (
-    orderId: string,
-    newStatus: string
-  ) => {
+  const updatestatusinvoice = async (orderId: string, newStatus: string) => {
     try {
       const updateFormData = new FormData();
       updateFormData.append("vadmin", newStatus);
@@ -154,7 +141,9 @@ const ListOrders: React.FC = () => {
       }
       setOrders((prevData) =>
         prevData.map((item) =>
-          item._id === orderId ? { ...item, statusinvoice: JSON.parse(newStatus) } : item
+          item._id === orderId
+            ? { ...item, statusinvoice: JSON.parse(newStatus) }
+            : item
         )
       );
       const data = await response.json();
@@ -201,14 +190,14 @@ const ListOrders: React.FC = () => {
       const matchesSearch =
         order.ref?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         order.user?.username.toLowerCase().includes(searchTerm.toLowerCase());
-  
-      const matchesStatus = status === '' || order.orderStatus === status;
-  
+
+      const matchesStatus = status === "" || order.orderStatus === status;
+
       // Apply date filtering based on the selected timeframe
       const matchesDateFilter = (date: string) => {
         const orderDate = new Date(order.createdAt);
         const selectedDateObj = new Date(date);
-  
+
         if (timeframe === "year") {
           return orderDate.getFullYear() === selectedDateObj.getFullYear();
         } else if (timeframe === "month") {
@@ -225,25 +214,29 @@ const ListOrders: React.FC = () => {
         }
         return true; // No filter if no timeframe is selected
       };
-  
+
       return matchesSearch && matchesStatus && matchesDateFilter(selectedDate);
     });
-  
+
     setFilteredOrders(filtered);
     setCurrentPage(1); // Reset to the first page
   }, [searchTerm, status, orders, timeframe, selectedDate]);
-  
+
   useEffect(() => {
     // Set default selectedDate when the component is mounted
     const currentDate = new Date();
     if (timeframe === "year") {
       setSelectedDate(`${currentDate.getFullYear()}-01-01`);
     } else if (timeframe === "month") {
-      setSelectedDate(`${currentDate.getFullYear()}-${(currentDate.getMonth() + 1).toString().padStart(2, '0')}-01`);
+      setSelectedDate(
+        `${currentDate.getFullYear()}-${(currentDate.getMonth() + 1)
+          .toString()
+          .padStart(2, "0")}-01`
+      );
     } else if (timeframe === "day") {
-      setSelectedDate(currentDate.toISOString().split('T')[0]); // Current date in YYYY-MM-DD format
+      setSelectedDate(currentDate.toISOString().split("T")[0]); // Current date in YYYY-MM-DD format
     }
-  }, [timeframe]); 
+  }, [timeframe]);
   const indexOfLastOrder = currentPage * ordersPerPage;
   const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
   const currentOrders = filteredOrders.slice(
@@ -254,107 +247,121 @@ const ListOrders: React.FC = () => {
 
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
-  
   if (error) {
     return <div>Error: {error}</div>;
   }
 
   return (
-    <div className="mx-auto w-[85%] py-8 flex flex-col gap-8">
-      <div className="flex items-center justify-between">
+    <div className="mx-auto w-[90%] py-8 flex flex-col gap-8">
+      <div className="flex justify-between">
         <p className="text-3xl font-bold">ALL Orders</p>
+        <Link
+          href={"orderlist/addorder"}
+          className="bg-gray-800 text-white w-1/4 p-2 hover:bg-gray-400 rounded-md flex items-center justify-center"
+        >
+          <button type="button" className="uppercase ">
+            create order
+          </button>
+        </Link>
       </div>
-      <div className="flex justify-end">
-        <Link href={"orderlist/addorder"} className="bg-gray-800 text-white w-1/3 p-2 hover:bg-gray-400 rounded-md flex items-center justify-center">
-      <button type="button" className="uppercase ">create order</button>
-      </Link>
-      </div>
-      <input
-        type="text"
-        placeholder="Search orders"
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        className="p-2 border border-gray-300 rounded w-full"
-      />
-      <div className="flex items-center justify-between">
-
-      <div className="w-1/2 ">
-      <select
-        name="category"
-        value={status}
-        onChange={handleChange}
-        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-1/2 block p-2.5"
-        required
-      >
-        <option value="">All</option>
-        <option value="Processing">En cours de traitement</option>
-        <option value="Pack">Expédiée</option>
-        <option value="Deliver">Livrée</option>
-        <option value="Cancelled">Annulée</option>
-        <option value="Refunded">Remboursée</option>
-      </select>
-    </div>
-    <div className="flex justify-end ">
-        <button
-          onClick={() => setTimeframe("year")}
-          className={`p-2 rounded-l ${
-            timeframe === "year"
-              ? "bg-gray-800 text-white"
-              : "bg-gray-300 text-white"
-          }`}
-        >
-          Par Année
-        </button>
-        <button
-          onClick={() => setTimeframe("month")}
-          className={`p-2 ${
-            timeframe === "month"
-              ? "bg-gray-800 text-white"
-              : "bg-gray-300 text-white"
-          }`}
-        >
-          Par Mois
-        </button>
-        <button
-          onClick={() => setTimeframe("day")}
-          className={`p-2 rounded-r ${
-            timeframe === "day"
-              ? "bg-gray-800 text-white"
-              : "bg-gray-300 text-white"
-          }`}
-        >
-          Par Jour
-        </button>
+      
+      
+      <div className="flex justify-between">
         <input
-    type={timeframe === "year" ? "number" : timeframe === "month" ? "month" : "date"}
-    className="border rounded p-2 ml-4 w-44"
-    value={timeframe === "year" ? selectedDate.split("-")[0] : timeframe === "month" ? selectedDate.slice(0, 7) : selectedDate}
-    onChange={(e) => {
-      if (timeframe === "year") {
-        setSelectedDate(`${e.target.value}-01-01`);
-      } else if (timeframe === "month") {
-        setSelectedDate(e.target.value);
-      } else {
-        setSelectedDate(e.target.value);
-      }
-    }}
-  />
+          type="text"
+          placeholder="Search orders"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="p-2 border border-gray-300 rounded "
+        />
+        
+          <select
+            name="category"
+            value={status}
+            onChange={handleChange}
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block p-2.5"
+            required
+          >
+            <option value="">All</option>
+            <option value="Processing">En cours de traitement</option>
+            <option value="Pack">Expédiée</option>
+            <option value="Deliver">Livrée</option>
+            <option value="Cancelled">Annulée</option>
+            <option value="Refunded">Remboursée</option>
+          </select>
+        
+        <div>
+          <button
+            onClick={() => setTimeframe("year")}
+            className={`p-2 rounded-l ${
+              timeframe === "year"
+                ? "bg-gray-800 text-white"
+                : "bg-gray-300 text-white"
+            }`}
+          >
+            Par Année
+          </button>
+          <button
+            onClick={() => setTimeframe("month")}
+            className={`p-2 ${
+              timeframe === "month"
+                ? "bg-gray-800 text-white"
+                : "bg-gray-300 text-white"
+            }`}
+          >
+            Par Mois
+          </button>
+          <button
+            onClick={() => setTimeframe("day")}
+            className={`p-2 rounded-r ${
+              timeframe === "day"
+                ? "bg-gray-800 text-white"
+                : "bg-gray-300 text-white"
+            }`}
+          >
+            Par Jour
+          </button>
+          <input
+            type={
+              timeframe === "year"
+                ? "number"
+                : timeframe === "month"
+                ? "month"
+                : "date"
+            }
+            className="border rounded p-2 ml-4 w-44"
+            value={
+              timeframe === "year"
+                ? selectedDate.split("-")[0]
+                : timeframe === "month"
+                ? selectedDate.slice(0, 7)
+                : selectedDate
+            }
+            onChange={(e) => {
+              if (timeframe === "year") {
+                setSelectedDate(`${e.target.value}-01-01`);
+              } else if (timeframe === "month") {
+                setSelectedDate(e.target.value);
+              } else {
+                setSelectedDate(e.target.value);
+              }
+            }}
+          />
+        </div>
       </div>
-    </div>
-    
-      <table className="w-full rounded overflow-hidden table-fixed ">
-        <thead>
-          <tr className="bg-gray-800">
-            <th className="px-4 py-2 w-[12%]">REF</th>
-            <th className="px-4 py-2 w-[13%]">Customer Name</th>
-            <th className="px-4 py-2 w-[10%]">Total</th>
-            
-            
-            <th className="px-4 py-2 w-[15%]">Date</th>
-            <th className="px-4 text-center py-2 w-[50%]">Action</th>
-          </tr>
-        </thead>
-        {loading ? (
+      <div className="h-96 pt-3.5">
+        <table className="w-full rounded overflow-hidden table-fixed ">
+          <thead>
+            <tr className="bg-gray-800">
+              <th className="px-4 py-3 w-[12%]">REF</th>
+              <th className="px-4 py-3 w-[13%]">Customer Name</th>
+              <th className="px-4 py-3 w-[10%]">Total</th>
+
+              <th className="px-4 py-3 w-[15%]">Date</th>
+              <th className="px-4 text-center py-3 w-[50%]">Action</th>
+            </tr>
+          </thead>
+          {loading ? (
             <tbody>
               <tr>
                 <td colSpan={5}>
@@ -375,88 +382,118 @@ const ListOrders: React.FC = () => {
               </tr>
             </tbody>
           ) : (
-        <tbody>
-          {currentOrders.map((item) => (
-            <tr key={item._id} className="bg-white text-black whitespace-nowrap">
-              <td className="border px-4 py-2 uppercase ">{item.ref.slice(0,10)}...</td>
-              <td className="border px-4 py-2 uppercase">{item.user.username}</td>
-              <td className="border px-4 py-2 text-start">{item.total.toFixed(2)} TND</td>
-              <td className="border px-4 py-2 ">{new Date(item.createdAt).toLocaleDateString('en-GB')} - {new Date(item.createdAt).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}</td>
-              <td className="border px-4 py-2">
-                <div className="flex items-center justify-center gap-2">
-                  <select
-                    className={`w-50 text-black rounded-md p-2 ${
-                      item.orderStatus === "Processing"
-                        ? "bg-gray-800 text-white"
-                        : "bg-red-700 text-white"
-                    }`}
-                    value={item.orderStatus}
-                    onChange={(e) =>
-                      updateOrderStatus(item._id, e.target.value)
-                    }
-                  >
-                    <option value="Processing">En cours</option>
-                    <option value="Pack">Expédiée</option>
-                    <option value="Deliver">Livrée</option>
-                    <option value="Cancelled">Annulée</option>
-                    <option value="Refunded">Remboursée</option>
-                  </select>
-                  <Link href={`/admin/orderlist/${item.ref}`}>
-                    <button className="bg-gray-800 text-white mt-1.5 pl-3 w-10 h-10 hover:bg-gray-600 rounded-md justify-center">
-                    <FaRegEye />
-                    </button>
-                  </Link>
-                  <Link href={`/admin/orderlist/editorder/${item.ref}`}>
-                    <button className="bg-gray-800 text-white px-4 h-10 hover:bg-gray-600 rounded-md uppercase">
-                      Edit
-                    </button>
-                  </Link>
-                  <select
-                    className={`w-50 text-black rounded-md p-2 ${
-                      item.statusinvoice === false
-                        ? "bg-gray-400 text-white"
-                        : "bg-green-500 text-white"
-                    }`}
-                    value={item.statusinvoice.toString()} 
-                    onChange={(e) =>
-                      updatestatusinvoice(item._id, e.target.value)
-                    }
-                  >
-                    <option value="true" className="text-white uppercase">
-                      approve
-                    </option>
-                    <option
-                       value="false"
-                      className="text-white uppercase"
-                    >
-                      Not approve{" "}
-                    </option>
-                  </select>
-                 {item.statusinvoice===false ?( <Link href={`/admin/Bondelivraison/${item.ref}`}>
-                    <button className="bg-gray-800 text-white px-4 h-10 hover:bg-gray-600 rounded-md uppercase">
-                    INVOICE
-                    </button>
-                  </Link>):(
-                  <button type="button" onClick={()=>handleinvoice(item._id)}className="bg-gray-800 text-white w-32 h-10 hover:bg-gray-600 rounded-md uppercase">
-                      Invoice
-                    </button>)}
-                  <button
-                  onClick={()=>handleDeleteClick(item)}
-                    className="bg-gray-800 text-white pl-3 w-10 h-10 hover:bg-gray-600 rounded-md"
-                    disabled={loadingOrderId === item._id}
-                  >
-                    {loadingOrderId === item._id ? "Processing..." : <FaTrashAlt />}
-                  </button>
-                  {isPopupOpen &&     < DeletePopup  handleClosePopup={handleClosePopup} Delete={DeleteOrder}  id={selectedOrder.id} // Pass selected user's id
-                    name={selectedOrder.name} />}      
-                </div>
-              </td>
-            </tr>
-          ))}
-        </tbody>)}
-      </table>
+            <tbody>
+              {currentOrders.map((item) => (
+                <tr
+                  key={item._id}
+                  className="bg-white text-black whitespace-nowrap"
+                >
+                  <td className="border px-4 py-2 uppercase ">
+                    {item.ref.slice(0, 10)}...
+                  </td>
+                  <td className="border px-4 py-2 uppercase">
+                    {item.user.username}
+                  </td>
+                  <td className="border px-4 py-2 text-start">
+                    {item.total.toFixed(2)} TND
+                  </td>
+                  <td className="border px-4 py-2 ">
+                    {new Date(item.createdAt).toLocaleDateString("en-GB")} -{" "}
+                    {new Date(item.createdAt).toLocaleTimeString("en-GB", {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </td>
+                  <td className="border px-4 py-2">
+                    <div className="flex items-center justify-center gap-2">
+                      <select
+                        className={`w-50 text-black rounded-md p-2 ${
+                          item.orderStatus === "Processing"
+                            ? "bg-gray-800 text-white"
+                            : "bg-red-700 text-white"
+                        }`}
+                        value={item.orderStatus}
+                        onChange={(e) =>
+                          updateOrderStatus(item._id, e.target.value)
+                        }
+                      >
+                        <option value="Processing">En cours</option>
+                        <option value="Pack">Expédiée</option>
+                        <option value="Deliver">Livrée</option>
+                        <option value="Cancelled">Annulée</option>
+                        <option value="Refunded">Remboursée</option>
+                      </select>
+                      <Link href={`/admin/orderlist/${item.ref}`}>
+                        <button className="bg-gray-800 text-white mt-1.5 pl-3 w-10 h-10 hover:bg-gray-600 rounded-md justify-center">
+                          <FaRegEye />
+                        </button>
+                      </Link>
+                      <Link href={`/admin/orderlist/editorder/${item.ref}`}>
+                        <button className="bg-gray-800 text-white px-4 h-10 hover:bg-gray-600 rounded-md uppercase">
+                          Edit
+                        </button>
+                      </Link>
+                      <select
+                        className={`w-50 text-black rounded-md p-2 ${
+                          item.statusinvoice === false
+                            ? "bg-gray-400 text-white"
+                            : "bg-green-500 text-white"
+                        }`}
+                        value={item.statusinvoice.toString()}
+                        onChange={(e) =>
+                          updatestatusinvoice(item._id, e.target.value)
+                        }
+                      >
+                        <option value="true" className="text-white uppercase">
+                          approve
+                        </option>
+                        <option value="false" className="text-white uppercase">
+                          Not approve{" "}
+                        </option>
+                      </select>
+                      {item.statusinvoice === false ? (
+                        <Link href={`/admin/Bondelivraison/${item.ref}`}>
+                          <button className="bg-gray-800 text-white px-4 h-10 hover:bg-gray-600 rounded-md uppercase">
+                            INVOICE
+                          </button>
+                        </Link>
+                      ) : (
+                        <button
+                          type="button"
+                          onClick={() => handleinvoice(item._id)}
+                          className="bg-gray-800 text-white w-32 h-10 hover:bg-gray-600 rounded-md uppercase"
+                        >
+                          Invoice
+                        </button>
+                      )}
+                      <button
+                        onClick={() => handleDeleteClick(item)}
+                        className="bg-gray-800 text-white pl-3 w-10 h-10 hover:bg-gray-600 rounded-md"
+                        disabled={loadingOrderId === item._id}
+                      >
+                        {loadingOrderId === item._id ? (
+                          "Processing..."
+                        ) : (
+                          <FaTrashAlt />
+                        )}
+                      </button>
+                      {isPopupOpen && (
+                        <DeletePopup
+                          handleClosePopup={handleClosePopup}
+                          Delete={DeleteOrder}
+                          id={selectedOrder.id} // Pass selected user's id
+                          name={selectedOrder.name}
+                        />
+                      )}
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          )}
+        </table>
+      </div>
       <div className="flex justify-center mt-4">
-        
         <Pagination
           currentPage={currentPage}
           totalPages={Math.ceil(totalPages)}

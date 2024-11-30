@@ -242,7 +242,6 @@ const AddedProducts: React.FC = () => {
   );
   const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
 
-  
   if (error) {
     return <div>Error: {error}</div>;
   }
@@ -257,15 +256,16 @@ const AddedProducts: React.FC = () => {
           </button>
         </Link>
       </div>
-      <input
-        type="text"
-        placeholder="Search products"
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        className="mt-4 p-2 border border-gray-300 rounded"
-      />
-      <div>
-        <div className="flex justify-end items-center  ">
+
+     
+        <div className="flex justify-between items-center">
+          <input
+            type="text"
+            placeholder="Search products"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="mt-4 p-2 border border-gray-300 rounded"
+          />
           <select
             name="category"
             value={selectedCategory}
@@ -281,19 +281,20 @@ const AddedProducts: React.FC = () => {
             ))}
           </select>
         </div>
-      </div>
-      <table className="w-full rounded overflow-hidden table-fixed ">
-        <thead>
-          <tr className="bg-gray-800">
-            <th className="px-4 py-2 w-[15px]">REF</th>
-            <th className="px-4 py-2 w-[50px]">Name</th>
-            <th className="px-4 py-2 w-[25px]">Quantity</th>
-            <th className="px-4 py-2 w-[25px]">Image</th>
-            <th className="px-4 py-2 w-[50px]">Created By</th>
-            <th className="px-4 text-center py-2 w-[250px]">Action</th>
-          </tr>
-        </thead>
-        {loading ? (
+      
+      <div className="h-96">
+        <table className="w-full rounded overflow-hidden table-fixed ">
+          <thead>
+            <tr className="bg-gray-800">
+              <th className="px-4 py-3 w-[15px]">REF</th>
+              <th className="px-4 py-3 w-[50px]">Name</th>
+              <th className="px-4 py-3 w-[25px]">Quantity</th>
+              <th className="px-4 py-3 w-[25px]">Image</th>
+              <th className="px-4 py-3 w-[50px]">Created By</th>
+              <th className="px-4 text-center py-3 w-[250px]">Action</th>
+            </tr>
+          </thead>
+          {loading ? (
             <tbody>
               <tr>
                 <td colSpan={6}>
@@ -314,126 +315,137 @@ const AddedProducts: React.FC = () => {
               </tr>
             </tbody>
           ) : (
-        <tbody>
-          {currentProducts.map((item) => (
-            <tr key={item._id} className="bg-white text-black">
-              <td className="border px-4 py-2">{item.ref}</td>
-              <td className="border px-4 py-2">{item.name.slice(0,10)}...</td>
-              <td className="border px-4 py-2 text-center">{item.stock}</td>
-              <td className="border px-4 py-2 ">
-                <div className="items-center justify-center flex">
-                  <Image
-                    alt={item.name}
-                    src={item.imageUrl}
-                    width={50}
-                    height={50}
-                  />
-                </div>
-              </td>
-              <td className="border px-4 py-2">{item.user.username}</td>
-              <td className="border px-4 py-2">
-                <div className="flex items-center justify-center gap-2">
-                  <select
-                    className={`w-50 text-black rounded-md p-2 ${
-                      item.vadmin === "not-approve"
-                        ? "bg-gray-400 text-white"
-                        : "bg-green-500 text-white"
-                    }`}
-                    value={item.vadmin}
-                    onChange={(e) =>
-                      updateProductvadmin(item._id, e.target.value)
-                    }
-                  >
-                    <option value="approve" className="text-white uppercase">
-                      approve
-                    </option>
-                    <option
-                      value="not-approve"
-                      className="text-white uppercase"
-                    >
-                      Not approve{" "}
-                    </option>
-                  </select>
-                 {item.stock>0 ?(<select
-                  className={`w-50 text-black rounded-md p-2 ${
-                    item.status === "in-stock"
-                      ? "bg-gray-800 text-white"
-                      : item.status === "out-of-stock"
-                      ? "bg-red-700 text-white"
-                      : "bg-gray-800 text-white" // If none of the conditions match, apply no background color
-                  }`}
-                    value={item.status}
-                    onChange={(e) =>
-                      updateProductStatus(item._id, e.target.value)
-                    }
-                  >
-                    <option value="in-stock" className="text-white">
-                      In stock
-                    </option>
-                    <option value="out-of-stock" className="text-white">
-                      Out of stock
-                    </option>
-                  </select>):(
-                    <div className="w-32 bg-gray-500 text-white rounded-md p-2 ">
-                    <p >Out of stock</p>
+            <tbody>
+              {currentProducts.map((item) => (
+                <tr key={item._id} className="bg-white text-black">
+                  <td className="border px-4 py-2">{item.ref}</td>
+                  <td className="border px-4 py-2">
+                    {item.name.slice(0, 10)}...
+                  </td>
+                  <td className="border px-4 py-2 text-center">{item.stock}</td>
+                  <td className="border px-4 py-2 ">
+                    <div className="items-center justify-center flex">
+                      <Image
+                        alt={item.name}
+                        src={item.imageUrl}
+                        width={50}
+                        height={50}
+                      />
                     </div>
-                  )}
-                  <select
-                    className={`w-50 text-black rounded-md p-2 ${
-                      item.statuspage === "none"
-                        ? "bg-gray-800 text-white"
-                        : "bg-emerald-950 text-white"
-                    }`}
-                    value={item.statuspage || ""}
-                    onChange={(e) =>
-                      updateProductStatusPlace(item._id, e.target.value)
-                    }
-                    disabled={loadingProductId === item._id}
-                  >
-                    <option value="">Select a Place</option>
-                    <option value="home-page">Weekly Best Sellers</option>
-                    <option value="best-collection">Best Collection</option>
-                    <option value="promotion">Promotion</option>
-                  </select>
+                  </td>
+                  <td className="border px-4 py-2">{item.user.username}</td>
+                  <td className="border px-4 py-2">
+                    <div className="flex items-center justify-center gap-2">
+                      <select
+                        className={`w-50 text-black rounded-md p-2 ${
+                          item.vadmin === "not-approve"
+                            ? "bg-gray-400 text-white"
+                            : "bg-green-500 text-white"
+                        }`}
+                        value={item.vadmin}
+                        onChange={(e) =>
+                          updateProductvadmin(item._id, e.target.value)
+                        }
+                      >
+                        <option
+                          value="approve"
+                          className="text-white uppercase"
+                        >
+                          approve
+                        </option>
+                        <option
+                          value="not-approve"
+                          className="text-white uppercase"
+                        >
+                          Not approve{" "}
+                        </option>
+                      </select>
+                      {item.stock > 0 ? (
+                        <select
+                          className={`w-50 text-black rounded-md p-2 ${
+                            item.status === "in-stock"
+                              ? "bg-gray-800 text-white"
+                              : item.status === "out-of-stock"
+                              ? "bg-red-700 text-white"
+                              : "bg-gray-800 text-white" // If none of the conditions match, apply no background color
+                          }`}
+                          value={item.status}
+                          onChange={(e) =>
+                            updateProductStatus(item._id, e.target.value)
+                          }
+                        >
+                          <option value="in-stock" className="text-white">
+                            In stock
+                          </option>
+                          <option value="out-of-stock" className="text-white">
+                            Out of stock
+                          </option>
+                        </select>
+                      ) : (
+                        <div className="w-32 bg-gray-500 text-white rounded-md p-2 ">
+                          <p>Out of stock</p>
+                        </div>
+                      )}
+                      <select
+                        className={`w-50 text-black rounded-md p-2 ${
+                          item.statuspage === "none"
+                            ? "bg-gray-800 text-white"
+                            : "bg-emerald-950 text-white"
+                        }`}
+                        value={item.statuspage || ""}
+                        onChange={(e) =>
+                          updateProductStatusPlace(item._id, e.target.value)
+                        }
+                        disabled={loadingProductId === item._id}
+                      >
+                        <option value="">Select a Place</option>
+                        <option value="home-page">Weekly Best Sellers</option>
+                        <option value="best-collection">Best Collection</option>
+                        <option value="promotion">Promotion</option>
+                      </select>
 
+                      <Link href={`/admin/productlist/${item._id}`}>
+                        <button className="bg-gray-800 text-white w-28 h-10 hover:bg-gray-600 rounded-md uppercase">
+                          Modify
+                        </button>
+                      </Link>
+                      <button
+                        onClick={() => handleDeleteClick(item)}
+                        className="bg-gray-800 text-white pl-3 w-10 h-10 hover:bg-gray-600 rounded-md"
+                        disabled={loadingProductId === item._id}
+                      >
+                        {loadingProductId === item._id ? (
+                          "Processing..."
+                        ) : (
+                          <FaTrashAlt />
+                        )}
+                      </button>
+                      <Link
+                        href={`/${item.vadmin === "approve" ? "" : "admin/"}${
+                          item.category?.slug
+                        }/${item.slug}`}
+                      >
+                        <button className="bg-gray-800 text-white mt-1.5 pl-3 w-10 h-10 hover:bg-gray-600 rounded-md justify-center">
+                          <FaRegEye />
+                        </button>
+                      </Link>
 
-                    
-                  <Link href={`/admin/productlist/${item._id}`}>
-                    <button className="bg-gray-800 text-white w-28 h-10 hover:bg-gray-600 rounded-md uppercase">
-                      Modify
-                    </button>
-                  </Link>
-                  <button
-                    onClick={() => handleDeleteClick(item)}
-                    className="bg-gray-800 text-white pl-3 w-10 h-10 hover:bg-gray-600 rounded-md"
-                    disabled={loadingProductId === item._id}
-                  >
-                    {loadingProductId === item._id ? "Processing..." : <FaTrashAlt />}
-                  </button>
-                  <Link
-                    href={`/${item.vadmin === "approve" ? "" : "admin/"}${
-                      item.category?.slug
-                    }/${item.slug}`}
-                  >
-                    <button className="bg-gray-800 text-white mt-1.5 pl-3 w-10 h-10 hover:bg-gray-600 rounded-md justify-center">
-                    <FaRegEye />
-                    </button>
-                  </Link>
-
-                  {isPopupOpen && (
-                    <DeletePopup
-                      handleClosePopup={handleClosePopup}
-                      Delete={deleteProduct}
-                      id={selectedProduct.id}
-                      name={selectedProduct.name}
-                    />
-                  )}
-                </div>
-              </td>
-            </tr>
-          ))}
-        </tbody>)}
-      </table> 
+                      {isPopupOpen && (
+                        <DeletePopup
+                          handleClosePopup={handleClosePopup}
+                          Delete={deleteProduct}
+                          id={selectedProduct.id}
+                          name={selectedProduct.name}
+                        />
+                      )}
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          )}
+        </table>{" "}
+      </div>
       <div className="flex justify-center mt-4">
         <Pagination
           currentPage={currentPage}

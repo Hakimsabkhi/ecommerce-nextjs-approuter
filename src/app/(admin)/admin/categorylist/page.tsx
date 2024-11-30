@@ -160,6 +160,7 @@ const AddedCategories: React.FC = () => {
         onChange={(e) => setSearchTerm(e.target.value)}
         className="mt-4 p-2 border border-gray-300 rounded"
       />
+      <div className='h-96'>
       <table className="w-full rounded overflow-hidden table-fixed">
         <thead>
           <tr className="bg-gray-800">
@@ -262,7 +263,7 @@ const AddedCategories: React.FC = () => {
             </tr>
           ))}
         </tbody> )}
-      </table>
+      </table> </div>
       <div className="flex justify-center mt-4">
         <Pagination
           currentPage={currentPage}
