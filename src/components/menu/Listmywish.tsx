@@ -7,6 +7,7 @@ import { FaRegTrashAlt } from 'react-icons/fa';
 import { AiOutlineHeart } from 'react-icons/ai';
 import { useDispatch } from 'react-redux';
 import { removeFromWishlist } from '@/store/wishlistSlice';
+import Wishlist from './Wishlist';
 
 interface ListmywishProps {
     data: Product[];
@@ -70,7 +71,8 @@ const Listmywish: React.FC<ListmywishProps> = ({ data }) => {
 
     return (
         <div>
-            <div onClick={toggleListVisibility} className="flex w-[200px] items-center justify-center gap-2 max-lg:w-fit text-white cursor-pointer select-none max-xl:hidden">
+            <div onClick={toggleListVisibility} 
+            className="flex w-[200px] items-center justify-center gap-2 max-lg:w-fit text-white cursor-pointer select-none max-xl:hidden">
                 <div className="relative my-auto mx-2">
                     <AiOutlineHeart size={40} className="text-white" />
                     <span className="w-4 flex justify-center h-4 items-center text-xs rounded-full absolute -top-1 -right-1 text-white bg-secondary">
@@ -84,27 +86,34 @@ const Listmywish: React.FC<ListmywishProps> = ({ data }) => {
             </div>
             {/* Render the wishlist items based on visibility */}
             {isListVisible && (
-                <div ref={listRef} className="absolute flex flex-col px-4 w-[400px] max-md:w-[350px] max-h-64 overflow-y-auto border-[#15335D] border-4 rounded-lg bg-white z-30 right-52">
+                <div ref={listRef} className="absolute flex flex-col mt-2  w-[400px] max-md:w-[350px] max-h-64 overflow-y-auto
+                                             border-[#15335D] border-4 rounded-lg bg-white z-30 right-52 ">
+                                            
                     {data.length > 0 ? (
                         <div>
+                            <h1 className="text-lg font-bold text-black border-b-2 text-center py-2 max-md:text-sm">
+                                        Your Wishlist 
+                                        </h1>
+                                        
                             {data.map(item => {
                                 return (
-                                    <div key={item._id} className="flex items-center justify-between py-2 max-md:mx-[10%] border-b-2">
-                                        <Link href={`/${item.category.slug}/${item.slug}`} onClick={handleLinkClick} className="grid grid-cols-4">
+                                    <div key={item._id} className=" py-2 max-md:mx-[10%] border-b-2">
+                                        <Link href={`/${item.category.slug}/${item.slug}`} onClick={handleLinkClick} className="flex justify-between items-center ">
                                             <Image
-                                                width={50}
-                                                height={50}
+                                                width={70}
+                                                height={60}
                                                 src={item.imageUrl || '/placeholder.jpg'} // Provide a default placeholder image
                                                 alt={item.name}
-                                                className="rounded-md"
+                                                className="rounded-md "
                                             />
                                             <span>{item.name}</span>
                                             {/* Product Price & Discount */}
-                                            <span className="flex flex-col">
+                                            <span className="flex flex-col ">
+                                                
                                                 {item.discount ? (
                                                     <>
                                                         {/* Show discounted price */}
-                                                        <span className="line-through mr-2 text-red-500">
+                                                        <span className="line-through text-red-500">
                                                             {item.price.toFixed(2)} TND
                                                         </span>
                                                         <span className="text-green-500">
@@ -115,13 +124,15 @@ const Listmywish: React.FC<ListmywishProps> = ({ data }) => {
                                                     <span className='text-gray-400'>{item.price.toFixed(2)} TND</span>
                                                 )}
                                             </span>
-                                        </Link>
-                                        <div>
-                                            <button type="button" onClick={() => handleDeleteFavorite(item._id)} className="ml-4 text-gray-500">
+                                            <div>
+                                            <button type="button" onClick={() => handleDeleteFavorite(item._id)} className=" text-gray-500 pr-4">
                                                 <FaRegTrashAlt />
                                             </button>
                                         </div>
+                                        </Link>
+                                        
                                     </div>
+                                    
                                 );
                             })}
                         </div>
