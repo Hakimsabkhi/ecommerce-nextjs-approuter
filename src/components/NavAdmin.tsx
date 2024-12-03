@@ -1,13 +1,59 @@
 "use client"
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import {pageUrls} from "@/lib/page"
+import { useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
+import { useSessionData } from "@/lib/useSessionData"; // Adjust the import path as necessary
 
 const NavAdmin = () => {
   const [activeLink, setActiveLink] = useState<string | null>(null);
-  const [isOpen, setIsOpen] = useState(false);
-  const handleClick = (link: string) => {
+  const router = useRouter();
+  const pathname = usePathname();
+  const { session, loading } = useSessionData();
+  const [selectedPath, setSelectedPath] = useState<string>(pathname);
+  const [allowedPages, setAllowedPages] = useState<string[]>([]);
+  const [error, setError] = useState<string | null>(null);
+    const handleClick = (link: string) => {
     setActiveLink(link);
   };
+  useEffect(() => {
+    setSelectedPath(pathname);
+  }, [pathname]);
+  useEffect(() => {
+    const fetchAllowedPages = async () => {
+      if (!session?.user?.role) return;
+
+      try {
+        setError(null); // Reset error state
+        const response = await fetch(`/api/roles/access?role=${session.user.role}`);
+        if (!response.ok) throw new Error("Failed to fetch role access");
+
+        const data = await response.json();
+        setAllowedPages(data.allowedPages || []);
+      } catch (error) {
+        console.error("Error fetching role access:", error);
+        setError("Unable to load navigation. Please try again.");
+      }
+    };
+
+    // Fetch allowed pages only for non-admin roles
+    if (session?.user?.role !== "Admin" && session?.user?.role !== "SuperAdmin") {
+      fetchAllowedPages();
+    }
+  }, [session]);
+
+  const navigateTo = (path: string) => {
+    router.push(path);
+    setSelectedPath(path);
+  };
+
+  const filteredNavigationItems = session?.user?.role === "Admin" || session?.user?.role === "SuperAdmin"
+    ? pageUrls // Show all pages for Admin and SuperAdmin
+    : pageUrls.filter(page =>
+        allowedPages.includes(page.name) // Only include pages user has permission for
+      );
+
 
   return (
     <nav className="bg-gray-800 w-[100%] relative ">
@@ -24,109 +70,22 @@ const NavAdmin = () => {
            
           </div>
           <div className="hidden md:flex md:items-center">
-            <div className="ml-10 flex items-baseline space-x-4">
-            <Link href="/admin/users">
+                        <div className="ml-10 flex items-baseline space-x-4">
+            {filteredNavigationItems.map((item) => (<Link key={item.name} href={item.path}>
                 <p
-                  onClick={() => handleClick('users')}
+                  onClick={() => handleClick(item.name)}
                   className={`text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium cursor-pointer ${
-                    activeLink === 'users' ? 'bg-gray-700' : ''
+                    activeLink === item.name ? 'bg-gray-700' : ''
                   }`}
                 >
-                  Users
+                  {item.name}
                 </p>
-              </Link>
-              <Link href="/admin/brandlist">
-                <p
-                  onClick={() => handleClick('brandlist')}
-                  className={`text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium cursor-pointer ${
-                    activeLink === 'brandlist' ? 'bg-gray-700' : ''
-                  }`}
-                >
-                  Brands
-                </p>
-              </Link>
-              <Link href="/admin/categorylist">
-                <p
-                  onClick={() => handleClick('categorylist')}
-                  className={`text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium cursor-pointer ${
-                    activeLink === 'categorylist' ? 'bg-gray-700' : ''
-                  }`}
-                >
-                  Categories
-                </p>
-              </Link>
-              <Link href="/admin/productlist">
-                <p
-                  onClick={() => handleClick('productlist')}
-                  className={`text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium cursor-pointer ${
-                    activeLink === 'productlist' ? 'bg-gray-700' : ''
-                  }`}
-                >
-                  Products
-                </p>
-              </Link>
-              <Link href="/admin/promotionlist">
-                <p
-                  onClick={() => handleClick('promotionlist')}
-                  className={`text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium cursor-pointer ${
-                    activeLink === 'promotionlist' ? 'bg-gray-700' : ''
-                  }`}
-                >
-                  Promation
-                </p>
-              </Link>
-              <Link href="/admin/reviewlist">
-                <p
-                  onClick={() => handleClick('reviewlist')}
-                  className={`text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium cursor-pointer ${
-                    activeLink === 'reviewlist' ? 'bg-gray-700' : ''
-                  }`}
-                >
-                  Reviews
-                </p>
-              </Link>
-              <Link href="/admin/orderlist">
-                <p
-                  onClick={() => handleClick('orderlist')}
-                  className={`text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium cursor-pointer ${
-                    activeLink === 'orderlist' ? 'bg-gray-700' : ''
-                  }`}
-                >
-                  Orders
-                </p>
-              </Link>
-              <Link href="/admin/invoice">
-                <p
-                  onClick={() => handleClick('invoice')}
-                  className={`text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium cursor-pointer ${
-                    activeLink === 'invoice' ? 'bg-gray-700' : ''
-                  }`}
-                >
-                  Invoice
-                </p>
-              </Link>
-              <Link href="/admin/company">
-                <p
-                  onClick={() => handleClick('company')}
-                  className={`text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium cursor-pointer ${
-                    activeLink === 'company' ? 'bg-gray-700' : ''
-                  }`}
-                >
-                  Company
-                </p>
-              </Link>
-              <Link href="/admin/revenue">
-                <p
-                  onClick={() => handleClick('revenue')}
-                  className={`text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium cursor-pointer ${
-                    activeLink === 'revenue' ? 'bg-gray-700' : ''
-                  }`}
-                >
-                  Revenue
-                </p>
-              </Link>
-            </div>
+              </Link> ))}
+              </div>
           </div>
+          <div>
+
+    </div>
         </div>
       </div>
     </nav>

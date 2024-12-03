@@ -1,16 +1,18 @@
 import mongoose, { Document, Schema, Model } from 'mongoose';
-import { IUser } from './User'; // Import the IUser interface
+
 export interface IRole extends Document {
   name: string;
-  user: IUser | string; // Reference to a User document or User ID  
-  createdAt?: Date;
-  updatedAt?: Date;
+  access: Map<string, boolean>; // Access is a Map of page names to boolean
 
 }
 
 const RoleSchema: Schema = new Schema({
-  name: { type: String, required: true },
-  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  name: { type: String, required: true, unique: true },
+  access: {
+    type: Map,
+    of: Boolean, // Define that the Map values are booleans
+    default: {}, // Initialize with an empty map
+  },
 },{ timestamps: true });
 
 const Role: Model<IRole> = mongoose.models.Role || mongoose.model<IRole>('Role', RoleSchema);

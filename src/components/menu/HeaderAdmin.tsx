@@ -6,6 +6,7 @@ import { authOptions } from "@/lib/authOptions";
 import LogoComponent from "@/components/menu/LogoComponent";
 
 import UserMenu from "@/components/userComp/UserMenu";
+import Notification from "@/components/menu/Notification";
 
 const HeaderAdmin = async () => {
   // Fetch the session on the server-side
@@ -19,7 +20,7 @@ const HeaderAdmin = async () => {
           <LogoComponent />
           <div className="flex">
         
-           
+           <Notification/>
             <UserMenu session={session} />
           </div>
         </div>

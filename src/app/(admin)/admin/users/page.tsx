@@ -54,9 +54,9 @@ const AdminDashboard = () => {
   };
 
   const fetchrole = async () => {
-    const res = await fetch(`/api/role/getrole`);
+    const res = await fetch(`/api/role/getroles`);
     const data = await res.json();
-    setRoles(data);
+    setRoles(data.roles);
   };
 
   const handleDeleteClick = (user: User) => {
