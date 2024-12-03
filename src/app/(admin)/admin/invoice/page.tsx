@@ -173,12 +173,12 @@ const Listinvoice: React.FC = () => {
         placeholder="Search invoice"
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
-        className="mt-4 p-2 border border-gray-300 rounded"
+        className=" p-2 border border-gray-300 rounded"
       />
-      <div className="flex justify-end ">
+      <div className="flex justify-between w-1/3 ">
         <button
           onClick={() => setTimeframe("year")}
-          className={`p-2 rounded-l ${
+          className={`p-2 rounded ${
             timeframe === "year"
               ? "bg-gray-800 text-white"
               : "bg-gray-300 text-white"
@@ -188,7 +188,7 @@ const Listinvoice: React.FC = () => {
         </button>
         <button
           onClick={() => setTimeframe("month")}
-          className={`p-2 ${
+          className={`p-2 rounded ${
             timeframe === "month"
               ? "bg-gray-800 text-white"
               : "bg-gray-300 text-white"
@@ -198,7 +198,7 @@ const Listinvoice: React.FC = () => {
         </button>
         <button
           onClick={() => setTimeframe("day")}
-          className={`p-2 rounded-r ${
+          className={`p-2 rounded ${
             timeframe === "day"
               ? "bg-gray-800 text-white"
               : "bg-gray-300 text-white"
@@ -222,7 +222,7 @@ const Listinvoice: React.FC = () => {
             />
         </div>
       </div>
-      <div className='h-96 p-1'>
+      <div className="h-96 pt-5">
       <table className="w-full rounded overflow-hidden table-fixed ">
         <thead>
           <tr className="bg-gray-800">
