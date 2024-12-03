@@ -5,7 +5,7 @@ import cloudinary from "@/lib/cloudinary";
 import stream from "stream";
 import { getToken } from "next-auth/jwt";
 import User from "@/models/User";
-import Address from "@/models/Address";
+
 // Utility function to extract public ID from the image URL
 const extractPublicId = (url: string): string => {
     const matches = url.match(/\/([^\/]+)\.(jpg|jpeg|png|gif|webp)$/);
@@ -86,7 +86,7 @@ export async function PUT( req: NextRequest ){
           (resolve, reject) => {
             const uploadStream = cloudinary.uploader.upload_stream(
               { folder: "company",
-                format: 'webp' 
+                format: 'svg' 
                },
               (error, result) => {
                 if (error) return reject(new Error(`Image upload failed: ${error.message}`));

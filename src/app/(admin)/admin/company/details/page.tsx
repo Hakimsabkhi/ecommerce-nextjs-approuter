@@ -250,10 +250,10 @@ function CreateCompany() {
             />
           </div>
           <div className="mb-4">
-            <p className="block text-sm font-medium">Upload Icon*</p>
+            <p className="block text-sm font-medium">Upload Icon SVG*</p>
             <input
               type="file"
-              accept="image/*"
+              accept="image/svg"
               onChange={handleIconChange}
               className="hidden"
               id="upload-icon"
