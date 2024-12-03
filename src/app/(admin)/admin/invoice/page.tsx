@@ -222,7 +222,7 @@ const Listinvoice: React.FC = () => {
             />
         </div>
       </div>
-      <div className="h-96 pt-5">
+      <div className="h-96 pt-4">
       <table className="w-full rounded overflow-hidden table-fixed ">
         <thead>
           <tr className="bg-gray-800">

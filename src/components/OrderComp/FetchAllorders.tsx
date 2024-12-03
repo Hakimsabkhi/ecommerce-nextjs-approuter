@@ -329,7 +329,7 @@ const ListOrders: React.FC = () => {
                 ? "month"
                 : "date"
             }
-            className="border rounded p-2          w-44"
+            className="border rounded p-2 w-44"
             value={
               timeframe === "year"
                 ? selectedDate.split("-")[0]
@@ -349,7 +349,7 @@ const ListOrders: React.FC = () => {
           />
         </div>
       </div>
-      <div className="h-96 pt-3.5">
+      <div className="h-96 pt-4">
         <table className="w-full rounded overflow-hidden table-fixed ">
           <thead>
             <tr className="bg-gray-800">
