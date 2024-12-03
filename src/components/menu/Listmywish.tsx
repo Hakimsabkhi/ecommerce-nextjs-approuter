@@ -74,7 +74,7 @@ const Listmywish: React.FC<ListmywishProps> = ({ data }) => {
             <div onClick={toggleListVisibility} 
             className="flex w-[200px] items-center justify-center gap-2 max-lg:w-fit text-white cursor-pointer select-none max-xl:hidden">
                 <div className="relative my-auto mx-2">
-                    <AiOutlineHeart size={40} className="text-white" />
+                    <AiOutlineHeart size={45} className="text-white" />
                     <span className="w-4 flex justify-center h-4 items-center text-xs rounded-full absolute -top-1 -right-1 text-white bg-secondary">
                         {data.length} {/* Show the number of wishlist items */}
                     </span>
