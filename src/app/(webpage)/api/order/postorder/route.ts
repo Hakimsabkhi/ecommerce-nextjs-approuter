@@ -6,6 +6,7 @@ import  connectDB  from "@/lib/db"; // MongoDB connection utility
 import User from "@/models/User";
 import { getToken } from "next-auth/jwt";
 import Product from "@/models/Product";
+import Notifications from "@/models/Notifications";
 // POST - Create a new order
 export async function POST(req: NextRequest) {
   try {
@@ -74,7 +75,10 @@ for (let i = 0; i < orderItems.length; i++) {
 
     // Save the order to the database
      const savedOrder = await newOrder.save();
-  
+    const newNotification = new Notifications({
+      order:savedOrder,
+    })
+    await newNotification.save();
     // Return success response
     return NextResponse.json({
       success: true,

@@ -63,7 +63,7 @@ export async function POST(req: NextRequest) {
         const result = await new Promise<any>((resolve, reject) => {
           const uploadStream = cloudinary.uploader.upload_stream(
             { folder: 'company',
-              format: 'webp' 
+              format: 'svg' 
              },
             (error, result) => {
               if (error) {
