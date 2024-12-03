@@ -173,9 +173,9 @@ const Listinvoice: React.FC = () => {
         placeholder="Search invoice"
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
-        className=" p-2 border border-gray-300 rounded"
+        className=" p-2 border border-gray-300 rounded w-1/5"
       />
-      <div className="flex justify-between w-1/3 ">
+      <div className="flex justify-between w-2/5 ">
         <button
           onClick={() => setTimeframe("year")}
           className={`p-2 rounded ${
@@ -208,7 +208,7 @@ const Listinvoice: React.FC = () => {
         </button>
                   <input
               type={timeframe === "year" ? "number" : timeframe === "month" ? "month" : "date"}
-              className="border rounded p-2 ml-4 w-44"
+              className="border rounded p-2  w-44"
               value={timeframe === "year" ? selectedDate.split("-")[0] : timeframe === "month" ? selectedDate.slice(0, 7) : selectedDate}
               onChange={(e) => {
                 if (timeframe === "year") {

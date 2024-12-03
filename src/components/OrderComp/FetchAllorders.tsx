@@ -257,7 +257,7 @@ const ListOrders: React.FC = () => {
         <p className="text-3xl font-bold">ALL Orders</p>
         <Link
           href={"orderlist/addorder"}
-          className="bg-gray-800 text-white w-1/5 p-2 hover:bg-gray-400 rounded-md flex items-center justify-center"
+          className="bg-gray-800 text-white w-1/5  hover:bg-gray-400 rounded-md flex items-center justify-center"
         >
           <button type="button" className="uppercase ">
             create order
@@ -272,14 +272,14 @@ const ListOrders: React.FC = () => {
           placeholder="Search orders"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="p-2 border border-gray-300 rounded "
+          className="p-2 border border-gray-300 rounded w-1/5"
         />
         
           <select
             name="category"
             value={status}
             onChange={handleChange}
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded  block w-56"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded  block w-1/5"
             required
           >
             <option value="">All</option>
@@ -290,7 +290,7 @@ const ListOrders: React.FC = () => {
             <option value="Refunded">Remboursée</option>
           </select>
         
-        <div className="w-1/3 flex justify-between">
+        <div className="w-2/5 flex justify-between">
           <button
             onClick={() => setTimeframe("year")}
             className={`p-2 rounded ${
