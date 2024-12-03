@@ -71,7 +71,7 @@ const NavAdmin = () => {
           </div>
           <div className="hidden md:flex md:items-center">
                         <div className="ml-10 flex items-baseline space-x-4">
-            {filteredNavigationItems.map((item) => (<Link href={item.path}>
+            {filteredNavigationItems.map((item) => (<Link key={item.name} href={item.path}>
                 <p
                   onClick={() => handleClick(item.name)}
                   className={`text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium cursor-pointer ${
