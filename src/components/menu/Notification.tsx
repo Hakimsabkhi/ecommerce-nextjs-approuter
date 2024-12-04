@@ -30,6 +30,7 @@ const Notification: React.FC= () => {
   const [isListVisible, setListVisible] = useState(false);
   const listRef = useRef<HTMLDivElement>(null); // Ref for wishlist container
   const route=useRouter();
+
  // Define the function to fetch data
  const fetchNotifications = async () => {
   try {
@@ -38,7 +39,9 @@ const Notification: React.FC= () => {
       throw new Error('Failed to fetch notifications');
     }
     const data = await response.json();
-     setNotif(data.length);
+    const Nnotif = data.filter((notification: { look: string; }) => notification.look && notification.look === 'false').length;
+    //console.log(Nnotif)
+     setNotif(Nnotif);
      setNotifs(data)
    
   } catch (err) {
@@ -74,18 +77,32 @@ const hendlafficheorder=async (item:any)=>{
           document.removeEventListener("mousedown", handleClickOutside);
       };
   }, []);
-  const toggleListVisibility = () => {
-    setListVisible(prev => !prev);
+  const toggleListVisibility = async (data:any[]) => {
+    
+    const response = await fetch(`/api/notification/updatenotifications/`, {
+      method: 'PUT',
+      body: JSON.stringify(data),
+    });
+    if(response.ok){
+      setListVisible(prev => !prev);  
+      fetchNotifications();
+    }else{
+      console.log('eurr notification')
+    }
+   
 };
   useEffect(() => {
    
 
     fetchNotifications(); // Call the fetch function when the component mounts
+    const interval = setInterval(fetchNotifications, 30000);
 
+    // Clean up the interval when the component unmounts
+    return () => clearInterval(interval);
   }, []);
 
   return (
-    <div ref={listRef} onClick={()=>toggleListVisibility()}className="flex items-center gap-2 text-white cursor-pointer select-none max-xl:hidden ">
+    <div ref={listRef} onClick={()=>toggleListVisibility(notifs)}className="flex items-center gap-2 text-white cursor-pointer select-none max-xl:hidden ">
       <div className="relative">
    
         <AiOutlineBell size={40} className="text-primary" />
