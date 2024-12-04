@@ -349,16 +349,16 @@ const ListOrders: React.FC = () => {
           />
         </div>
       </div>
-      <div className="h-96 pt-4">
+      <div className="h-80 pt-4">
         <table className="w-full rounded overflow-hidden table-fixed ">
           <thead>
             <tr className="bg-gray-800">
               <th className="px-4 py-3 w-[12%]">REF</th>
               <th className="px-4 py-3 w-[13%]">Customer Name</th>
-              <th className="px-4 py-3 w-[10%]">Total</th>
+              <th className="px-4 py-3 w-[15%]">Total</th>
 
               <th className="px-4 py-3 w-[15%]">Date</th>
-              <th className="px-4 text-center py-3 w-[50%]">Action</th>
+              <th className="px-4 text-center py-3 w-[45%]">Action</th>
             </tr>
           </thead>
           {loading ? (
@@ -386,7 +386,7 @@ const ListOrders: React.FC = () => {
               {currentOrders.map((item) => (
                 <tr
                   key={item._id}
-                  className="bg-white text-black whitespace-nowrap"
+                  className="bg-white text-black "
                 >
                   <td className="border px-4 py-2 uppercase ">
                     {item.ref.slice(0, 10)}...
@@ -424,7 +424,7 @@ const ListOrders: React.FC = () => {
                         <option value="Refunded">Remboursée</option>
                       </select>
                       <Link href={`/admin/orderlist/${item.ref}`}>
-                        <button className="bg-gray-800 text-white mt-1.5 pl-3 w-10 h-10 hover:bg-gray-600 rounded-md justify-center">
+                        <button className="bg-gray-800 text-white p-3 hover:bg-gray-600 rounded-md uppercase">
                           <FaRegEye />
                         </button>
                       </Link>

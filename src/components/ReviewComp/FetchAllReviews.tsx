@@ -86,7 +86,7 @@ const ListerReview: React.FC<AddedProductsProps> = ({ products }) => {
           className="mt-4 p-2 border border-gray-300 rounded"
         />
       </div>
-      <div className='h-96 pt-1'>
+      <div className='h-80 pt-1'>
       <table className="w-full rounded overflow-hidden table-fixed">
         <thead>
           <tr className="bg-gray-800 ">

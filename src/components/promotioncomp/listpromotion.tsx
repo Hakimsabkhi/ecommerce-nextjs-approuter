@@ -147,7 +147,7 @@ const ListPromotion: React.FC = () => {
           </select>
         </div>
       
-      <div className='h-96'>
+      <div className='h-80'>
       <table className="w-full rounded overflow-hidden table-fixed ">
         <thead>
           <tr className="bg-gray-800">

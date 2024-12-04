@@ -5,6 +5,7 @@ import { useSession } from "next-auth/react";
 import DeletePopup from "@/components/Popup/DeletePopup";
 import { toast } from "react-toastify";
 import Link from "next/link";
+import Role from "@/models/Role";
 
 interface User {
   _id: string;
@@ -34,13 +35,27 @@ const AdminDashboard = () => {
   }, []);
 
   useEffect(() => {
-    filterUsers();
+   filterUsers();
   }, [searchTerm, selectedRole, users]);
 
   const fetchUsers = async () => {
-    const res = await fetch(`/api/users/userdashboard`);
+    try {
+    const res = await fetch(`/api/users/userdashboard`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (!res.ok) {
+      throw new Error("Failed to fetch user");
+    }
     const data = await res.json();
     setUsers(data);
+  } catch (err: any) {
+    console.log(`[get user] ${err.message}`);
+  } finally {
+    setLoading(false);
+  }
   };
 
   const filterUsers = () => {
@@ -119,23 +134,22 @@ const AdminDashboard = () => {
   };
 
   return (
-    <div className="container mx-auto p-8">
-      <h1 className="text-4xl font-bold mb-8 text-center">Admin Dashboard</h1>
-      <div className="flex justify-end">
-        <Link
-          href={"/admin/users/role"}
-          className="bg-gray-800 hover:bg-gray-600 rounded-md w-1/5 p-2 text-white flex justify-center items-center mb-4"
-        >
-          ROLE
+    <div className="mx-auto w-[90%] py-8 flex flex-col gap-8">
+      <div className="flex items-center justify-between">
+         <h1 className="text-3xl font-bold">Admin Dashboard</h1>
+         <Link href="/admin/brandlist/addbrand" >
+         <button className="bg-gray-800 font-bold hover:bg-gray-600 text-white rounded-lg w-[200px] h-10">
+         Role
+          </button>
         </Link>
       </div>
-      <div className="flex justify-between items-center pb-4">
+      <div className="flex justify-between items-center ">
         <input
           type="text"
           placeholder="Search users"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-[30%] block p-2.5"
+          className="mt-4 p-2 border border-gray-300 rounded"
         />
 
         <select
@@ -161,9 +175,9 @@ const AdminDashboard = () => {
           )}
         </select>
       </div>
-      <div className="relative shadow-lg rounded-lg">
-        <table className="w-full text-sm text-left rtl:text-right">
-          <thead className="text-xl uppercase">
+      <div className="h-96">
+        <table className="w-full rounded overflow-hidden table-fixed ">
+          <thead>
             <tr className="bg-gray-800">
               <th scope="col" className="px-6 py-3 w-1/3">
                 Email
@@ -176,7 +190,27 @@ const AdminDashboard = () => {
               </th>
             </tr>
           </thead>
-
+          {loading ? (
+            <tbody>
+              <tr>
+                <td colSpan={3}>
+                  <div className="flex justify-center items-center h-full w-full py-6">
+                    <FaSpinner className="animate-spin text-[30px] items-center" />
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          ) :users.length === 0 ? (
+            <tbody>
+              <tr>
+                <td colSpan={3}>
+                  <div className="text-center py-6 text-gray-600 w-full">
+                    <p>Aucune marque trouvée.</p>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          ) : (
           <tbody>
             {filteredUsers.map((user) => (
               <tr
@@ -234,8 +268,10 @@ const AdminDashboard = () => {
                 </td>
               </tr>
             ))}
-          </tbody>
+          </tbody>)}
         </table>
+      </div>
+      <div className="flex justify-center mt-4">
       </div>
     </div>
   );
