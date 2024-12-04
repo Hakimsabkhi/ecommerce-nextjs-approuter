@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic'; 
 import { NextResponse } from "next/server";
 import connectToDatabase from "@/lib/db"; // Adjust the import path as necessary
 import Role from "@/models/Role"; // Adjust the import path as necessary
