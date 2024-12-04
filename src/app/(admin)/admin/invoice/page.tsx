@@ -175,7 +175,7 @@ const Listinvoice: React.FC = () => {
         onChange={(e) => setSearchTerm(e.target.value)}
         className=" p-2 border border-gray-300 rounded w-1/5"
       />
-      <div className="flex justify-between w-2/5 ">
+      <div className="flex justify-between w-[500px] ">
         <button
           onClick={() => setTimeframe("year")}
           className={`p-2 rounded ${
@@ -198,7 +198,7 @@ const Listinvoice: React.FC = () => {
         </button>
         <button
           onClick={() => setTimeframe("day")}
-          className={`p-2 rounded ${
+          className={`p-2 mr-8 rounded ${
             timeframe === "day"
               ? "bg-gray-800 text-white"
               : "bg-gray-300 text-white"

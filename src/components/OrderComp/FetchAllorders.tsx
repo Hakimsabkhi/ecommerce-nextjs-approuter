@@ -290,7 +290,7 @@ const ListOrders: React.FC = () => {
             <option value="Refunded">Remboursée</option>
           </select>
         
-        <div className="w-2/5 flex justify-between">
+        <div className="flex justify-between w-[500px]">
           <button
             onClick={() => setTimeframe("year")}
             className={`p-2 rounded ${
@@ -313,7 +313,7 @@ const ListOrders: React.FC = () => {
           </button>
           <button
             onClick={() => setTimeframe("day")}
-            className={`p-2 rounded ${
+            className={`p-2 mr-8 rounded ${
               timeframe === "day"
                 ? "bg-gray-800 text-white"
                 : "bg-gray-300 text-white"
