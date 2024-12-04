@@ -32,13 +32,14 @@ export async function GET(req: NextRequest) {
   
     const notifications = await Notification.find({seen:'false'}).populate({
       path: 'order',
-      select: 'ref', // Select specific fields from the order
+      select: 'ref createdAt',
+       // Select specific fields from the order
       populate: [
         { path: 'user', select: 'username' } // Select specific fields from user
       ]
     });
     
-console.log(notifications)
+
     // Return the fetched notfication 
     return new NextResponse(JSON.stringify(notifications), { status: 200 });
   
