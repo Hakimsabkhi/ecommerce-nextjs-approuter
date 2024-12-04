@@ -24,12 +24,9 @@ export async function PUT(
     try {
       // Handle form data
       const id = params.id; // Get ID from params
-      const formData = await req.formData();
-      
-     /*  const imageFile = formData.get("image") as File | null;
-      const logoFile = formData.get("logo") as File | null;
-      const bannerFile = formData.get("banner") as File | null;
-    
+  
+      console.log(id)
+     
   
       if (!id) {
         return NextResponse.json(
@@ -38,20 +35,20 @@ export async function PUT(
         );
       }
   
-      const existingCategory = await Category.findById(id);
-      if (!existingCategory) {
+      const existingNotifications = await Notifications.findById(id);
+      if (!existingNotifications) {
         return NextResponse.json(
-          { message: "Category not found" },
+          { message: "Notifications not found" },
           { status: 404 }
         );
       }
   
       
-      // Update category with new values
-      existingCategory.name = name;
-      await existingCategory.save();
-   */
-      return NextResponse.json(/* existingCategory, */ { status: 200 });
+      // Update Notifications with new values
+      existingNotifications.seen = true;
+      await existingNotifications.save();
+
+      return NextResponse.json({ status: 200 });
     } catch (error) {
       console.error(error); // Log error for debugging
       return NextResponse.json(

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 
 
 interface ListNotificationProps {
@@ -11,7 +11,28 @@ interface ListNotificationProps {
   }
 
 
-
+  const timeAgo = (date: string): string => {
+    const now = new Date();
+    const commentDate = new Date(date);
+    const diffInSeconds = Math.floor((now.getTime() - commentDate.getTime()) / 1000);
+  
+    const minutes = Math.floor(diffInSeconds / 60);
+    const hours = Math.floor(diffInSeconds / 3600);
+    const days = Math.floor(diffInSeconds / 86400);
+    const weeks = Math.floor(diffInSeconds / 604800);
+  
+    if (weeks > 0) {
+      return `${weeks} week${weeks > 1 ? 's' : ''} ago`;
+    } else if (days > 0) {
+      return `${days} day${days > 1 ? 's' : ''} ago`;
+    } else if (hours > 0) {
+      return `${hours} hour${hours > 1 ? 's' : ''} ago`;
+    } else if (minutes > 0) {
+      return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
+    } else {
+      return 'Just now';
+    }
+  };
 
 
 
@@ -45,9 +66,13 @@ interface ListNotificationProps {
             >
              
               <span>{item.order.ref}</span>
-              <span >
-                {item.order.user.username}
+              <span className='flex flex-col'>
+               
+                <span className='text-sm'> {item.order.user.username}</span>
+                <span className='text-[10px] flex justify-end'>{timeAgo(item.order.createdAt)}</span>
+                
               </span>
+
             </div>
           </div>
         ))}

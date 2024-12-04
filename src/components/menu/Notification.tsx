@@ -49,10 +49,18 @@ const Notification: React.FC= () => {
 };
 
   
-const hendlafficheorder=(item:any)=>{
+const hendlafficheorder=async (item:any)=>{
+  const response = await fetch(`/api/notification/updatenotification/${item._id}`, {
+    method: 'PUT',
+    
 
-  route.push(`/admin/orderlist/${item.ref}`)
+  });
+  if(response.ok){
+  route.push(`/admin/orderlist/${item.order.ref}`)
   fetchNotifications();
+  }else{
+    console.log('eurr notification')
+  }
 }
   useEffect(() => {
       const handleClickOutside = (event: MouseEvent) => {
