@@ -24,7 +24,7 @@ interface Notification {
 
 const Notification: React.FC= () => {
    // State to track loading status
-  const [error, setError] = useState<string | null>(null);  // State to track error
+ 
   const [notif,setNotif]=useState<number | 0>(0)
   const [notifs, setNotifs] = useState<any[]>([]);
   const [isListVisible, setListVisible] = useState(false);
@@ -47,7 +47,7 @@ const Notification: React.FC= () => {
   } catch (err) {
     // Log the error to the console for debugging
     console.log('Error fetching notifications:', err);
-    setError('Failed to load notifications');  // Set error message in state
+   
   } 
 };
 
