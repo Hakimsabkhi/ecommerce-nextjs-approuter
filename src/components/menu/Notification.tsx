@@ -95,7 +95,7 @@ const hendlafficheorder=async (item:any)=>{
    
 
     fetchNotifications(); // Call the fetch function when the component mounts
-    const interval = setInterval(fetchNotifications, 30000);
+    const interval = setInterval(fetchNotifications, 3000);
 
     // Clean up the interval when the component unmounts
     return () => clearInterval(interval);

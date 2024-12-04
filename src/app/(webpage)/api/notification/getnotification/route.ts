@@ -37,7 +37,7 @@ export async function GET(req: NextRequest) {
       populate: [
         { path: 'user', select: 'username' } // Select specific fields from user
       ]
-    });
+    }).sort({ createdAt: -1 });
     
 
     // Return the fetched notfication 
