@@ -78,13 +78,13 @@ const hendlafficheorder=async (item:any)=>{
       };
   }, []);
   const toggleListVisibility = async (data:any[]) => {
-    
+    setListVisible(prev => !prev);  
     const response = await fetch(`/api/notification/updatenotifications/`, {
       method: 'PUT',
       body: JSON.stringify(data),
     });
     if(response.ok){
-      setListVisible(prev => !prev);  
+      
       fetchNotifications();
     }else{
       console.log('eurr notification')
