@@ -1,6 +1,7 @@
 "use client";
 
-import React from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
+import Pagination from '../Pagination';
 
 
 interface ListNotificationProps {
@@ -42,7 +43,24 @@ interface ListNotificationProps {
     hendlafficheorder,
   }) => {
     
- 
+    const [currentPage, setCurrentPage] = useState(1);
+    const dataPerPage = 4;
+    const totalPages = useMemo(() => Math.ceil(data.length / dataPerPage), [data.length]);
+  
+    const paginateddata = useMemo(() => {
+      return data.slice((currentPage - 1) * dataPerPage, currentPage * dataPerPage);
+    }, [data, currentPage, dataPerPage]);
+  
+    // Ensure that the current page is within bounds when data change
+    useEffect(() => {
+      if (currentPage > totalPages) {
+        setCurrentPage(totalPages);
+      }
+    }, [currentPage, totalPages]);
+  
+    if (data.length === 0) {
+      return null;
+    }
 
     return (
         <div>
@@ -57,7 +75,14 @@ interface ListNotificationProps {
         <h1 className="text-lg font-bold text-black border-b-2 text-center py-2 max-md:text-sm">
           New order
         </h1>
-        {data.map((item: any) => (
+        <div className="py-2 text-gray-500 border-b-2">
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+        />
+      </div>
+        {paginateddata.map((item: any) => (
           <div key={item._id} className="py-2 max-md:mx-[10%] border-b-2">
             <div
             
