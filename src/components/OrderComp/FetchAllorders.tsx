@@ -3,6 +3,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { toast } from "react-toastify";
 import DeletePopup from "../Popup/DeletePopup";
+import ConfirmPopup  from "../Popup/ConfirmPopup";
 import { FaSpinner, FaTrashAlt, FaRegEye } from "react-icons/fa";
 import Pagination from "../Pagination";
 import { useRouter } from "next/navigation";
@@ -50,7 +51,9 @@ const ListOrders: React.FC = () => {
   const [status, setStatus] = useState(""); // Initial value
   const [timeframe, setTimeframe] = useState<"year" | "month" | "day">("month");
   const [selectedDate, setSelectedDate] = useState<string>("");
-
+  const [isPopupOpeninvoice, setIsPopupOpeninvoice] = useState(false);
+  const [selectedorderid, setSelectedorderid] = useState<string>("");
+  const [selectedval, setSelectedval] = useState<string>("");
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setStatus(e.target.value);
     console.log(e.target.value); // Do something with the selected value (e.g., filter data)
@@ -65,6 +68,10 @@ const ListOrders: React.FC = () => {
   const handleClosePopup = () => {
     setIsPopupOpen(false);
     setLoadingOrderId(null);
+  };
+  const handleClosePopupinvoice = () => {
+    setIsPopupOpeninvoice(false);
+    
   };
   const handleinvoice = async (order: string) => {
     try {
@@ -123,11 +130,45 @@ const ListOrders: React.FC = () => {
       setLoading(false);
     }
   }, []);
+  const handleinvoiceconfirm=async(orderId: string, newStatus: string)=>{
+    
+    
+    try{
+    const updateFormData = new FormData();
+    updateFormData.append("vadmin", newStatus);
+    const response = await fetch(
+      `/api/order/updatestatusinvoice/${orderId}`,
+      {
+        method: "PUT",
+        body: updateFormData,
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`Error: ${response.statusText}`);
+    }
+    setOrders((prevData) =>
+      prevData.map((item) =>
+        item._id === orderId
+          ? { ...item, statusinvoice: JSON.parse(newStatus) }
+          : item
+      )
+    );
+    handleinvoice(orderId);
+    const data = await response.json();
+    console.log("Order status updated successfully:", data);
+  } catch (error) {
+    console.error("Failed to update Order status:", error);
+    toast.error("Failed to update Order status");
+  }
+  }
   const updatestatusinvoice = async (orderId: string, newStatus: string) => {
+   
+    if(newStatus=="false"){
+    
     try {
       const updateFormData = new FormData();
       updateFormData.append("vadmin", newStatus);
-
       const response = await fetch(
         `/api/order/updatestatusinvoice/${orderId}`,
         {
@@ -152,6 +193,11 @@ const ListOrders: React.FC = () => {
       console.error("Failed to update Order status:", error);
       toast.error("Failed to update Order status");
     }
+  }else{
+    setIsPopupOpeninvoice(true)
+    setSelectedorderid(orderId)
+    setSelectedval(newStatus)
+  }
   };
   const updateOrderStatus = async (orderId: string, newStatus: string) => {
     setLoadingOrderId(orderId);
@@ -500,6 +546,8 @@ const ListOrders: React.FC = () => {
           onPageChange={setCurrentPage}
         />
       </div>
+      {isPopupOpeninvoice && (   <ConfirmPopup handleClosePopupinvoice={handleClosePopupinvoice} 
+      handleinvoiceconfirm={handleinvoiceconfirm} selectedorderid={selectedorderid} selectedval={selectedval}/>)}
     </div>
   );
 };

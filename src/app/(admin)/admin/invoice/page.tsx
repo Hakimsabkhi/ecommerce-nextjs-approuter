@@ -250,7 +250,7 @@ const Listinvoice: React.FC = () => {
             <tr>
               <td colSpan={6}>
                 <div className="text-center py-6 text-gray-600 w-full">
-                  <p>Aucune categorie trouvée.</p>
+                  <p>Aucune invoice trouvée.</p>
                 </div>
               </td>
             </tr>
@@ -267,7 +267,7 @@ const Listinvoice: React.FC = () => {
                   {item.user.username}
                 </td>
                 <td className="border px-4 py-2 text-start">
-                  {item.total} TND
+                  {item.total.toFixed(3)} TND
                 </td>
 
                 <td className="border px-4 py-2 uppercase">

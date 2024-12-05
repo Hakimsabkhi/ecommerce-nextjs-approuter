@@ -4,6 +4,8 @@ import React, { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import OrderTable from "@/components/OrderComp/OrderTable";
 import OrderAddress from "@/components/OrderComp/OrderAddress";
+import Orderitemslistproduct from "@/components/OrderComp/Orderitemslistproduct";
+import Ordercustomerinfo from "@/components/OrderComp/Ordercustomerinfo";
 
 
 // Item interface
@@ -386,249 +388,42 @@ const orderData = {
           <h2 className="font-bold text-2xl mb-3">Add new order</h2>
 
           <form className="w-full flex flex-col" onSubmit={handleFormSubmit}>
-            <div className="grid grid-cols-2 justify-center  gap-2">
-              <div className="w-full">
-                <label htmlFor="customer">Customer</label>
-                <div className="relative">
-                  <input
-                    id="customer"
-                    type="text"
-                      className=" p-2 border  rounded-sm mb-3 w-full"
-                    placeholder="Search customer by name"
-                    value={searchTerm}
-                    onChange={handleSearchCustomers} // Call this on input change
-                  />
-                  <ul className="absolute top-full mt-1 w-full bg-white  rounded-md shadow-md max-h-60 overflow-auto">
-                    {OpenCustomer && filteredCustomers.map((cust) => (
-                      <li
-                        key={cust._id}
-                        className="p-2 hover:bg-gray-200 cursor-pointer"
-                        onClick={() => handleCustomerSelect(cust._id, cust.username)}
-                      >
-                        {cust.username}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-
-              <div className="w-full">
-                <label htmlFor="address">Address</label>
-                <select
-                  className="border-[1px] p-2 rounded-sm mb-3 w-full"
-                  required
-                  value={address}
-                  onChange={(e) => setAddress(e.target.value)}
-                >
-                  <option value="" disabled>
-                    Select an address
-                  </option>
-                  {addresses.map((addr) => (
-                    <option key={addr._id} value={addr._id}>
-                      {`${addr.address}, ${addr.city}, ${addr.governorate} - ${addr.zipcode}`}
-                    </option>
-                  ))}
-                </select>
-                <button
-    type="button"
-    onClick={() => setShowNewAddressModal(true)}
-    className="text-blue-600 underline"
-  >
-    Add New Address
-  </button>
-
-
-              </div>
-                {/* Delivery Method */}
-              <div className="w-full">
-                <label htmlFor="deliveryMethod">Mode de livraison</label>
-                <select
-                  className="border-[1px] p-2 rounded-sm mb-3 w-full"
-                  required
-                  value={Deliverymethod}
-                  onChange={handleDeliveryChange}
-                >
-                  <option value="" disabled>
-                    Select Mode de livraison
-                  </option>
-                  {deliveryMethods.map((method) => (
-                    <option key={method.id} value={method.id} >
-                     {method.label}-{method.cost === 0 ? "free" : `${method.cost} DT`}
-                    </option>
-                  ))}
-                </select>
-              </div>
-           {/* Payment Method */}
-           <div className="w-full">
-                <label htmlFor="paymentMethod">Mode de Payment</label>
-                <select
-                  className="border-[1px] p-2 rounded-sm mb-3 w-full"
-                  required
-                  value={paymentMethod}
-                  onChange={(e) => setPaymentMethod(e.target.value)}
-                >
-                  <option value="" disabled>
-                    Select Mode de Payment
-                  </option>
-                  <option value="virement">Virement</option>
-                  <option value="carte">Carte Bancaire</option>
-                  <option value="onDelivery">Payment on Delivery</option>
-                  <option value="express">Paiement Express</option>
-                </select>
-              </div>
-              <div className="w-full">
-                <label htmlFor="paymentMethod">Timbre Fiscale</label>
-              
-      <label htmlFor="toggle" className="flex items-center cursor-pointer">
-        {/* Label text */}
-        <span className="mr-3 text-gray-700">{isOn ? 'On' : 'Off'}</span>
-
-        {/* Toggle container */}
-        <div
-          onClick={handleToggle}
-          className={`relative inline-block w-12 h-6 rounded-full ${isOn ? 'bg-green-500' : 'bg-gray-300'}`}
-        >
-          {/* Circle inside the toggle */}
-          <div
-            className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full transition-transform ${isOn ? 'transform translate-x-6' : ''}`}
-          ></div>
-        </div>
-      </label>
-    
-              </div>
-              
-            </div>
+          <Ordercustomerinfo searchTerm={searchTerm} 
+           handleSearchCustomers={handleSearchCustomers } 
+           OpenCustomer={OpenCustomer} 
+           filteredCustomers={filteredCustomers} 
+           handleCustomerSelect={handleCustomerSelect} 
+           address={address} 
+           setAddress={setAddress } 
+           addresses={addresses} 
+           setShowNewAddressModal={setShowNewAddressModal} 
+           Deliverymethod={Deliverymethod} 
+           handleDeliveryChange={handleDeliveryChange } 
+           deliveryMethods={deliveryMethods} 
+           paymentMethod={paymentMethod} 
+           setPaymentMethod={setPaymentMethod} 
+           isOn={isOn} 
+           handleToggle={handleToggle }/>
+          
           
             {/* Items */}
-            <div className="w-full flex flex-col mt-4 mb-3">
-              <h3 className="font-bold mb-2">Items List</h3>
-              {/* Form for adding items */}
-              <div className="space-x-3">
-                {/* Item search */}
-                <div className="w-full">
-                  <label htmlFor="search" className="font-bold">
-                    Search Product
-                  </label>
-                  <input
-                    type="text"
-                    value={searchQuery}
-                    onChange={handleSearchChange}
-                    placeholder="Search for a product..."
-                    className="py-2 px-4 bg-gray-100 w-full mt-2"
-                  />
-
-                  {/* Show filtered products */}
-                  {filteredProducts.length > 0 && searchQuery && (
-                    <div className="mt-2 border border-gray-300 rounded-sm max-h-60 overflow-y-auto">
-                      {filteredProducts.map((product) => (
-                        <div
-                          key={product._id}
-                          className="px-4 py-2 cursor-pointer hover:bg-gray-100"
-                          onClick={() => handleProductSelect(product)}
-                        >
-                         <div className="flex gap-5 justify-between items-center m-2 text-xl"><h1>{product.ref}</h1><h1>{product.name}</h1><h1>{product.price.toFixed(3)} TND</h1><h1>{product.discount||0}%</h1><h1>{(product.price - product.price * ((product.discount||0) / 100)).toFixed(3) } TND </h1></div><hr/>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-
-                <div className="grid grid-cols-2 gap-2 mt-2">
-                  {/* Inputs for customizing selected product */}
-                  <div className="flex flex-col">
-                    <h2 className="font-bold">ref :</h2>
-                    <input
-                      type="text"
-                      placeholder="ref"
-                      value={ref}
-                      onChange={(e) => setRef(e.target.value)}
-                      className="py-2 px-4 bg-gray-100"
-                    />
-                  </div>
-                  <div className="flex flex-col">
-                    <h2 className="font-bold">Designation :</h2>
-                    <input
-                      type="text"
-                      placeholder="Item Name"
-                      value={itemName}
-                      onChange={(e) => setItemName(e.target.value)}
-                      className="py-2 px-4 bg-gray-100"
-                    />
-                  </div>
-                  <div className="flex flex-col">
-                    <h2 className="font-bold">PU BRUT :</h2>
-                    <input
-                      type="number"
-                      placeholder="Prix brut"
-                      value={price}
-                      onChange={(e) => setPrice(Number(e.target.value))}
-                      className="py-2 px-4 bg-gray-100"
-                    />
-                  </div>
-                  <div className="flex flex-col">
-                    <h2 className="font-bold">Tav % :</h2>
-                    <input
-                      type="number"
-                      placeholder="TVA"
-                      value={itemTva}
-                      onChange={(e) => setItemTva(Number(e.target.value))}
-                      className="py-2 px-4 bg-gray-100"
-                    />
-                  </div>
-                  <div className="flex flex-col">
-                    <h2 className="font-bold">rem % :</h2>
-                    <input
-                      type="number"
-                      placeholder="Discount"
-                      value={itemDiscount}
-                      onChange={(e) => setItemDiscount(Number(e.target.value))}
-                      className="py-2 px-4 bg-gray-100"
-                    />
-                  </div>
-                  <div className="flex flex-col">
-                    <h2 className="font-bold">Qte :</h2>
-                    <input
-                      type="number"
-                      placeholder="Quantity"
-                      value={itemQuantity}
-                      onChange={(e) => setItemQuantity(Number(e.target.value))}
-                      className="py-2 px-4 bg-gray-100"
-                    />
-                  </div>
-                  <div className="flex flex-col">
-                    <h2 className="font-bold">Pu Tva :</h2>
-                    <input
-                      type="number"
-                      placeholder="Quantity"
-                      value={price - (price * (itemDiscount / 100 || 0))}
-                      className="py-2 px-4 bg-gray-100"
-                    />
-                  </div>
-                  <div>
-                    <input
-                      type="text"
-                      value={itemImage}
-                      onChange={(e) => setItemImage(e.target.value)}
-                      className="py-2 px-4 bg-gray-100 hidden"
-                    />
-                    <input
-                      type="text"
-                      value={itemProduct}
-                      onChange={(e) => setItemProduct(e.target.value)}
-                      className="py-2 px-4 bg-gray-100 hidden"
-                    />
-                  </div>
-                </div>
-                <div className="flex justify-end mt-2 ">
-                <button
-                  onClick={handleAddItem}
-                  className="bg-gray-400 w-1/2 hover:bg-gray-600 text-white px-4 h-12 rounded mt-2"
-                >
-                  Add Item
-                </button>
-                </div>
-              </div>
-            </div>
+            <Orderitemslistproduct searchQuery={searchQuery} handleSearchChange={handleSearchChange } 
+           handleProductSelect={handleProductSelect} 
+           filteredProducts={filteredProducts} refa={ref}
+            setRef={setRef} itemName={itemName} 
+            setItemName={setItemName} 
+            price={price} 
+            setPrice={setPrice} 
+            itemTva={itemTva} 
+            setItemTva={setItemTva}
+            itemDiscount={itemDiscount} 
+            setItemDiscount={setItemDiscount } 
+            itemQuantity={itemQuantity} setItemQuantity={setItemQuantity} 
+            itemImage={itemImage} 
+            setItemImage={setItemImage} 
+            itemProduct={itemProduct} 
+            setItemProduct={setItemProduct } 
+            handleAddItem={handleAddItem }/>
 
             {/* Items Table */}
             <OrderTable items={itemList}handleDeleteItem={handleDeleteItem} calculateTotal={calculateTotal} costs={costs} isOn={isOn} />
