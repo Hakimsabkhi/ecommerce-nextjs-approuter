@@ -143,7 +143,7 @@ const AddedCategories: React.FC = () => {
   }
 
   return (
-    <div className="mx-auto w-[90%] h-screen py-8 flex flex-col gap-8">
+    <div className="mx-auto w-[90%] py-8 flex flex-col gap-8">
       <div className="flex items-center justify-between">
         <p className="text-3xl font-bold">ALL categories</p>
 
