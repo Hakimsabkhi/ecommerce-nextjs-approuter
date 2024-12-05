@@ -160,6 +160,7 @@ const AdminDashboard = () => {
           required
         >
           <option value="">All</option>
+          <option value="Visiteur">Visiteur</option>
           {roles.map((role, index) =>
             session?.user?.role === "SuperAdmin" ? (
               <option key={index} value={role.name}>
@@ -233,6 +234,7 @@ const AdminDashboard = () => {
                       }
                       disabled={loadingUserId === user._id}
                     >
+                      <option value="Visiteur">Visiteur</option>
                       {roles.map((role, index) =>
                         session?.user?.role === "SuperAdmin" ? (
                           <option key={index} value={role.name}>
