@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { FaSpinner } from "react-icons/fa";
+import { FaSpinner, FaTrashAlt } from "react-icons/fa";
 import { toast } from 'react-toastify';
 import DeletePopup from "@/components/Popup/DeletePopup";
 import Pagination from '@/components/Pagination';
@@ -181,9 +181,9 @@ const AddedBrands: React.FC = () => {
                 </Link>
                 <button
                   onClick={() => handleDeleteClick(item)}
-                  className="bg-gray-800 text-white w-28 h-10 hover:bg-gray-600 rounded-md"
+                  className="bg-gray-800 text-white pl-3 w-10 h-10 hover:bg-gray-600 rounded-md"
                 >
-                  {loadingBrandId === item._id ? "Processing..." : "DELETE"}
+                  {loadingBrandId === item._id ? "Processing..." : <FaTrashAlt />}
                 </button>
                 {isPopupOpen && (
                   <DeletePopup

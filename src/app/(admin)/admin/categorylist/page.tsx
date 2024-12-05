@@ -3,7 +3,7 @@ import React, { useEffect, useState, useMemo } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { toast } from "react-toastify";
-import { FaSpinner } from "react-icons/fa";
+import { FaSpinner, FaTrashAlt } from "react-icons/fa";
 import DeletePopup from "@/components/Popup/DeletePopup";
 import Pagination from "@/components/Pagination";
 
@@ -241,12 +241,12 @@ const AddedCategories: React.FC = () => {
                   </Link>
                   <button
                     onClick={() => handleDeleteClick(category)}
-                    className="bg-gray-800 text-white w-28 h-10 hover:bg-gray-600 rounded-md"
+                    className="bg-gray-800 text-white pl-3 w-10 h-10 hover:bg-gray-600 rounded-md"
                     disabled={selectedCategory?._id === category._id}
                   >
                     {selectedCategory?._id === category._id
                       ? "Processing..."
-                      : "DELETE"}
+                      : <FaTrashAlt />}
                   </button>
 
                   <Link

@@ -4,7 +4,7 @@ import Link from "next/link";
 import { toast } from "react-toastify";
 
 import { useRouter } from "next/navigation";
-import { FaSpinner } from "react-icons/fa";
+import { FaTrashAlt,FaSpinner } from "react-icons/fa";
 import Pagination from "@/components/Pagination";
 import DeletePopup from "@/components/Popup/DeletePopup";
 
@@ -300,12 +300,12 @@ const Listinvoice: React.FC = () => {
                     </Link>
                     <button
                       onClick={() => handleDeleteClick(item)}
-                      className="bg-gray-800 text-white w-28 h-10 hover:bg-gray-600 rounded-md"
+                      className="bg-gray-800 text-white pl-3 w-10 h-10 hover:bg-gray-600 rounded-md"
                       disabled={loadinginvoiceId === item._id}
                     >
                       {loadinginvoiceId === item._id
                         ? "Processing..."
-                        : "DELETE"}
+                        : <FaTrashAlt />}
                     </button>
                     {isPopupOpen && (
                       <DeletePopup
