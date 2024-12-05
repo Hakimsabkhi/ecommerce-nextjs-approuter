@@ -250,7 +250,7 @@ const Listinvoice: React.FC = () => {
             <tr>
               <td colSpan={6}>
                 <div className="text-center py-6 text-gray-600 w-full">
-                  <p>Aucune categorie trouvée.</p>
+                  <p>Aucune invoice trouvée.</p>
                 </div>
               </td>
             </tr>
