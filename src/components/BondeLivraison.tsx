@@ -153,7 +153,7 @@ const BondeLivraison=()=>{
       }
 
       // Save the PDF
-      pdf.save(`BondeLivraison${order?.ref.replace('ORDER-', '')}.pdf`);
+      pdf.save(`INVOICE-${order?.ref.replace('ORDER-', '')}.pdf`);
     });
   } else {
     console.error('Invoice content is not found');
@@ -199,7 +199,7 @@ if (loading) {
   
 
         <div className="text-end">
-          <h2 className="text-2xl md:text-3xl font-semibold text-gray-800 dark:text-neutral-200">Bon de Livraison #</h2>
+          <h2 className="text-2xl md:text-3xl font-semibold text-gray-800 dark:text-neutral-200">Invoice  #</h2>
           <span className="mt-1 block text-gray-500 dark:text-neutral-500">{order?.ref.replace('ORDER-', '')}</span>
 
           <p className="mt-4 not-italic text-gray-800 dark:text-neutral-200">
@@ -216,7 +216,7 @@ if (loading) {
 
       <div className="mt-8 grid sm:grid-cols-2 gap-3">
         <div className=' border border-gray-200 p-2 rounded-md'>
-          <h3 className="text-lg font-semibold text-gray-800 dark:text-neutral-200">Bon de Livraison à:</h3>
+          <h3 className="text-lg font-semibold text-gray-800 dark:text-neutral-200">Facturer à:</h3>
           <h3 className="text-lg font-semibold text-gray-800 dark:text-neutral-200 uppercase">{order?.user.username}</h3>
           <p className="mt-2 not-italic text-gray-500 dark:text-neutral-500">
             {order?.address.address}<br/>
