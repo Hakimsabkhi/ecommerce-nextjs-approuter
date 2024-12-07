@@ -86,8 +86,9 @@ const ListOrders: React.FC = () => {
       }
 
       const data = await response.json();
-      console.log(data);
-      router.push(`/admin/invoice/${data.ref._id}`);
+      window.open(`/admin/invoice/${data.ref._id}`, '_blank');
+      setIsPopupOpeninvoice(false);
+     
     } catch (error) {
       toast.error("Failed to create invoice");
     }
