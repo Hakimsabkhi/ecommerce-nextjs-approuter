@@ -37,7 +37,7 @@ const Categories: React.FC=  async () => {
 
     return (
         <div className='desktop max-md:w-[95%] flex flex-col gap-10 py-8'>
-            <div className='flex-col flex gap-2 items-center w-full max-lg:text-center'>
+           {categories.length>0 &&  <div><div className='flex-col flex gap-2 items-center w-full max-lg:text-center'>
                 <h3 className='font-bold text-4xl text-HomePageTitles'>
                     Our categories
                 </h3>
@@ -66,7 +66,7 @@ const Categories: React.FC=  async () => {
                         </div>                   
                     </Link>
                 ))}
-            </div>
+            </div></div>}
         </div>
     );
 }

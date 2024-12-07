@@ -57,11 +57,12 @@ const fetchProduct = async (): Promise<Products[]> => {
 
 const Collection: React.FC = async () => {
   const products = await fetchProduct();
+  const filteredProducts = products.filter(item => item.statuspage === "best-collection").length;
   return (
     <div className="desktop max-lg:w-[95%] flex flex-col justify-center items-center gap-10 py-8">
-      <div className="col-span-full flex flex-col items-center gap-2">
+       {filteredProducts>0 &&<div className="col-span-full flex flex-col items-center gap-2">
         <h2 className="font-bold text-HomePageTitles text-4xl">Product Collection</h2>
-      </div>
+      </div>}
 
       <div className="grid grid-cols-4 w-full max-sm:grid-cols-1 max-xl:grid-cols-2 group max-2xl:grid-cols-3 gap-8 max-md:gap-3">
         {products.map(
