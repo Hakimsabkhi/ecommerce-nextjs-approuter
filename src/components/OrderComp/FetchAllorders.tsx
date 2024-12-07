@@ -494,7 +494,7 @@ const ListOrders: React.FC = () => {
                           approve
                         </option>
                         <option value="false" className="text-white uppercase">
-                          Not approve{" "}
+                          Not approve
                         </option>
                       </select>
                       {item.statusinvoice === false ? (
@@ -507,7 +507,7 @@ const ListOrders: React.FC = () => {
                         <button
                           type="button"
                           onClick={() => handleinvoice(item._id)}
-                          className="bg-gray-800 text-white w-32 h-10 hover:bg-gray-600 rounded-md uppercase"
+                          className="bg-gray-800 text-white px-4 h-10 hover:bg-gray-600 rounded-md uppercase"
                         >
                           Invoice
                         </button>
