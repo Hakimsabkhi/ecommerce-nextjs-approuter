@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { FaSpinner } from "react-icons/fa";
 import Pagination from "../Pagination";
+import useIs2xl from "@/hooks/useIs2x";
 
 
 
@@ -35,7 +36,9 @@ const ListerReview: React.FC<AddedProductsProps> = ({ products }) => {
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const productsPerPage = 5;
+
+  const is2xl = useIs2xl();
+  const productsPerPage =is2xl ? 8 : 5;
 
   useEffect(() => {
     setFilteredProducts(products);
@@ -86,7 +89,7 @@ const ListerReview: React.FC<AddedProductsProps> = ({ products }) => {
           className="mt-4 p-2 border border-gray-300 rounded"
         />
       </div>
-      <div className='h-80 pt-1'>
+      <div className='max-2xl:h-80 h-[50vh] pt-1'>
       <table className="w-full rounded overflow-hidden table-fixed">
         <thead>
           <tr className="bg-gray-800 ">

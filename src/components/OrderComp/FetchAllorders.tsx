@@ -8,7 +8,7 @@ import { FaSpinner, FaTrashAlt, FaRegEye } from "react-icons/fa";
 import Pagination from "../Pagination";
 import { useRouter } from "next/navigation";
 import { items } from "@/assets/data";
-
+import useIs2xl from "@/hooks/useIs2x";
 type User = {
   _id: string;
   username: string;
@@ -43,7 +43,9 @@ const ListOrders: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const ordersPerPage = 5;
+
+  const is2xl = useIs2xl();
+  const ordersPerPage =is2xl ? 8 : 5;
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [selectedOrder, setSelectedOrder] = useState({ id: "", name: "" });
@@ -396,7 +398,7 @@ const ListOrders: React.FC = () => {
           />
         </div>
       </div>
-      <div className="h-80 pt-4">
+      <div className="max-2xl:h-80 h-[50vh] pt-4">
         <table className="w-full rounded overflow-hidden table-fixed ">
           <thead>
             <tr className="bg-gray-800">

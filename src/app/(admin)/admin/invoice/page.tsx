@@ -2,7 +2,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { toast } from "react-toastify";
-
+import useIs2xl from "@/hooks/useIs2x";
 import { useRouter } from "next/navigation";
 import { FaTrashAlt,FaSpinner } from "react-icons/fa";
 import Pagination from "@/components/Pagination";
@@ -40,7 +40,9 @@ const Listinvoice: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const invoicePerPage = 5;
+ 
+  const is2xl = useIs2xl();
+  const invoicePerPage =is2xl ? 8 : 5;
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [selectedinvoice, setSelectedinvoice] = useState({ id: "", name: "" });
@@ -222,7 +224,7 @@ const Listinvoice: React.FC = () => {
             />
         </div>
       </div>
-      <div className="h-80 pt-4">
+      <div className="max-2xl:h-80 h-[50vh] pt-4">
       <table className="w-full rounded overflow-hidden table-fixed ">
         <thead>
           <tr className="bg-gray-800">

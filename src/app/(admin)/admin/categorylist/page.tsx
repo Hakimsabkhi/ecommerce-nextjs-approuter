@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import { FaSpinner, FaTrashAlt } from "react-icons/fa";
 import DeletePopup from "@/components/Popup/DeletePopup";
 import Pagination from "@/components/Pagination";
+import useIs2xl from "@/hooks/useIs2x";
 
 type Category = {
   _id: string;
@@ -30,7 +31,8 @@ const AddedCategories: React.FC = () => {
     null
   );
 
-  const categoriesPerPage = 5;
+  const is2xl = useIs2xl();
+  const categoriesPerPage =is2xl ? 8 : 5;
 
   const handleDeleteClick = (category: Category) => {
     setSelectedCategory(category);
@@ -160,7 +162,7 @@ const AddedCategories: React.FC = () => {
         onChange={(e) => setSearchTerm(e.target.value)}
         className="mt-4 p-2 border border-gray-300 rounded"
       />
-      <div className='h-80'>
+      <div className="max-2xl:h-80 h-[50vh]">
       <table className="w-full rounded overflow-hidden table-fixed">
         <thead>
           <tr className="bg-gray-800">
@@ -195,7 +197,7 @@ const AddedCategories: React.FC = () => {
           ) : (
         <tbody>
           {currentCategories.map((category) => (
-            <tr key={category._id} className="bg-white text-black">
+            <tr key={category._id}>
               <td className="border px-4 py-2">
                 <Image
                   src={category.logoUrl}

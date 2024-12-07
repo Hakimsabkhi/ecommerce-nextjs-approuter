@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import DeletePopup from "@/components/Popup/DeletePopup";
 import Pagination from "@/components/Pagination";
 import Image from "next/image";
+import useIs2xl from "@/hooks/useIs2x";
 
 type User = {
   _id: string;
@@ -43,7 +44,9 @@ const ListPromotion: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const productsPerPage = 5;
+  const is2xl = useIs2xl();
+  const  productsPerPage=is2xl ? 8 : 5;
+  
   const [loading, setLoading] = useState(true);
   const [categories, setCategories] = useState<Category[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>("");
@@ -147,7 +150,7 @@ const ListPromotion: React.FC = () => {
           </select>
         </div>
       
-      <div className='h-80'>
+      <div className='max-2xl:h-80 h-[50vh]'>
       <table className="w-full rounded overflow-hidden table-fixed ">
         <thead>
           <tr className="bg-gray-800">
