@@ -140,7 +140,7 @@ const FirstBlock: React.FC<FirstBlockProps> = ({ product }) => {
     }
   };
   const items = useSelector((state: RootState) => state.cart.items);
-  console.log(items);
+
   const dispatch = useDispatch();
 
   const addToCartHandler = (product: Product, quantity: number) => {
@@ -149,8 +149,8 @@ const FirstBlock: React.FC<FirstBlockProps> = ({ product }) => {
     // Dispatch the action with item and quantity
     dispatch(addItem({ item: product, quantity }));
 
-    // Show success notification
-    toast.success(`${product.name} added to cart with quantity ${quantity}!`);
+    
+   
   };
   return (
     <>

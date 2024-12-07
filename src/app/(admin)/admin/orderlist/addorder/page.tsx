@@ -247,13 +247,7 @@ const handleAddNewAddress = async (e: React.FormEvent) => {
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // Handle creating the order here
- /*    console.log(itemList)
-    console.log(calculateTotal(itemList,costs))
-    console.log(Deliverymethod)
-    console.log(costs)
-    console.log(customer);
-   console.log(address);
-   console.log(paymentMethod); */
+
    const orderData = {
     itemList: itemList,
     totalCost: calculateTotal(itemList, costs,isOn),
@@ -264,7 +258,7 @@ const handleAddNewAddress = async (e: React.FormEvent) => {
     statustimbre:isOn,
     paymentMethod: paymentMethod,
   };
-  console.log(orderData); 
+
   try {
     // Send POST request to API
     const response = await fetch('/api/order/createorder', {

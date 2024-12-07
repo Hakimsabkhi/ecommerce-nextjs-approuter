@@ -46,7 +46,7 @@ const fetchCategoryData = async (id: string): Promise<ICategory | null> => {
       },
       next: { revalidate: 0 }, 
     });
-    console.log(res)
+
 
     if (!res.ok) {
       console.log('Category not found');
@@ -61,51 +61,6 @@ const fetchCategoryData = async (id: string): Promise<ICategory | null> => {
   }
 };
 
-// Fetch products data by category ID
-const fetchProductsData = async (id: string): Promise<ProductData[]> => {
-  try {
-    const res = await fetch(`${process.env.NEXTAUTH_URL}/api/search/${id}`, {
-      method: 'GET',
-      headers: {
-        "Content-Type": "application/json",
-      },
-      next: { revalidate: 0 }, // Disable caching
-    });
-
-    if (!res.ok) {
-      throw new Error('Products not found');
-    }
-
-    const data: ProductData[] = await res.json();
-    return data;
-  } catch (error) {
-    console.error('Error fetching products data:', error);
-    return [];
-  }
-};
-
-// Fetch brand data
-const fetchBrandData = async (): Promise<Brand[]> => {
-  try {
-    const res = await fetch(`${process.env.NEXTAUTH_URL}/api/brand/getAllBrand`, {
-      method: 'GET',
-      headers: {
-        "Content-Type": "application/json",
-      },
-      next: { revalidate: 0 }, // Disable caching
-    });
-
-    if (!res.ok) {
-      throw new Error('Brand not found');
-    }
-
-    const data: Brand[] = await res.json();
-    return data;
-  } catch (error) {
-    console.error('Error fetching brand data:', error);
-    return [];
-  }
-};
 
 // HomePage component
 async function CategoryPage({ params }: CategoryPageProps) {
