@@ -127,14 +127,26 @@ const ReviewBlock: React.FC<ReviewBlockProps> = ({ productId, product,refresh })
         ) : (
           reviews.map((review) => (
             <div key={review._id} className="w-full max-lg:w-full flex flex-col p-4 gap-2">
-              <div className="flex flex-col rounded-r-3xl rounded-t-3xl mr-4 drop-shadow-md p-4 bg-white">
+              <div className="flex flex-col rounded-3xl mr-4 drop-shadow-md p-4 bg-white">
                 <div className="flex flex-col gap-3 ">
-                <p className="text-[#525566]">{review.text}</p>
-              <hr></hr>
-                  
-                    <div className="flex justify-between ">
+                <div className="flex justify-between ">
                        <div className="flex gap-4 items-center"> 
                         <p className="text-lg max-md:text-xs font-medium">{review.name}</p>
+                        
+                        </div>
+                        <div className="flex gap-2" >
+                          <div className="text-primary max-md:text-xs flex gap-1 justify-center items-center">
+                            
+                            <FaStar className="text-yellow-500 size-3 max-md:size-2.5"/>{review.rating} of 5
+                          </div>
+                        </div>
+                    </div>
+                        <hr></hr>
+                <p className="text-[#525566]">{review.text}</p>
+                
+                </div>
+              </div>
+              <div className="flex gap-8 pl-4">
                         <p className="text-[#525566] max-md:text-xs max-md:hidden">
                           {new Date(review.createdAt).toLocaleDateString("en-US", {
                             day: "2-digit",
@@ -142,50 +154,31 @@ const ReviewBlock: React.FC<ReviewBlockProps> = ({ productId, product,refresh })
                             year: "numeric",
                           })}
                         </p> 
-                        </div>
-                        <div className="flex gap-2" >
-                          <div className="text-primary max-md:text-xs flex gap-1 justify-center items-center">
-                            
-                            <FaStar className="text-yellow-500 size-3 max-md:size-2.5"/>{review.rating} of 5
-                          </div>
-                          
                             <div className="flex gap-1 items-center">
                               <button  onClick={() => handleVote('like',review._id)}>
-                              <AiOutlineLike  className="md:hidden mb-0.5" size={12}  color={getlikeColor(review)} />
-                              <AiOutlineLike  className="max-md:hidden mb-1" size={17}  color={getlikeColor(review)} />
+                             
+                              <AiOutlineLike  className="" size={17}  color={getlikeColor(review)} />
                               </button>
                               <p className=" text-md  max-md:text-xs text-[#525566]">{review.likes ? review.likes.length : 0}</p>
                             </div>
-                          
-                        </div>
                     </div>
-                  
-                 
-                </div>
-                
-              </div>
-    
 
-
-             {review.user && <div className="flex flex-col gap-3 ml-4 bg-white rounded-r-3xl rounded-b-3xl drop-shadow-md p-4">
-              
-                
+             {review.user && <div className="flex flex-col gap-3 ml-4 bg-white rounded-3xl drop-shadow-md p-4">
                 <p className="text-[#525566]">
                    {review?.reply}
                   </p>
               <hr></hr>
-                  
                     <div className="flex justify-between">
-                        
                           <p className="text-lg max-md:text-xs font-medium">{review.user?.username}</p>
-                          <p className="text-[#525566] max-md:text-xs"> {new Date(review.updatedAt).toLocaleDateString("en-US", {
+                          
+                    </div>
+                    
+              </div> }
+              <p className="text-[#525566] max-md:text-xs"> {new Date(review.updatedAt).toLocaleDateString("en-US", {
                             day: "2-digit",
                             month: "long",
                             year: "numeric",
                           })}</p>
-                          
-                    </div>
-              </div> }
             </div>
           ))
         )}

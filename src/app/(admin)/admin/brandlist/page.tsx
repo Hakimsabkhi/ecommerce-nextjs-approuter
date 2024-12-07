@@ -6,6 +6,7 @@ import { FaSpinner, FaTrashAlt } from "react-icons/fa";
 import { toast } from 'react-toastify';
 import DeletePopup from "@/components/Popup/DeletePopup";
 import Pagination from '@/components/Pagination';
+import useIs2xl from '@/hooks/useIs2x';
 
 type Brand = {
   _id: string;
@@ -29,11 +30,14 @@ const AddedBrands: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const brandsPerPage = 5; // Number of brands to display per page
+  const is2xl = useIs2xl();
+  const brandsPerPage = is2xl ? 8 : 5; // Number of brands to display per page
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [selectedBrand, setSelectedBrand] = useState({ id: '', name: '' });
   const [loadingBrandId, setLoadingBrandId] = useState<string | null>(null);
+
+
 
   const handleDeleteClick = (brand: Brand) => {
     setLoadingBrandId(brand._id);
@@ -126,7 +130,7 @@ const AddedBrands: React.FC = () => {
         className='mt-4 p-2 border border-gray-300 rounded'
       />
 
-      <div className='h-80'>
+      <div className='max-2xl:h-80 h-[50vh]'>
       <table className="w-full  rounded overflow-hidden table-fixed ">
         <thead>
           <tr className='bg-gray-800'>
@@ -162,18 +166,18 @@ const AddedBrands: React.FC = () => {
         <tbody>
           {currentBrands.map((item, index) => (
             <tr key={index} className='bg-white text-black'>
-              <td className="border px-4 py-2">
+              <td className="border px-4 py-3">
                 <Image src={item.logoUrl} width={30} height={30} alt="icon" />
               </td>
-              <td className="border px-4 py-2">
+              <td className="border px-4 py-3">
                 <Link href={item.imageUrl}>
                   {item.imageUrl.split('/').pop()}
                 </Link>
               </td>
-              <td className="border px-4 py-2">{item.name}</td>
-              <td className="border-b px-4 py-2">{item.place}</td>
-              <td className="border-b px-4 py-2">{item?.user?.username}</td>
-              <td className="border-b flex items-center justify-center gap-2">
+              <td className="border px-4 py-3">{item.name}</td>
+              <td className="border px-4 py-3">{item.place}</td>
+              <td className="border px-4 py-3">{item?.user?.username}</td>
+              <td className="flex items-center justify-center gap-2">
                 <Link href={`/admin/brandlist/${item._id}`}>
                   <button className="bg-gray-800 text-white w-28 h-10 hover:bg-gray-600 rounded-md uppercase">
                     Modify

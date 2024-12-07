@@ -1,11 +1,13 @@
 "use client";
-import { FaSpinner } from "react-icons/fa";
-import { useEffect, useState } from "react";
+import { FaSpinner, FaTrashAlt } from "react-icons/fa";
+import { useEffect, useMemo, useState } from "react";
 import { useSession } from "next-auth/react";
 import DeletePopup from "@/components/Popup/DeletePopup";
 import { toast } from "react-toastify";
 import Link from "next/link";
 import Role from "@/models/Role";
+import Pagination from "@/components/Pagination";
+import useIs2xl from "@/hooks/useIs2x";
 
 interface User {
   _id: string;
@@ -28,6 +30,23 @@ const AdminDashboard = () => {
   const [loadingUserId, setLoadingUserId] = useState<string | null>(null);
   const [selectedUser, setSelectedUser] = useState({ id: "", email: "" });
   const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+
+  
+  const is2xl = useIs2xl();
+  const usersPerPage =is2xl ? 8 : 5;
+
+  const currentUser = useMemo(() => {
+    const indexOfLastUser = currentPage * usersPerPage;
+    const indexOfFirstUser = indexOfLastUser - usersPerPage;
+    return users.slice(indexOfFirstUser, indexOfLastUser);
+  }, [currentPage, users, usersPerPage]);
+
+  const totalPages = useMemo(() => {
+    return Math.ceil(users.length / usersPerPage);
+  }, [users.length, usersPerPage]);
+
+
 
   useEffect(() => {
     fetchUsers();
@@ -37,6 +56,8 @@ const AdminDashboard = () => {
   useEffect(() => {
    filterUsers();
   }, [searchTerm, selectedRole, users]);
+
+
 
   const fetchUsers = async () => {
     try {
@@ -176,7 +197,7 @@ const AdminDashboard = () => {
           )}
         </select>
       </div>
-      <div className="h-96">
+      <div className="max-2xl:h-80 h-[50vh]">
         <table className="w-full rounded overflow-hidden table-fixed ">
           <thead>
             <tr className="bg-gray-800">
@@ -196,7 +217,7 @@ const AdminDashboard = () => {
               <tr>
                 <td colSpan={3}>
                   <div className="flex justify-center items-center h-full w-full py-6">
-                    <FaSpinner className="animate-spin text-[30px] items-center" />
+                    <FaSpinner className="animate-spin text-[30px] " />
                   </div>
                 </td>
               </tr>
@@ -206,7 +227,7 @@ const AdminDashboard = () => {
               <tr>
                 <td colSpan={3}>
                   <div className="text-center py-6 text-gray-600 w-full">
-                    <p>Aucune marque trouvée.</p>
+                    <p>Aucun user trouvée.</p>
                   </div>
                 </td>
               </tr>
@@ -214,17 +235,11 @@ const AdminDashboard = () => {
           ) : (
           <tbody>
             {filteredUsers.map((user) => (
-              <tr
-                key={user._id}
-                className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
-              >
-                <th
-                  scope="row"
-                  className="px-6 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                >
+              <tr  key={user._id} >
+                <td className="px-6 py-1 font-medium text-gray-900  dark:text-white">
                   {user.email}
-                </th>
-                <td className="px-6 py-2 text-center">
+                </td>
+                <td className="px-6 py-1 text-center">
                   <div className="flex items-center justify-center">
                     <select
                       className="w-[50%] text-center border-2 p-2"
@@ -251,13 +266,13 @@ const AdminDashboard = () => {
                     </select>
                   </div>
                 </td>
-                <td className="px-6 py-2 relative text-center">
+                <td className="px-6 py-1 relative text-center">
                   <button
                     onClick={() => handleDeleteClick(user)}
-                    className="bg-red-500 w-[50%] text-white py-2 rounded"
+                    className="bg-gray-800 text-white pl-3 w-10 h-10 hover:bg-gray-600 rounded-md"
                     disabled={loadingUserId === user._id}
                   >
-                    {loadingUserId === user._id ? "Processing..." : "DELETE"}
+                    {loadingUserId === user._id ? "Processing..." :<FaTrashAlt />}
                   </button>
                   {isPopupOpen && (
                     <DeletePopup
@@ -274,6 +289,11 @@ const AdminDashboard = () => {
         </table>
       </div>
       <div className="flex justify-center mt-4">
+      <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+        />
       </div>
     </div>
   );
