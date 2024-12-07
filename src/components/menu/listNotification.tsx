@@ -1,13 +1,16 @@
 "use client";
 
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import Pagination from '../Pagination';
+import { Dispatch } from '@reduxjs/toolkit';
 
 
 interface ListNotificationProps {
     data: any[];
     isListVisible: boolean;
     hendlafficheorder(item:any):void;
+    currentPage:number;
+    setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
 
   }
 
@@ -39,29 +42,30 @@ interface ListNotificationProps {
 
   const ListNotification: React.FC<ListNotificationProps> = ({
     data,
+    currentPage,
+    setCurrentPage,
     isListVisible,
     hendlafficheorder,
   }) => {
-    
-    const [currentPage, setCurrentPage] = useState(1);
     const dataPerPage = 4;
-    const totalPages = useMemo(() => Math.ceil(data.length / dataPerPage), [data.length]);
-  
-    const paginateddata = useMemo(() => {
-      return data.slice((currentPage - 1) * dataPerPage, currentPage * dataPerPage);
-    }, [data, currentPage, dataPerPage]);
-  
-    // Ensure that the current page is within bounds when data change
-    useEffect(() => {
-      if (currentPage > totalPages) {
-        setCurrentPage(totalPages);
-      }
-    }, [currentPage, totalPages]);
-  
-    if (data.length === 0) {
-      return null;
-    }
+  const totalPages = useMemo(() => Math.ceil(data.length / dataPerPage), [data.length]);
 
+  const paginateddata = useMemo(() => {
+    return data.slice((currentPage - 1) * dataPerPage, currentPage * dataPerPage);
+  }, [data, currentPage, dataPerPage]);
+
+  // Ensure that the current page is within bounds when data change
+  useEffect(() => {
+   
+      setCurrentPage(totalPages);
+
+  }, [currentPage, totalPages]);
+
+  if (data.length === 0) {
+    return null;
+  }
+
+ 
     return (
         <div>
       
