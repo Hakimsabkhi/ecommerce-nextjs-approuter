@@ -90,9 +90,15 @@ export default async function Bb() {
                                         Home
                                     </p>
                                 </Link>
+                            
                                 <Link href="/about">
                                     <p className="   hover:text-white cursor-pointer">
                                         About
+                                    </p>
+                                </Link>
+                                <Link href="/contactus">
+                                    <p className="   hover:text-white cursor-pointer">
+                                        Contact Us
                                     </p>
                                 </Link>
                                 <Link href="#">

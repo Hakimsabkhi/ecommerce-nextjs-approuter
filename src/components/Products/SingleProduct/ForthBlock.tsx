@@ -90,13 +90,13 @@ const ForthBlock: React.FC<{ product: Product | null }> = ({ product }) => {
     setReview('');
     setRating(0);
     setSaveInfo(false);
-      toast.success("Review submitted successfully!");
+
 
       // Force re-render by changing key
       setKey(prevKey => prevKey + 1);
   } catch (error) {
       console.error("Error submitting review:", error);
-      toast.error("Do not add two reviews");
+     
   }
 };
 
@@ -177,20 +177,7 @@ const ForthBlock: React.FC<{ product: Product | null }> = ({ product }) => {
               </div>
             )}
 
-              <label className="flex items-center gap-1">                
-                <input
-                  
-                  type="checkbox"
-                  checked={saveInfo}
-                  onChange={() => setSaveInfo(!saveInfo)}
-                  className="w-5 h-5 rounded bg-[#525566]"
-                />
-                <p className="font-bold">
-                  Save my name, email, and website in this browser for the next
-                  time I comment.
-                </p>
-              </label>
-
+             
               <button
                 type="submit"
                 className="text-white bg-primary hover:bg-[#15335D] h-10 w-[20%] font-bold rounded-md"
