@@ -39,15 +39,15 @@ const ProductList: React.FC<ProductListProps> = ({ products   }) => {
   return (
     <div>
     
-      {products.length !== 0  ?(
+    
         <div className="grid group grid-cols-3 max-md:grid-cols-1 max-lg:grid-cols-2 max-md:gap-3 gap-8">
           {products.map((item) => (
             <ProductCard key={item._id} item={item} />
           ))}
         </div>
-      ):(
-        <div className=" text-xl  w-full h-full flex justify-center ">no products available</div>
-      )}
+     
+       
+     
     </div>
   );
 };
