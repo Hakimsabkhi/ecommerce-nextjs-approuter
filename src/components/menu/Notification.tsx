@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { AiOutlineBell } from "react-icons/ai";
 import ListNotification from "./listNotification";
 import { useRouter } from "next/navigation";
@@ -30,7 +30,8 @@ const Notification: React.FC= () => {
   const [isListVisible, setListVisible] = useState(false);
   const listRef = useRef<HTMLDivElement>(null); // Ref for wishlist container
   const route=useRouter();
-
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  
  // Define the function to fetch data
  const fetchNotifications = async () => {
   try {
@@ -60,6 +61,7 @@ const hendlafficheorder=async (item:any)=>{
   });
   if(response.ok){
   route.push(`/admin/orderlist/${item.order.ref}`)
+  setListVisible(false);
   fetchNotifications();
   }else{
     console.log('eurr notification')
@@ -91,6 +93,7 @@ const hendlafficheorder=async (item:any)=>{
     }
    
 };
+
   useEffect(() => {
    
 
@@ -102,8 +105,8 @@ const hendlafficheorder=async (item:any)=>{
   }, []);
 
   return (
-    <div ref={listRef} onClick={()=>toggleListVisibility(notifs)}className="flex items-center gap-2 text-white cursor-pointer select-none max-xl:hidden ">
-      <div className="relative">
+    <div ref={listRef}   className="flex items-center gap-2 text-white cursor-pointer select-none max-xl:hidden ">
+      <div className="relative" onClick={()=>toggleListVisibility(notifs)}>
    
         <AiOutlineBell size={40} className="text-primary" />
         
@@ -113,10 +116,9 @@ const hendlafficheorder=async (item:any)=>{
        
       </div>
      <ListNotification 
-     data={notifs}
-     isListVisible={isListVisible}
-     hendlafficheorder={hendlafficheorder}
-    />
+        data={notifs}
+        isListVisible={isListVisible}
+        hendlafficheorder={hendlafficheorder} currentPage={currentPage} setCurrentPage={setCurrentPage}    />
     </div>
   );
 };
