@@ -140,7 +140,7 @@ const FirstBlock: React.FC<FirstBlockProps> = ({ product }) => {
     }
   };
   const items = useSelector((state: RootState) => state.cart.items);
-  console.log(items);
+
   const dispatch = useDispatch();
 
   const addToCartHandler = (product: Product, quantity: number) => {

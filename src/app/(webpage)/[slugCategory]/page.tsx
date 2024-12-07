@@ -46,7 +46,7 @@ const fetchCategoryData = async (id: string): Promise<ICategory | null> => {
       },
       next: { revalidate: 0 }, 
     });
-    console.log(res)
+
 
     if (!res.ok) {
       console.log('Category not found');
