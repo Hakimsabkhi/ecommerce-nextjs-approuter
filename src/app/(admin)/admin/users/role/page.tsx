@@ -1,9 +1,11 @@
 "use client";
 
 import DeletePopup from "@/components/Popup/DeletePopup";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { FaTrash, FaTrashAlt } from "react-icons/fa";
 import { pages } from "@/lib/page";
+import Pagination from "@/components/Pagination";
+import useIs2xl from "@/hooks/useIs2x";
 
 const Page = () => {
   // Renamed from "page" to "Page"
@@ -11,10 +13,25 @@ const Page = () => {
     { _id: string; name: string; access: Record<string, boolean> }[]
   >([]);
   const [newRole, setNewRole] = useState("");
+  const [currentPage, setCurrentPage] = useState<number>(1);
   const [isAddingRole, setIsAddingRole] = useState(false);
   const [updatingRole, setUpdatingRole] = useState<string | null>(null);
   const [selectedRole, setSelectedRole] = useState({ id: "", name: "" });
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+
+
+  const is2xl = useIs2xl();
+  const usersPerPage =is2xl ? 8 : 5;
+
+  const currentUser = useMemo(() => {
+    const indexOfLastUser = currentPage * usersPerPage;
+    const indexOfFirstUser = indexOfLastUser - usersPerPage;
+    return roles.slice(indexOfFirstUser, indexOfLastUser);
+  }, [currentPage, roles, usersPerPage]);
+
+  const totalPages = useMemo(() => {
+    return Math.ceil(roles.length / usersPerPage);
+  }, [roles.length, usersPerPage]);
 
   const handleDeleteClick = (role: any) => {
     setUpdatingRole(role._id);
@@ -96,6 +113,7 @@ const Page = () => {
     }
   }
 
+
   async function handleAddRole() {
     if (!newRole.trim()) {
       alert("Role name cannot be empty.");
@@ -155,7 +173,7 @@ const Page = () => {
             Ajouter un Role
           </button>
         </div>
-        
+        <div className="max-2xl:h-80 h-[50vh]">
         <table className="w-full rounded overflow-hidden table-fixed ">
           <thead>
             <tr className="bg-gray-800">
@@ -200,7 +218,7 @@ const Page = () => {
                     </div>
                   </td>
                 ))}
-                <td className="border border-gray-300 px-4 py-2">
+                <td className="border flex justify-center border-gray-300 px-4 py-2">
                   <button
                     onClick={() => handleDeleteClick(role)}
                     className="bg-gray-800 text-white pl-3 w-10 h-10 hover:bg-gray-600 rounded-md"
@@ -209,7 +227,7 @@ const Page = () => {
                     {updatingRole === role._id ? (
                       <div className="animate-spin h-5 w-5 border-2 border-gray-300 border-t-blue-500 rounded-full"></div>
                     ) : (
-                      <FaTrashAlt />
+                      <FaTrashAlt className="" />
                     )}
                   </button>
                   {isPopupOpen && (
@@ -225,6 +243,14 @@ const Page = () => {
             ))}
           </tbody>
         </table>
+        </div>
+      </div>
+      <div className="flex justify-center mt-4">
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+        />
       </div>
     </div>
   );
