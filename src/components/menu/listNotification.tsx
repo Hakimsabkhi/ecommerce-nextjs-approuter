@@ -56,9 +56,9 @@ interface ListNotificationProps {
 
   // Ensure that the current page is within bounds when data change
   useEffect(() => {
-    if (currentPage >= totalPages) {
+   
       setCurrentPage(totalPages);
-    }
+
   }, [currentPage, totalPages]);
 
   if (data.length === 0) {
