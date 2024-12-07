@@ -106,7 +106,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
   const dispatch = useDispatch();
   const addToCartHandler = (product: ProductData, quantity: number) => {
     dispatch(addItem({ item: product, quantity }));
-    toast.success(`${product.name} added to cart!`);
+   
   };
 
   return (

@@ -149,8 +149,8 @@ const FirstBlock: React.FC<FirstBlockProps> = ({ product }) => {
     // Dispatch the action with item and quantity
     dispatch(addItem({ item: product, quantity }));
 
-    // Show success notification
-    toast.success(`${product.name} added to cart with quantity ${quantity}!`);
+    
+   
   };
   return (
     <>
